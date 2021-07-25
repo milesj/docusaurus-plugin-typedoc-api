@@ -1,0 +1,46 @@
+# Logs
+logs/
+*.log
+
+# Cache
+.eslintcache
+.idea
+.npm
+.vscode
+.yarnclean
+
+# Directories
+build/
+cjs/
+coverage/
+dist/
+esm/
+lib/
+mjs/
+node_modules/
+tmp/
+
+# Custom
+*.min.js
+*.map
+
+# Beemo configs
+.babelrc
+.eslintignore
+.eslintrc.js
+.flowconfig
+.prettierignore
+tsconfig.json
+tsconfig.options.json
+*.config.js
+*.config.ts
+*.tsbuildinfo
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
