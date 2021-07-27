@@ -30,8 +30,6 @@ tmp/
 .eslintrc.js
 .flowconfig
 .prettierignore
-tsconfig.json
-tsconfig.options.json
 *.config.js
 *.config.ts
 *.tsbuildinfo

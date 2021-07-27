@@ -18,7 +18,7 @@
     "coverage": "yarn run test --coverage",
     "format": "beemo prettier",
     "lint": "beemo eslint",
-    "type": "beemo typescript",
+    "type": "beemo typescript --project tsconfig.eslint.json",
     "release": "yarn run pack && yarn run check && npx np --yolo"
   },
   "repository": {
