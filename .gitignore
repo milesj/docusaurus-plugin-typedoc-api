@@ -33,6 +33,8 @@ tmp/
 *.config.js
 *.config.ts
 *.tsbuildinfo
+!website/babel.config.js
+!docusaurus.config.js
 
 # Yarn
 .yarn/*
