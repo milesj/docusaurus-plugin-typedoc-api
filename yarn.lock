@@ -2283,6 +2283,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@docusaurus/module-type-aliases@npm:^2.0.0-beta.3":
+  version: 2.0.0-beta.ff31de0ff
+  resolution: "@docusaurus/module-type-aliases@npm:2.0.0-beta.ff31de0ff"
+  checksum: a1d9314bd56dc275b6789ea5a7ab01a4b253534590e41609948d0314fe151c969eaefad8ed958f6deb4e9cbacf4b9059775e335056707339f5db7c0c360ccee3
+  languageName: node
+  linkType: hard
+
 "@docusaurus/plugin-content-blog@npm:2.0.0-beta.3":
   version: 2.0.0-beta.3
   resolution: "@docusaurus/plugin-content-blog@npm:2.0.0-beta.3"
@@ -2540,6 +2547,19 @@ __metadata:
     webpack: ^5.40.0
     webpack-merge: ^5.8.0
   checksum: d6f0d32bd4e8b3c7cc22ba234330acc69223a81b37c6bce82c6233d35441e7ef7a35bae26740c8dffa6d67531b1f7d311ed5af5ffcccf66f404a953cc652d1fc
+  languageName: node
+  linkType: hard
+
+"@docusaurus/types@npm:^2.0.0-beta.3":
+  version: 2.0.0-beta.ff31de0ff
+  resolution: "@docusaurus/types@npm:2.0.0-beta.ff31de0ff"
+  dependencies:
+    commander: ^5.1.0
+    joi: ^17.4.0
+    querystring: 0.2.0
+    webpack: ^5.37.0
+    webpack-merge: ^5.7.3
+  checksum: fc3ecc751d240428c5e4a1ff53d4d947a10f921a9d942363d2ba563a17aa7126ea525ab0f71c4c800915ae381fe2f497ca7591f5fee45dcd1ce25db2b58e5bcb
   languageName: node
   linkType: hard
 
@@ -3636,10 +3656,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/prop-types@npm:*":
+  version: 15.7.4
+  resolution: "@types/prop-types@npm:15.7.4"
+  checksum: ef15c425a944f6b13824a87854cccf238e1b4cd0350b3124f4938406fe758fbdd6fadb2480d1388a00daeab61ce9888be5ca2b73da275f5dbc977143ff98e1eb
+  languageName: node
+  linkType: hard
+
 "@types/q@npm:^1.5.1":
   version: 1.5.5
   resolution: "@types/q@npm:1.5.5"
   checksum: a79d4ee7ee14bcf876619f5992d8958fdedcd63df1300cce03341fe5923b1755e496a030b6baf3849aa1dc85138cd568d22648d72de9602e31d804ffe82ceadf
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:^17.0.15":
+  version: 17.0.15
+  resolution: "@types/react@npm:17.0.15"
+  dependencies:
+    "@types/prop-types": "*"
+    "@types/scheduler": "*"
+    csstype: ^3.0.2
+  checksum: 427cca327d7a3c46af90e13ca3e1fe5e9c0dc1142df73c9b97c010ea420eb753776a58aec2e783fd669521dc87e89932bd17135fce2b2642aaa475216ac25914
   languageName: node
   linkType: hard
 
@@ -3667,6 +3705,13 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: 1c8096a450af626f63ed4efe849df3e5169a0872419a06bedf02125c859c7a12c1133db0e26a5be3b5d1db0888a82e38bdf6584e6b748b42126ff02c2ebc01c9
+  languageName: node
+  linkType: hard
+
+"@types/scheduler@npm:*":
+  version: 0.16.2
+  resolution: "@types/scheduler@npm:0.16.2"
+  checksum: e78d1bb50ca9321a76826c0f5a5ed7f1b6e995597127993cad658bd18d7f7de4324cd7efdfd0140079ee212a05774bbbd95eecfdf72370d14023acb99b841a30
   languageName: node
   linkType: hard
 
@@ -6211,6 +6256,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"csstype@npm:^3.0.2":
+  version: 3.0.8
+  resolution: "csstype@npm:3.0.8"
+  checksum: e15233592a2c580fd72c4346a5c921044b8f4f29bcb81628a81199c4d6a91eb8f8e4875f440ef9c990e85f179a3370f3b842fe55e4743119ad0ce712519e7123
+  languageName: node
+  linkType: hard
+
 "damerau-levenshtein@npm:^1.0.6":
   version: 1.0.7
   resolution: "damerau-levenshtein@npm:1.0.7"
@@ -6567,8 +6619,18 @@ __metadata:
     "@beemo/cli": ^2.0.1
     "@beemo/core": ^2.0.1
     "@beemo/dev": ^1.3.1
+    "@docusaurus/module-type-aliases": ^2.0.0-beta.3
+    "@docusaurus/types": ^2.0.0-beta.3
+    "@types/react": ^17.0.15
+    clsx: ^1.1.1
     packemon: ^1.2.0
+    react: ^17.0.2
+    react-dom: ^17.0.2
     typedoc: ^0.21.4
+    typescript: ^4.3.5
+  peerDependencies:
+    react: ">=16.0.0"
+    typescript: ^4.0.0
   languageName: unknown
   linkType: soft
 
@@ -13665,7 +13727,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^17.0.1":
+"react-dom@npm:^17.0.1, react-dom@npm:^17.0.2":
   version: 17.0.2
   resolution: "react-dom@npm:17.0.2"
   dependencies:
@@ -13861,7 +13923,7 @@ fsevents@^1.2.7:
   languageName: node
   linkType: hard
 
-"react@npm:^17.0.1":
+"react@npm:^17.0.1, react@npm:^17.0.2":
   version: 17.0.2
   resolution: "react@npm:17.0.2"
   dependencies:
@@ -16898,7 +16960,7 @@ resolve@~1.19.0:
   languageName: node
   linkType: hard
 
-"webpack-merge@npm:^5.8.0":
+"webpack-merge@npm:^5.7.3, webpack-merge@npm:^5.8.0":
   version: 5.8.0
   resolution: "webpack-merge@npm:5.8.0"
   dependencies:
@@ -16928,7 +16990,7 @@ resolve@~1.19.0:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.40.0":
+"webpack@npm:^5.37.0, webpack@npm:^5.40.0":
   version: 5.46.0
   resolution: "webpack@npm:5.46.0"
   dependencies:

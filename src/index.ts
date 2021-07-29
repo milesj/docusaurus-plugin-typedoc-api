@@ -1,70 +1,93 @@
+/* eslint-disable sort-keys */
+
+import fs from 'fs';
 import path from 'path';
-import TypeDoc from 'typedoc';
+import type { JSONOutput } from 'typedoc';
+import * as TypeDoc from 'typedoc';
+import type { LoadContext, Plugin } from '@docusaurus/types';
+import { extractSidebar } from './sidebar';
 
-const plugin = {
-	name: 'docusaurus-plugin-typedoc-api',
-	async loadContent() {
-		const filePath = path.join(context.generatedFilesDir, 'typedoc.json');
+export interface DocusaurusPluginTypedocApiOptions {
+	exclude?: string[];
+	packageEntryPoints: string[];
+	projectRoot: string;
+}
 
-		if (fs.existsSync(filePath)) {
-			return require(filePath);
-		}
+export default function typedocApiPlugin(
+	context: LoadContext,
+	{ exclude = [], packageEntryPoints, projectRoot }: DocusaurusPluginTypedocApiOptions,
+): Plugin<JSONOutput.ProjectReflection> {
+	return {
+		name: 'docusaurus-plugin-typedoc-api',
+		async loadContent() {
+			const filePath = path.join(context.generatedFilesDir, 'typedoc.json');
 
-		console.log(context);
-		console.log('loadContent');
+			if (fs.existsSync(filePath)) {
+				// return import(filePath);
+			}
 
-		const app = new TypeDoc.Application();
+			console.log('loadContent', context);
 
-		app.options.addReader(new TypeDoc.TSConfigReader());
-		app.options.addReader(new TypeDoc.TypeDocReader());
+			const app = new TypeDoc.Application();
 
-		app.bootstrap({
-			tsconfig: '../tsconfig.json',
-			entryPoints: pkgList.map((name) => `../packages/${name}/src/index.ts`),
-			exclude: ['**/themes/*', '**/website/*'],
-			excludeExternals: true,
-			excludePrivate: true,
-		});
+			app.options.addReader(new TypeDoc.TSConfigReader());
+			app.options.addReader(new TypeDoc.TypeDocReader());
 
-		const project = app.convert();
+			app.bootstrap({
+				tsconfig: path.join(projectRoot, 'tsconfig.json'),
+				entryPoints: packageEntryPoints.map((entry) => path.join(projectRoot, entry)),
+				exclude,
+				excludeExternals: true,
+				excludeInternal: true,
+				excludePrivate: true,
+				excludeProtected: true,
+			});
 
-		if (project) {
-			await app.generateJson(project, filePath);
+			const project = app.convert();
 
-			return require(filePath);
-		}
-	},
-	async contentLoaded({ content, actions }) {
-		if (!content) {
-			return;
-		}
+			if (project) {
+				await app.generateJson(project, filePath);
 
-		const { createData, addRoute } = actions;
+				return import(filePath);
+			}
 
-		console.log('contentLoaded');
+			return undefined;
+		},
+		async contentLoaded({ content, actions }) {
+			if (!content) {
+				return;
+			}
 
-		await Promise.all(
-			content.children.map(async (pkg) => {
-				const { children: pkgExports, ...pkgMetadata } = pkg;
+			console.log('contentLoaded');
 
-				pkgMetadata.name = pkg.name.replace('/src', '');
+			const { createData, addRoute } = actions;
 
-				const pkgData = await createData(
-					`package-${pkgMetadata.name}.json`,
-					JSON.stringify(pkgMetadata),
-				);
+			// Create a sidebar for all pages
+			const sidebar = await extractSidebar(projectRoot, content);
+			const sidebarData = await createData(`sidebar.json`, JSON.stringify(sidebar));
 
-				actions.addRoute({
-					path: `/api/${pkgMetadata.name}`,
-					component: '../src/pages/typedoc/Package.tsx',
-					modules: {
-						data: pkgData,
-					},
-					exact: true,
-				});
-			}),
-		);
-	},
-};
+			await Promise.all(
+				content.children.map(async (pkg) => {
+					const { children: pkgExports, ...pkgMetadata } = pkg;
 
-export default plugin;
+					pkgMetadata.name = pkg.name.replace('/src', '');
+
+					const pkgData = await createData(
+						`package-${pkgMetadata.name}.json`,
+						JSON.stringify(pkgMetadata),
+					);
+
+					addRoute({
+						path: `/api/${pkgMetadata.name}`,
+						component: path.join(__dirname, './components/ApiPage.js'),
+						modules: {
+							data: pkgData,
+							sidebar: sidebarData,
+						},
+						exact: true,
+					});
+				}),
+			);
+		},
+	};
+}

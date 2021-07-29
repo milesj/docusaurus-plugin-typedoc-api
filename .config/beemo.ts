@@ -15,5 +15,6 @@ export default {
 	],
 	settings: {
 		node: true,
+		react: true,
 	},
 };

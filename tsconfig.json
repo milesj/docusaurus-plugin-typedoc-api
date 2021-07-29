@@ -1,36 +1,17 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Beemo",
-  "compilerOptions": {
-    "allowJs": false,
-    "allowSyntheticDefaultImports": true,
-    "declaration": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": false,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "lib": [
-      "esnext"
-    ],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noEmitOnError": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "pretty": true,
-    "removeComments": false,
-    "resolveJsonModule": false,
-    "skipLibCheck": true,
-    "sourceMap": false,
-    "strict": true,
-    "target": "es2020",
-    "declarationDir": "dts",
-    "outDir": "dts",
-    "rootDir": "src",
-    "emitDeclarationOnly": true
-  },
-  "include": [
-    "src/**/*",
-    "types/**/*"
+  "extends": "./tsconfig.options.json",
+  "files": [],
+  "references": [
+    {
+      "path": "."
+    },
+    {
+      "path": "tests"
+    },
+    {
+      "path": "website"
+    }
   ]
 }

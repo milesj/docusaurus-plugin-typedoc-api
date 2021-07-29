@@ -1,3 +1,4 @@
+const path = require('path');
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
@@ -101,6 +102,29 @@ module.exports = {
 				theme: {
 					customCss: require.resolve('./src/css/custom.css'),
 				},
+			},
+		],
+	],
+	plugins: [
+		[
+			path.join(__dirname, '../lib/index.js'),
+			{
+				projectRoot: path.join(__dirname, '../../boost'),
+				packageEntryPoints: [
+					'args',
+					'cli',
+					'common',
+					'config',
+					'debug',
+					'decorators',
+					'event',
+					'log',
+					'pipeline',
+					'plugin',
+					'terminal',
+					'translate',
+				].map((pkg) => `packages/${pkg}/src/index.ts`),
+				exclude: ['**/themes/*', '**/website/*'],
 			},
 		],
 	],
