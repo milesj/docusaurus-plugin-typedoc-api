@@ -3,6 +3,7 @@
 import React from 'react';
 import { JSONOutput } from 'typedoc';
 import { Comment, hasComment } from './Comment';
+import { Type } from './Type';
 import { TypeParameters } from './TypeParameters';
 
 export interface ReflectionProps {
@@ -12,6 +13,8 @@ export interface ReflectionProps {
 		| JSONOutput.SignatureReflection;
 }
 
+// Doesnt exist in JSON:
+// - typeHierarchy
 export function Reflection({ reflection }: ReflectionProps) {
 	return (
 		<>
@@ -25,6 +28,38 @@ export function Reflection({ reflection }: ReflectionProps) {
 				<section className="tsd-panel tsd-type-parameters">
 					<h3>Type parameters</h3>
 					<TypeParameters params={reflection.typeParameter} />
+				</section>
+			)}
+
+			{'implementedTypes' in reflection && reflection.implementedTypes && (
+				<section className="tsd-panel tsd-implemented-types">
+					<h3>Implements</h3>
+					<ul className="tsd-hierarchy">
+						{reflection.implementedTypes.map((type) => (
+							<li>
+								<Type type={type} />
+							</li>
+						))}
+					</ul>
+				</section>
+			)}
+
+			{'implementedBy' in reflection && reflection.implementedBy && (
+				<section className="tsd-panel tsd-implemented-by">
+					<h3>Implemented by</h3>
+					<ul className="tsd-hierarchy">
+						{reflection.implementedBy.map((type) => (
+							<li>
+								<Type type={type} />
+							</li>
+						))}
+					</ul>
+				</section>
+			)}
+
+			{'signatures' in reflection && reflection.signatures && (
+				<section className="tsd-panel tsd-signatures">
+					<h3 className="tsd-before-signature">Callable</h3>
 				</section>
 			)}
 		</>
