@@ -6,8 +6,8 @@ import type { JSONOutput } from 'typedoc';
 import * as TypeDoc from 'typedoc';
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs-types';
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
-import { addMetadataToReflections, extractMetadata } from './data';
-import { extractSidebar } from './sidebar';
+import { addMetadataToPackages, extractMetadata } from './data';
+import { extractSidebar, extractSidebarPermalinks } from './sidebar';
 import { DeclarationInfo, PackageInfo } from './types';
 
 export interface DocusaurusPluginTypedocApiOptions {
@@ -30,7 +30,7 @@ export default function typedocApiPlugin(
 			const filePath = path.join(context.generatedFilesDir, 'typedoc.json');
 
 			if (fs.existsSync(filePath)) {
-				return import(filePath);
+				// return import(filePath);
 			}
 
 			console.log('loadContent', context);
@@ -69,10 +69,7 @@ export default function typedocApiPlugin(
 			console.log('contentLoaded');
 
 			const { createData, addRoute } = actions;
-
-			// Create a sidebar for all pages
-			const sidebar = await extractSidebar(projectRoot, content);
-			// const sidebarData = await createData(`sidebar.json`, JSON.stringify(sidebar));
+			const apiPackages = await addMetadataToPackages(projectRoot, content);
 
 			// Define version metadata for all pages. We need to use the same structure as
 			// "docs" so that we can utilize the same React components.
@@ -83,15 +80,15 @@ export default function typedocApiPlugin(
 				label: 'Current',
 				banner: 'none',
 				isLast: true,
-				docsSidebars: { api: sidebar },
-				permalinkToSidebar: {},
+				docsSidebars: { api: await extractSidebar(apiPackages) },
+				permalinkToSidebar: await extractSidebarPermalinks(apiPackages),
 			};
 			const versionMetadataData = await createData(
 				`version-${versionMetadata.version}-metadata.json`,
 				JSON.stringify(versionMetadata),
 			);
 
-			async function createReflectionRoute(
+			async function createRoute(
 				info: DeclarationInfo | PackageInfo,
 				componentName: string,
 			): Promise<RouteConfig> {
@@ -116,30 +113,26 @@ export default function typedocApiPlugin(
 			async function createDeclarationRoutes(pkg: PackageInfo) {
 				// Map a route for every declaration in the package (the exported APIs)
 				const routes = await Promise.all(
-					pkg.children.map(async (decl) => createReflectionRoute(decl, 'ApiItem')),
+					pkg.children.map(async (decl) => createRoute(decl, 'ApiItem')),
 				);
 
 				// Map a top-level package route, otherwise `DocPage` shows a page not found
-				routes.push(await createReflectionRoute(pkg, 'ApiItemIndex'));
+				routes.push(await createRoute(pkg, 'ApiItemIndex'));
 
 				return routes.sort((a, b) => a.path.localeCompare(b.path));
 			}
 
 			await Promise.all(
-				content.children.map(async (pkg) => {
-					const pkgInfo = addMetadataToReflections(pkg);
-					const pkgInfoData = await createData(
-						`package-${pkgInfo.name}.json`,
-						JSON.stringify(pkgInfo),
-					);
+				apiPackages.map(async (pkg) => {
+					const pkgData = await createData(`package-${pkg.name}.json`, JSON.stringify(pkg));
 
 					addRoute({
-						path: pkgInfo.permalink,
+						path: pkg.permalink,
 						exact: false,
 						component: path.join(__dirname, './components/ApiPage.js'),
-						routes: await createDeclarationRoutes(pkgInfo),
+						routes: await createDeclarationRoutes(pkg),
 						modules: {
-							data: pkgInfoData,
+							data: pkgData,
 							versionMetadata: versionMetadataData,
 						},
 					});

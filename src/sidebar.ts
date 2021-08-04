@@ -1,25 +1,9 @@
-import fs from 'fs';
-import path from 'path';
-import { JSONOutput, ReflectionKind } from 'typedoc';
-import { createDeclarationMap, DeclarationReflectionMap } from './data';
-import { SidebarItem } from './types';
-import { createUrl, getKindSlug } from './url';
-
-async function loadPackageJson(initialDir: string) {
-	let currentDir = initialDir;
-
-	while (!fs.existsSync(path.join(currentDir, 'package.json'))) {
-		currentDir = path.dirname(currentDir);
-	}
-
-	return JSON.parse(await fs.promises.readFile(path.join(currentDir, 'package.json'), 'utf8')) as {
-		name: string;
-	};
-}
+import { JSONOutput } from 'typedoc';
+import { createDeclarationMap, DeclarationInfoMap } from './data';
+import { PackageInfo, SidebarItem } from './types';
 
 export function groupSidebarItems(
-	pkgSlug: string,
-	decls: DeclarationReflectionMap,
+	decls: DeclarationInfoMap,
 	groups: JSONOutput.ReflectionGroup[],
 ): SidebarItem[] {
 	const items: SidebarItem[] = [];
@@ -38,10 +22,7 @@ export function groupSidebarItems(
 					const child = decls[id];
 
 					return {
-						href:
-							child.kind === ReflectionKind.Variable
-								? createUrl(pkgSlug, `#${child.name}`)
-								: createUrl(pkgSlug, getKindSlug(child), child.name),
+						href: child.permalink,
 						label: child.name,
 						type: 'link',
 					};
@@ -54,35 +35,38 @@ export function groupSidebarItems(
 	return items;
 }
 
-export async function extractSidebar(
-	projectRoot: string,
-	project: JSONOutput.DeclarationReflection | JSONOutput.ProjectReflection,
-): Promise<SidebarItem[]> {
-	const packages = (
-		project.kind === ReflectionKind.Project ? project.children ?? [] : [project]
-	).filter((pkg) => pkg.kind === ReflectionKind.Module) as JSONOutput.DeclarationReflection[];
-
+export function extractSidebar(packages: PackageInfo[]): SidebarItem[] {
 	if (packages.length === 0) {
 		return [];
 	}
 
-	const items: SidebarItem[] = await Promise.all(
-		packages.map(async (pkg, index) => {
-			const pkgInfo = await loadPackageJson(
-				path.join(projectRoot, path.dirname(String(pkg.sources?.[0].fileName))),
-			);
-			const pkgSlug = pkg.name.replace('/src', '');
-			const itemsMap = createDeclarationMap(pkg.children);
+	const items: SidebarItem[] = packages.map((pkg, index) => {
+		const itemsMap = createDeclarationMap(pkg.children);
 
-			return {
-				collapsed: index > 0,
-				collapsible: true,
-				items: pkg.groups ? groupSidebarItems(pkgSlug, itemsMap, pkg.groups) : [],
-				label: pkgInfo.name,
-				type: 'category',
-			} as const;
-		}),
-	);
+		return {
+			collapsed: index > 0,
+			collapsible: true,
+			items: pkg.groups ? groupSidebarItems(itemsMap, pkg.groups) : [],
+			label: pkg.packageName,
+			type: 'category',
+		} as const;
+	});
 
 	return items.filter((item) => 'items' in item && items.length > 0);
+}
+
+export function extractSidebarPermalinks(packages: PackageInfo[]): Record<string, string> {
+	const map: Record<string, string> = {};
+
+	if (packages.length === 0) {
+		return map;
+	}
+
+	packages.forEach((pkg) => {
+		pkg.children?.forEach((child) => {
+			map[child.permalink] = 'api';
+		});
+	});
+
+	return map;
 }

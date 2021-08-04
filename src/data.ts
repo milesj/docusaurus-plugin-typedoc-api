@@ -1,13 +1,13 @@
-import { JSONOutput } from 'typedoc';
+import fs from 'fs';
+import path from 'path';
+import { JSONOutput, ReflectionKind } from 'typedoc';
 import { ApiMetadata, DeclarationInfo, PackageInfo } from './types';
 import { getKindSlug } from './url';
 
-export type DeclarationReflectionMap = Record<number, JSONOutput.DeclarationReflection>;
+export type DeclarationInfoMap = Record<number, DeclarationInfo>;
 
-export function createDeclarationMap(
-	items: JSONOutput.DeclarationReflection[] = [],
-): DeclarationReflectionMap {
-	const map: DeclarationReflectionMap = {};
+export function createDeclarationMap(items: DeclarationInfo[] = []): DeclarationInfoMap {
+	const map: DeclarationInfoMap = {};
 
 	items.forEach((item) => {
 		map[item.id] = item;
@@ -16,9 +16,31 @@ export function createDeclarationMap(
 	return map;
 }
 
-export function addMetadataToReflections(pkg: JSONOutput.DeclarationReflection): PackageInfo {
-	// eslint-disable-next-line no-param-reassign
+async function loadPackageJson(initialDir: string) {
+	let currentDir = initialDir;
+
+	while (!fs.existsSync(path.join(currentDir, 'package.json'))) {
+		currentDir = path.dirname(currentDir);
+	}
+
+	return JSON.parse(await fs.promises.readFile(path.join(currentDir, 'package.json'), 'utf8')) as {
+		name: string;
+		version: string;
+	};
+}
+
+export async function addMetadataToDeclarations(
+	projectRoot: string,
+	pkgBase: JSONOutput.DeclarationReflection,
+): Promise<PackageInfo> {
+	const pkg = pkgBase as PackageInfo;
+	const pkgJson = await loadPackageJson(
+		path.join(projectRoot, path.dirname(String(pkgBase.sources?.[0].fileName))),
+	);
+
 	pkg.name = pkg.name.replace('/src', '');
+	pkg.packageName = pkgJson.name;
+	pkg.packageVersion = pkgJson.version;
 
 	const slug = `/${pkg.name}`;
 	const permalink = `/api${slug}`;
@@ -48,6 +70,17 @@ export function addMetadataToReflections(pkg: JSONOutput.DeclarationReflection):
 		permalink,
 		slug,
 	};
+}
+
+export async function addMetadataToPackages(
+	projectRoot: string,
+	project: JSONOutput.ProjectReflection,
+): Promise<PackageInfo[]> {
+	const packages = (
+		project.kind === ReflectionKind.Project ? project.children ?? [] : [project]
+	).filter((pkg) => pkg.kind === ReflectionKind.Module) as JSONOutput.DeclarationReflection[];
+
+	return Promise.all(packages.map((child) => addMetadataToDeclarations(projectRoot, child)));
 }
 
 export function extractMetadata(data: DeclarationInfo | PackageInfo): ApiMetadata {

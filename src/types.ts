@@ -20,4 +20,6 @@ export interface DeclarationInfo
 
 export interface PackageInfo extends Omit<JSONOutput.ProjectReflection, 'children'>, ApiMetadata {
 	children?: DeclarationInfo[];
+	packageName: string;
+	packageVersion: string;
 }
