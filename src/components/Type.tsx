@@ -168,7 +168,7 @@ export function Type({ needsParens, type: base }: TypeProps) {
 			value = (
 				<>
 					{false ? (
-						<a href="#" className="tsd-signature-type" data-tsd-kind="{type.kindString}">
+						<a href="#" className="tsd-signature-type" data-tsd-kind={type.kindString}>
 							{type.name}
 						</a>
 					) : (
