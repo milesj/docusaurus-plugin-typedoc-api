@@ -3860,6 +3860,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vscode/codicons@npm:^0.0.21":
+  version: 0.0.21
+  resolution: "@vscode/codicons@npm:0.0.21"
+  checksum: bf2da2d6ea6cacd67bf8b92cb9e635fc0c37b46f56f6280d1318991d78199102f3f994cf36e8b0060ee5243d33130eeef6708ffe3950e02b5e95269342b4cef5
+  languageName: node
+  linkType: hard
+
 "@webassemblyjs/ast@npm:1.11.1":
   version: 1.11.1
   resolution: "@webassemblyjs/ast@npm:1.11.1"
@@ -6622,6 +6629,7 @@ __metadata:
     "@docusaurus/module-type-aliases": ^2.0.0-beta.3
     "@docusaurus/types": ^2.0.0-beta.3
     "@types/react": ^17.0.15
+    "@vscode/codicons": ^0.0.21
     clsx: ^1.1.1
     packemon: ^1.2.0
     react: ^17.0.2

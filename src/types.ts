@@ -1,4 +1,4 @@
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 import type { PropSidebarItem } from '@docusaurus/plugin-content-docs-types';
 
 export type SidebarItem = PropSidebarItem;
@@ -17,6 +17,8 @@ export interface DeclarationInfo
 		ApiMetadata {
 	children?: DeclarationInfo[];
 }
+
+export type DeclarationInfoMap = Record<number, DeclarationInfo>;
 
 export interface PackageInfo extends Omit<JSONOutput.ProjectReflection, 'children'>, ApiMetadata {
 	children?: DeclarationInfo[];

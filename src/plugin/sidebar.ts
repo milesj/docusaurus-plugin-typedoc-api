@@ -1,6 +1,6 @@
 import { JSONOutput } from 'typedoc';
-import { createDeclarationMap, DeclarationInfoMap } from './data';
-import { PackageInfo, SidebarItem } from './types';
+import { DeclarationInfoMap, PackageInfo, SidebarItem } from '../types';
+import { createDeclarationMap } from './data';
 
 export function groupSidebarItems(
 	decls: DeclarationInfoMap,
@@ -42,11 +42,18 @@ export function extractSidebar(packages: PackageInfo[]): SidebarItem[] {
 
 	const items: SidebarItem[] = packages.map((pkg, index) => {
 		const itemsMap = createDeclarationMap(pkg.children);
+		const subItems = pkg.groups ? groupSidebarItems(itemsMap, pkg.groups) : [];
+
+		subItems.unshift({
+			href: pkg.permalink,
+			label: 'Overview',
+			type: 'link',
+		});
 
 		return {
 			collapsed: index > 0,
 			collapsible: true,
-			items: pkg.groups ? groupSidebarItems(itemsMap, pkg.groups) : [],
+			items: subItems,
 			label: pkg.packageName,
 			type: 'category',
 		} as const;
@@ -63,6 +70,8 @@ export function extractSidebarPermalinks(packages: PackageInfo[]): Record<string
 	}
 
 	packages.forEach((pkg) => {
+		map[pkg.permalink] = 'api';
+
 		pkg.children?.forEach((child) => {
 			map[child.permalink] = 'api';
 		});

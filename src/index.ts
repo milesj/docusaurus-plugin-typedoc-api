@@ -6,8 +6,8 @@ import type { JSONOutput } from 'typedoc';
 import * as TypeDoc from 'typedoc';
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs-types';
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
-import { addMetadataToPackages, extractMetadata } from './data';
-import { extractSidebar, extractSidebarPermalinks } from './sidebar';
+import { addMetadataToPackages, extractMetadata } from './plugin/data';
+import { extractSidebar, extractSidebarPermalinks } from './plugin/sidebar';
 import { DeclarationInfo, PackageInfo } from './types';
 
 export interface DocusaurusPluginTypedocApiOptions {
@@ -30,7 +30,7 @@ export default function typedocApiPlugin(
 			const filePath = path.join(context.generatedFilesDir, 'typedoc.json');
 
 			if (fs.existsSync(filePath)) {
-				// return import(filePath);
+				return import(filePath);
 			}
 
 			console.log('loadContent', context);
@@ -88,10 +88,7 @@ export default function typedocApiPlugin(
 				JSON.stringify(versionMetadata),
 			);
 
-			async function createRoute(
-				info: DeclarationInfo | PackageInfo,
-				componentName: string,
-			): Promise<RouteConfig> {
+			async function createRoute(info: DeclarationInfo | PackageInfo): Promise<RouteConfig> {
 				const reflection = extractMetadata(info);
 				const reflectionData = await createData(
 					`reflection-${reflection.id}.json`,
@@ -101,7 +98,7 @@ export default function typedocApiPlugin(
 				return {
 					path: reflection.permalink,
 					exact: true,
-					component: path.join(__dirname, `./components/${componentName}.js`),
+					component: path.join(__dirname, './components/ApiItem.js'),
 					modules: {
 						content: reflectionData,
 					},
@@ -112,12 +109,10 @@ export default function typedocApiPlugin(
 
 			async function createDeclarationRoutes(pkg: PackageInfo) {
 				// Map a route for every declaration in the package (the exported APIs)
-				const routes = await Promise.all(
-					pkg.children.map(async (decl) => createRoute(decl, 'ApiItem')),
-				);
+				const routes = await Promise.all(pkg.children.map(async (decl) => createRoute(decl)));
 
 				// Map a top-level package route, otherwise `DocPage` shows a page not found
-				routes.push(await createRoute(pkg, 'ApiItemIndex'));
+				routes.push(await createRoute(pkg));
 
 				return routes.sort((a, b) => a.path.localeCompare(b.path));
 			}

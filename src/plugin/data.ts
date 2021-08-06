@@ -1,10 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { JSONOutput, ReflectionKind } from 'typedoc';
-import { ApiMetadata, DeclarationInfo, PackageInfo } from './types';
+import { ApiMetadata, DeclarationInfo, DeclarationInfoMap, PackageInfo } from '../types';
 import { getKindSlug } from './url';
-
-export type DeclarationInfoMap = Record<number, DeclarationInfo>;
 
 export function createDeclarationMap(items: DeclarationInfo[] = []): DeclarationInfoMap {
 	const map: DeclarationInfoMap = {};
