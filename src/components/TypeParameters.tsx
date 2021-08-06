@@ -3,6 +3,7 @@
 import React from 'react';
 import { JSONOutput } from 'typedoc';
 import { Comment } from './Comment';
+import { DefaultValue } from './DefaultValue';
 import { Type } from './Type';
 
 export interface TypeParametersProps {
@@ -15,19 +16,17 @@ export function TypeParameters({ params }: TypeParametersProps) {
 	return (
 		<ul className="tsd-type-parameters">
 			{params.map((param) => (
-				<li>
+				<li key={param.id}>
 					<h4>
 						{param.name}
+
 						{param.type && (
 							<>
 								<span className="tsd-signature-symbol"> :</span> <Type type={param.type} />
 							</>
 						)}
-						{param.default && (
-							<>
-								<span className="tsd-signature-symbol"> =</span> <Type type={param.default} />
-							</>
-						)}
+
+						<DefaultValue type={param.default} />
 					</h4>
 
 					<Comment comment={param.comment} />

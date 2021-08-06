@@ -18,7 +18,7 @@ export function hasComment(comment?: JSONOutput.Comment): boolean {
 }
 
 export function Comment({ comment }: CommentProps) {
-	if (hasComment(comment)) {
+	if (!hasComment(comment)) {
 		return null;
 	}
 
@@ -37,12 +37,12 @@ export function Comment({ comment }: CommentProps) {
 			{comment.tags?.length > 0 && (
 				<dl className="tsd-comment-tags">
 					{comment.tags.map((tag) => (
-						<>
+						<React.Fragment key={tag.tag}>
 							<dt>{tag.tag}</dt>
 							<dd>
 								<Markdown content={tag.text} />
 							</dd>
-						</>
+						</React.Fragment>
 					))}
 				</dl>
 			)}

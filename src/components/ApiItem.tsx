@@ -15,6 +15,7 @@ import TOC from '@theme/TOC';
 import { useDeclaration } from '../hooks/useDeclaration';
 import { ApiMetadata, DeclarationInfo } from '../types';
 import { getKindIconHtml } from '../utils/icons';
+import { Reflection } from './Reflection';
 
 function extractTOC(item: DeclarationInfo): TOCItem[] {
 	const toc: TOCItem[] = [];
@@ -72,7 +73,7 @@ export default function ApiItem({ content }: ApiItemProps) {
 
 							<div className="markdown">
 								<MainHeading>{content.name}</MainHeading>
-								CONTENT
+								<Reflection reflection={item} />
 							</div>
 						</article>
 

@@ -6,41 +6,48 @@ import { MemberSignatureBody } from './MemberSignatureBody';
 import { MemberSignatureTitle } from './MemberSignatureTitle';
 
 export interface MemberGetterSetterProps {
-	reflection: JSONOutput.DeclarationReflection;
+	getter?: JSONOutput.DeclarationReflection['getSignature'];
+	setter?: JSONOutput.DeclarationReflection['setSignature'];
 }
 
-export function MemberGetterSetter({ reflection }: MemberGetterSetterProps) {
+export function MemberGetterSetter({
+	getter: baseGetter,
+	setter: baseSetter,
+}: MemberGetterSetterProps) {
+	const [getter] = baseGetter ?? [];
+	const [setter] = baseSetter ?? [];
+
 	// TODO cssClasses
 	return (
 		<>
 			<ul className="tsd-signatures {{cssClasses}}">
-				{reflection.getSignature && (
+				{getter && (
 					<li className="tsd-signature tsd-kind-icon">
 						<span className="tsd-signature-symbol">get </span>
-						{reflection.name}
-						<MemberSignatureTitle sig={reflection.getSignature[0]} hideName />
+						{getter.name}
+						<MemberSignatureTitle sig={getter} hideName />
 					</li>
 				)}
 
-				{reflection.setSignature && (
+				{setter && (
 					<li className="tsd-signature tsd-kind-icon">
 						<span className="tsd-signature-symbol">set </span>
-						{reflection.name}
-						<MemberSignatureTitle sig={reflection.setSignature[0]} hideName />
+						{setter.name}
+						<MemberSignatureTitle sig={setter} hideName />
 					</li>
 				)}
 			</ul>
 
 			<ul className="tsd-descriptions">
-				{reflection.getSignature && (
+				{getter && (
 					<li className="tsd-description">
-						<MemberSignatureBody sig={reflection.getSignature[0]} />
+						<MemberSignatureBody sig={getter} />
 					</li>
 				)}
 
-				{reflection.setSignature && (
+				{setter && (
 					<li className="tsd-description">
-						<MemberSignatureBody sig={reflection.setSignature[0]} />
+						<MemberSignatureBody sig={setter} />
 					</li>
 				)}
 			</ul>

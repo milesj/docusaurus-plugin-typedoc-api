@@ -29,18 +29,18 @@ export function MemberSignatureTitle({ hideName, sig }: MemberSignatureTitleProp
 			<span className="tsd-signature-symbol">(</span>
 
 			{sig.parameters?.map((param, index) => (
-				<>
+				<React.Fragment key={param.id}>
 					{index > 0 && ', '}
 					<span>
 						{param.flags.isRest && <span className="tsd-signature-symbol">...</span>}
 						{param.name}
 						<span className="tsd-signature-symbol">
-							{(param.flags.isOptional || 'defaultValue' in param) && '?'}
+							{(param.flags?.isOptional || 'defaultValue' in param) && '?'}
 							{': '}
 						</span>
 						<Type type={param.type} />
 					</span>
-				</>
+				</React.Fragment>
 			))}
 
 			<span className="tsd-signature-symbol">)</span>

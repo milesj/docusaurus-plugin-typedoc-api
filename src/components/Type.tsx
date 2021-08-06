@@ -68,10 +68,10 @@ export function Type({ needsParens, type: base }: TypeProps) {
 		case 'intersection': {
 			const type = base as JSONOutput.IntersectionType;
 			value = type.types.map((t, i) => (
-				<>
+				<React.Fragment key={t.type}>
 					{i > 0 && <span className="tsd-signature-symbol"> &amp; </span>}
 					<Type needsParens type={t} />
-				</>
+				</React.Fragment>
 			));
 			break;
 		}
@@ -178,10 +178,10 @@ export function Type({ needsParens, type: base }: TypeProps) {
 						<>
 							<span className="tsd-signature-symbol">&lt;</span>
 							{type.typeArguments.map((t, i) => (
-								<>
+								<React.Fragment key={t.type}>
 									{i > 0 && <span className="tsd-signature-symbol">, </span>}
 									<Type type={t} />
-								</>
+								</React.Fragment>
 							))}
 							<span className="tsd-signature-symbol">&gt;</span>
 						</>
@@ -192,6 +192,7 @@ export function Type({ needsParens, type: base }: TypeProps) {
 		}
 
 		case 'reflection': {
+			// TODO
 			break;
 		}
 
@@ -212,10 +213,10 @@ export function Type({ needsParens, type: base }: TypeProps) {
 				<>
 					<span className="tsd-signature-symbol">[</span>
 					{type.elements.map((t, i) => (
-						<>
+						<React.Fragment key={t.type}>
 							{i > 0 && <span className="tsd-signature-symbol">, </span>}
 							<Type type={t} />
-						</>
+						</React.Fragment>
 					))}
 					<span className="tsd-signature-symbol">]</span>
 				</>
@@ -227,7 +228,7 @@ export function Type({ needsParens, type: base }: TypeProps) {
 			const type = base as JSONOutput.TypeOperatorType;
 			value = (
 				<>
-					<span className="tsd-signature-symbol">{type.operator}</span>
+					<span className="tsd-signature-symbol">{type.operator} </span>
 					<Type type={type.target} />
 				</>
 			);
@@ -243,10 +244,10 @@ export function Type({ needsParens, type: base }: TypeProps) {
 		case 'union': {
 			const type = base as JSONOutput.UnionType;
 			value = type.types.map((t, i) => (
-				<>
+				<React.Fragment key={t.type}>
 					{i > 0 && <span className="tsd-signature-symbol"> | </span>}
 					<Type needsParens type={t} />
-				</>
+				</React.Fragment>
 			));
 			break;
 		}
@@ -276,12 +277,12 @@ export function Type({ needsParens, type: base }: TypeProps) {
 					<span className="tsd-signature-symbol">`</span>
 					{type.head && <span className="tsd-signature-type">{type.head}</span>}
 					{type.tail.map((t, i) => (
-						<>
+						<React.Fragment key={i}>
 							<span className="tsd-signature-symbol">{'${'}</span>
 							{typeof t[0] !== 'string' && <Type type={t[0] as JSONOutput.SomeType} />}
 							<span className="tsd-signature-symbol">{'}'}</span>
 							{typeof t[1] === 'string' && <span className="tsd-signature-type">{t[1]}</span>}
-						</>
+						</React.Fragment>
 					))}
 					<span className="tsd-signature-symbol">`</span>
 				</>

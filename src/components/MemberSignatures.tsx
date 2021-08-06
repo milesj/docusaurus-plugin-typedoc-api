@@ -17,7 +17,7 @@ export function MemberSignatures({ sigs }: MemberSignaturesProps) {
 		<>
 			<ul className="tsd-signatures {{cssClasses}}">
 				{sigs.map((sig) => (
-					<li className="tsd-signature tsd-kind-icon">
+					<li key={sig.id} className="tsd-signature tsd-kind-icon">
 						<MemberSignatureTitle sig={sig} />
 					</li>
 				))}
@@ -25,7 +25,7 @@ export function MemberSignatures({ sigs }: MemberSignaturesProps) {
 
 			<ul className="tsd-descriptions">
 				{sigs.map((sig) => (
-					<li className="tsd-description">
+					<li key={sig.id} className="tsd-description">
 						<MemberSignatureBody sig={sig} />
 					</li>
 				))}

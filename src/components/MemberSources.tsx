@@ -34,7 +34,7 @@ export function MemberSources({ reflection }: MemberSourcesProps) {
 			{reflection.sources && (
 				<ul>
 					{reflection.sources.map((source) => (
-						<li>
+						<li key={source.fileName}>
 							// TODO URL Defined in {source.fileName}:{source.line}
 						</li>
 					))}

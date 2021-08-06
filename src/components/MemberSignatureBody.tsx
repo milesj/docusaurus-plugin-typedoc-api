@@ -5,6 +5,7 @@
 import React from 'react';
 import { JSONOutput } from 'typedoc';
 import { Comment } from './Comment';
+import { Flags } from './Flags';
 import { Markdown } from './Markdown';
 import { Type } from './Type';
 import { TypeParameters } from './TypeParameters';
@@ -27,11 +28,9 @@ export function MemberSignatureBody({ sig }: MemberSignatureBodyProps) {
 					<h4 className="tsd-parameters-title">Parameters</h4>
 					<ul className="tsd-parameters">
 						{sig.parameters.map((param) => (
-							<li>
+							<li key={param.id}>
 								<h5>
-									{Object.values(param.flags).map((flag) => (
-										<span className={`tsd-flag ts-flag${flag}`}>{flag}</span>
-									))}
+									<Flags flags={param.flags} />
 
 									{param.flags.isRest && <span className="tsd-signature-symbol">...</span>}
 

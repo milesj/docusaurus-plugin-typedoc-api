@@ -3,6 +3,8 @@
 import React from 'react';
 import { JSONOutput } from 'typedoc';
 import { Comment, hasComment } from './Comment';
+import { Members } from './Members';
+import { MemberSignatures } from './MemberSignatures';
 import { Type } from './Type';
 import { TypeParameters } from './TypeParameters';
 
@@ -13,9 +15,13 @@ export interface ReflectionProps {
 		| JSONOutput.SignatureReflection;
 }
 
-// Doesnt exist in JSON:
+// TODO:
 // - typeHierarchy
+// - indexSignatures
+// - readme
 export function Reflection({ reflection }: ReflectionProps) {
+	console.log(reflection);
+
 	return (
 		<>
 			{hasComment(reflection.comment) && (
@@ -31,12 +37,14 @@ export function Reflection({ reflection }: ReflectionProps) {
 				</section>
 			)}
 
+			{/* typeHierarchy */}
+
 			{'implementedTypes' in reflection && reflection.implementedTypes && (
 				<section className="tsd-panel tsd-implemented-types">
 					<h3>Implements</h3>
 					<ul className="tsd-hierarchy">
 						{reflection.implementedTypes.map((type) => (
-							<li>
+							<li key={type.type}>
 								<Type type={type} />
 							</li>
 						))}
@@ -49,7 +57,7 @@ export function Reflection({ reflection }: ReflectionProps) {
 					<h3>Implemented by</h3>
 					<ul className="tsd-hierarchy">
 						{reflection.implementedBy.map((type) => (
-							<li>
+							<li key={type.name}>
 								<Type type={type} />
 							</li>
 						))}
@@ -60,8 +68,15 @@ export function Reflection({ reflection }: ReflectionProps) {
 			{'signatures' in reflection && reflection.signatures && (
 				<section className="tsd-panel tsd-signatures">
 					<h3 className="tsd-before-signature">Callable</h3>
+					<MemberSignatures sigs={reflection.signatures} />
 				</section>
 			)}
+
+			{/* indexSignature */}
+
+			{/* README */}
+
+			<Members reflection={reflection} />
 		</>
 	);
 }
