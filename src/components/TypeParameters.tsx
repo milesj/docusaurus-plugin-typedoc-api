@@ -11,8 +11,6 @@ export interface TypeParametersProps {
 }
 
 export function TypeParameters({ params }: TypeParametersProps) {
-	console.log('TypeParameters', params);
-
 	return (
 		<ul className="tsd-type-parameters">
 			{params.map((param) => (
@@ -22,7 +20,7 @@ export function TypeParameters({ params }: TypeParametersProps) {
 
 						{param.type && (
 							<>
-								<span className="tsd-signature-symbol"> :</span> <Type type={param.type} />
+								<span className="tsd-signature-symbol">:</span> <Type type={param.type} />
 							</>
 						)}
 

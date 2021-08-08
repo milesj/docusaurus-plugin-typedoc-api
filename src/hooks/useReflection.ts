@@ -1,8 +1,8 @@
 import { useContext } from 'react';
+import { JSONOutput } from 'typedoc';
 import { ApiDataContext } from '../components/ApiDataContext';
-import { DeclarationInfo } from '../types';
 
-export function useDeclaration(id?: number): DeclarationInfo | null {
+export function useReflection<T = JSONOutput.DeclarationReflection>(id?: number): T | null {
 	const data = useContext(ApiDataContext);
 
 	if (!id) {
@@ -10,7 +10,7 @@ export function useDeclaration(id?: number): DeclarationInfo | null {
 	}
 
 	if (data[id]) {
-		return data[id];
+		return data[id] as unknown as T;
 	}
 
 	throw new Error(`Unable to find declaration with ID ${id}`);

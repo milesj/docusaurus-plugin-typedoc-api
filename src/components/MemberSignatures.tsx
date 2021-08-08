@@ -10,9 +10,6 @@ export interface MemberSignaturesProps {
 }
 
 export function MemberSignatures({ sigs }: MemberSignaturesProps) {
-	console.log('MemberSignatures', sigs);
-
-	// TODO cssClasses
 	return (
 		<>
 			<ul className="tsd-signatures {{cssClasses}}">

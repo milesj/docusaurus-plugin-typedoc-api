@@ -1,9 +1,11 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.declaration.hbs
 
 import React from 'react';
-import { useDeclaration } from '../hooks/useDeclaration';
+import { useReflection } from '../hooks/useReflection';
 import { Comment } from './Comment';
+import { DefaultValue } from './DefaultValue';
 import { MemberSources } from './MemberSources';
+import { Parameter } from './Parameter';
 import { Type } from './Type';
 import { TypeParameters } from './TypeParameters';
 
@@ -12,9 +14,7 @@ export interface MemberDeclarationProps {
 }
 
 export function MemberDeclaration({ id }: MemberDeclarationProps) {
-	const reflection = useDeclaration(id);
-
-	console.log('MemberDeclaration', id, reflection);
+	const reflection = useReflection(id);
 
 	return (
 		<>
@@ -23,15 +23,9 @@ export function MemberDeclaration({ id }: MemberDeclarationProps) {
 				{reflection.typeParameter && (
 					<>&lt;{reflection.typeParameter.map((param) => param.name).join(', ')}&gt;</>
 				)}
-				<span className="tsd-signature-symbol">
-					{reflection.flags?.isOptional && '?'}: <Type type={reflection.type} />
-				</span>
-				{'defaultValue' in reflection && (
-					<span className="tsd-signature-symbol">
-						&nbsp;=&nbsp;
-						{reflection.defaultValue}
-					</span>
-				)}
+				<span className="tsd-signature-symbol">{reflection.flags?.isOptional && '?'}: </span>{' '}
+				<Type type={reflection.type} />
+				<DefaultValue type={reflection.defaultValue} />
 			</div>
 
 			<MemberSources reflection={reflection} />
@@ -45,7 +39,12 @@ export function MemberDeclaration({ id }: MemberDeclarationProps) {
 				</div>
 			)}
 
-			{'TODO declaration'}
+			{reflection.type?.declaration && (
+				<div className="tsd-type-declaration">
+					<h4>Type declaration</h4>
+					<Parameter param={reflection.type.declaration} />
+				</div>
+			)}
 		</>
 	);
 }

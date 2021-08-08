@@ -3,7 +3,7 @@ import { JSONOutput } from 'typedoc';
 import { Type } from './Type';
 
 export interface DefaultValueProps {
-	type?: JSONOutput.SomeType;
+	type?: JSONOutput.SomeType | string;
 }
 
 export function DefaultValue({ type }: DefaultValueProps) {
@@ -12,8 +12,9 @@ export function DefaultValue({ type }: DefaultValueProps) {
 	}
 
 	return (
-		<>
-			<span className="tsd-signature-symbol"> =</span> <Type type={type} />
-		</>
+		<span className="tsd-signature-symbol">
+			{' = '}
+			{typeof type === 'string' ? type : <Type type={type} />}
+		</span>
 	);
 }

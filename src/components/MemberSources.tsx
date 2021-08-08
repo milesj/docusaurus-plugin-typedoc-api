@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { JSONOutput } from 'typedoc';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { TypeAndParent } from './TypeAndParent';
 
 export interface MemberSourcesProps {
@@ -9,7 +10,7 @@ export interface MemberSourcesProps {
 }
 
 export function MemberSources({ reflection }: MemberSourcesProps) {
-	console.log('MemberSources', reflection);
+	const { siteConfig } = useDocusaurusContext();
 
 	return (
 		<aside className="tsd-sources">
@@ -31,11 +32,17 @@ export function MemberSources({ reflection }: MemberSourcesProps) {
 				</p>
 			)}
 
-			{reflection.sources && (
+			{reflection.sources?.length > 0 && (
 				<ul>
 					{reflection.sources.map((source) => (
 						<li key={source.fileName}>
-							// TODO URL Defined in {source.fileName}:{source.line}
+							Defined in{' '}
+							<a
+								href={`https://github.com/${siteConfig.organizationName}/${siteConfig.projectName}/blob/master/${source.fileName}#L${source.line}`}
+								target="_blank"
+							>
+								{source.fileName}:{source.line}
+							</a>
 						</li>
 					))}
 				</ul>

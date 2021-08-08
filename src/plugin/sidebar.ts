@@ -1,9 +1,9 @@
 import { JSONOutput } from 'typedoc';
-import { DeclarationInfoMap, PackageInfo, SidebarItem } from '../types';
-import { createDeclarationMap } from './data';
+import { DeclarationReflectionMap, SidebarItem } from '../types';
+import { createReflectionMap } from './data';
 
 export function groupSidebarItems(
-	decls: DeclarationInfoMap,
+	map: DeclarationReflectionMap,
 	groups: JSONOutput.ReflectionGroup[],
 ): SidebarItem[] {
 	const items: SidebarItem[] = [];
@@ -17,9 +17,9 @@ export function groupSidebarItems(
 
 			items.push({
 				collapsed: index > 0,
-				collapsible: true,
+				// collapsible: true,
 				items: group.children.map((id) => {
-					const child = decls[id];
+					const child = map[id];
 
 					return {
 						href: child.permalink,
@@ -35,13 +35,13 @@ export function groupSidebarItems(
 	return items;
 }
 
-export function extractSidebar(packages: PackageInfo[]): SidebarItem[] {
+export function extractSidebar(packages: JSONOutput.ProjectReflection[]): SidebarItem[] {
 	if (packages.length === 0) {
 		return [];
 	}
 
 	const items: SidebarItem[] = packages.map((pkg, index) => {
-		const itemsMap = createDeclarationMap(pkg.children);
+		const itemsMap = createReflectionMap(pkg.children);
 		const subItems = pkg.groups ? groupSidebarItems(itemsMap, pkg.groups) : [];
 
 		subItems.unshift({
@@ -62,7 +62,9 @@ export function extractSidebar(packages: PackageInfo[]): SidebarItem[] {
 	return items.filter((item) => 'items' in item && items.length > 0);
 }
 
-export function extractSidebarPermalinks(packages: PackageInfo[]): Record<string, string> {
+export function extractSidebarPermalinks(
+	packages: JSONOutput.ProjectReflection[],
+): Record<string, string> {
 	const map: Record<string, string> = {};
 
 	if (packages.length === 0) {

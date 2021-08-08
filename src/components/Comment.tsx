@@ -22,8 +22,6 @@ export function Comment({ comment }: CommentProps) {
 		return null;
 	}
 
-	console.log('Comment', comment);
-
 	return (
 		<div className="tsd-comment tsd-typography">
 			{!!comment.shortText && (

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { JSONOutput } from 'typedoc';
+import { Type } from './Type';
 
 export interface TypeAndParentProps {
 	type?: JSONOutput.SomeType;
@@ -21,10 +22,5 @@ export function TypeAndParent({ type }: TypeAndParentProps) {
 		);
 	}
 
-	// @ts-expect-error TODO
-	if ('reflection' in type && type.reflection) {
-		return <>TODO reflection?</>;
-	}
-
-	return null;
+	return <Type type={type} />;
 }

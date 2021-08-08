@@ -14,13 +14,7 @@ export function getKindSlug(decl: JSONOutput.DeclarationReflection): string {
 			return 'class';
 		case ReflectionKind.Interface:
 			return 'interface';
-		case ReflectionKind.TypeAlias:
-			return 'type';
 		default:
 			return '';
 	}
-}
-
-export function createUrl(...parts: string[]): string {
-	return parts.filter(Boolean).join('/').replace('/#', '#');
 }

@@ -17,7 +17,6 @@ export function MemberGetterSetter({
 	const [getter] = baseGetter ?? [];
 	const [setter] = baseSetter ?? [];
 
-	// TODO cssClasses
 	return (
 		<>
 			<ul className="tsd-signatures {{cssClasses}}">

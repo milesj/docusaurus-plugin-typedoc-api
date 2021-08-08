@@ -3,6 +3,7 @@
 // https://github.com/facebook/docusaurus/blob/master/packages/docusaurus-theme-classic/src/theme/DocItem/index.tsx
 
 import React, { useMemo } from 'react';
+import type { JSONOutput } from 'typedoc';
 import styles from '@docusaurus/theme-classic/lib/theme/DocItem/styles.module.css';
 import { TOCItem } from '@docusaurus/types';
 import DocPaginator from '@theme/DocPaginator';
@@ -12,12 +13,12 @@ import useWindowSize from '@theme/hooks/useWindowSize';
 import Seo from '@theme/Seo';
 import TOC from '@theme/TOC';
 // import TOCCollapsible from '@theme/TOCCollapsible';
-import { useDeclaration } from '../hooks/useDeclaration';
-import { ApiMetadata, DeclarationInfo } from '../types';
+import { useReflection } from '../hooks/useReflection';
+import { ApiMetadata } from '../types';
 import { getKindIconHtml } from '../utils/icons';
 import { Reflection } from './Reflection';
 
-function extractTOC(item: DeclarationInfo): TOCItem[] {
+function extractTOC(item: JSONOutput.DeclarationReflection): TOCItem[] {
 	const toc: TOCItem[] = [];
 
 	item.children?.forEach((child) => {
@@ -38,9 +39,9 @@ export interface ApiItemProps {
 }
 
 export default function ApiItem({ content }: ApiItemProps) {
-	const item = useDeclaration(content.id)!;
-	const prevItem = useDeclaration(content.previousId);
-	const nextItem = useDeclaration(content.nextId);
+	const item = useReflection(content.id)!;
+	const prevItem = useReflection(content.previousId);
+	const nextItem = useReflection(content.nextId);
 	const windowSize = useWindowSize();
 
 	// Table of contents

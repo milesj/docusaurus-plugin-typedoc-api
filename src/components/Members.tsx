@@ -2,27 +2,60 @@
 
 import React from 'react';
 import { JSONOutput } from 'typedoc';
+import { useReflectionMap } from '../hooks/useReflectionMap';
+import {
+	allCategoryChildrenHaveOwnDocument,
+	allGroupChildrenHaveOwnDocument,
+	hasOwnDocument,
+} from '../utils/visibility';
 import { Member } from './Member';
+import { MembersGroup } from './MembersGroup';
 
 export interface MembersProps {
 	reflection: JSONOutput.DeclarationReflection;
 }
 
-// `categories` does not exist in the JSON, so ignoring it
 export function Members({ reflection }: MembersProps) {
-	console.log('Members', reflection);
+	const reflections = useReflectionMap();
+
+	if (reflection.categories?.length > 0) {
+		return (
+			<>
+				{reflection.categories.map((category) => {
+					if (allCategoryChildrenHaveOwnDocument(category, reflections)) {
+						return null;
+					}
+
+					return (
+						<section
+							key={category.title}
+							className="tsd-panel-group tsd-member-group {{cssClasses}}"
+						>
+							<h2>{category.title}</h2>
+
+							{category.children?.map((child) => {
+								if (hasOwnDocument(child, reflections)) {
+									return null;
+								}
+
+								return <Member id={child} />;
+							})}
+						</section>
+					);
+				})}
+			</>
+		);
+	}
 
 	return (
 		<>
-			{reflection.groups?.map((group) => (
-				<section key={group.title} className="tsd-panel-group tsd-member-group {{cssClasses}}">
-					<h2>{group.title}</h2>
+			{reflection.groups?.map((group) => {
+				if (allGroupChildrenHaveOwnDocument(group, reflections)) {
+					return null;
+				}
 
-					{group.children?.map((child) => (
-						<Member key={child} id={child} />
-					))}
-				</section>
-			))}
+				return <MembersGroup key={group.title} group={group} />;
+			})}
 		</>
 	);
 }

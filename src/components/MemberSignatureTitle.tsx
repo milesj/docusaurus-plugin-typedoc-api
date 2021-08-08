@@ -6,18 +6,19 @@ import { JSONOutput } from 'typedoc';
 import { Type } from './Type';
 
 export interface MemberSignatureTitleProps {
+	useArrow?: boolean;
 	hideName?: boolean;
 	sig: JSONOutput.SignatureReflection;
 }
 
-export function MemberSignatureTitle({ hideName, sig }: MemberSignatureTitleProps) {
+export function MemberSignatureTitle({ useArrow, hideName, sig }: MemberSignatureTitleProps) {
 	return (
 		<>
-			{hideName ? (
+			{!hideName && sig.name !== '__type' ? (
 				sig.name
 			) : sig.kindString === 'Constructor signature' ? (
 				<>
-					{sig.flags.isAbstract && <span className="tsd-signature-symbol">abstract </span>}
+					{sig.flags?.isAbstract && <span className="tsd-signature-symbol">abstract </span>}
 					<span className="tsd-signature-symbol">new </span>
 				</>
 			) : null}
@@ -30,14 +31,17 @@ export function MemberSignatureTitle({ hideName, sig }: MemberSignatureTitleProp
 
 			{sig.parameters?.map((param, index) => (
 				<React.Fragment key={param.id}>
-					{index > 0 && ', '}
+					{index > 0 && <span className="tsd-signature-symbol">, </span>}
+
 					<span>
-						{param.flags.isRest && <span className="tsd-signature-symbol">...</span>}
+						{param.flags?.isRest && <span className="tsd-signature-symbol">...</span>}
 						{param.name}
+
 						<span className="tsd-signature-symbol">
 							{(param.flags?.isOptional || 'defaultValue' in param) && '?'}
 							{': '}
 						</span>
+
 						<Type type={param.type} />
 					</span>
 				</React.Fragment>
@@ -47,7 +51,7 @@ export function MemberSignatureTitle({ hideName, sig }: MemberSignatureTitleProp
 
 			{sig.type && (
 				<>
-					<span className="tsd-signature-symbol"> =&gt; </span>
+					<span className="tsd-signature-symbol">{useArrow ? ' => ' : ': '}</span>
 					<Type type={sig.type} />
 				</>
 			)}

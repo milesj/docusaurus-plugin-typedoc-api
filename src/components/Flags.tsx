@@ -2,6 +2,10 @@
 import React from 'react';
 import { JSONOutput } from 'typedoc';
 
+function removePrefix(value: string) {
+	return value.replace(/^is([A-Z])/, (match, char) => String(char).toLocaleLowerCase());
+}
+
 export interface FlagsProps {
 	flags?: JSONOutput.ReflectionFlags;
 }
@@ -11,15 +15,15 @@ export function Flags({ flags }: FlagsProps) {
 		return null;
 	}
 
-	console.log('Flags', flags);
-
 	return (
 		<>
-			{Object.keys(flags).map((flag) => (
-				<span key={flag} className={`tsd-flag ts-flag${flag}`}>
-					{flag}
-				</span>
-			))}
+			{Object.keys(flags)
+				.map(removePrefix)
+				.map((flag) => (
+					<span key={flag} className={`tsd-flag tsd-flag-${flag}`}>
+						{flag}
+					</span>
+				))}
 		</>
 	);
 }

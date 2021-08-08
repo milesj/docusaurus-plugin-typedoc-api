@@ -1,7 +1,14 @@
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/type.hbs
 
 import React from 'react';
 import { JSONOutput } from 'typedoc';
+import { useReflectionMap } from '../hooks/useReflectionMap';
+import { MemberSignatureTitle } from './MemberSignatureTitle';
+
+function wrapWithParens(type: JSONOutput.SomeType): boolean {
+	return type.type === 'union' || type.type === 'intersection';
+}
 
 export interface TypeProps {
 	needsParens?: boolean;
@@ -10,8 +17,7 @@ export interface TypeProps {
 
 // eslint-disable-next-line complexity
 export function Type({ needsParens, type: base }: TypeProps) {
-	console.log('Type', base);
-
+	const reflections = useReflectionMap();
 	let value: React.ReactNode;
 
 	switch (base.type) {
@@ -19,7 +25,7 @@ export function Type({ needsParens, type: base }: TypeProps) {
 			const type = base as JSONOutput.ArrayType;
 			value = (
 				<>
-					<Type needsParens type={type.elementType} />
+					<Type needsParens={wrapWithParens(type.elementType)} type={type.elementType} />
 					<span className="tsd-signature-symbol">[]</span>
 				</>
 			);
@@ -68,9 +74,9 @@ export function Type({ needsParens, type: base }: TypeProps) {
 		case 'intersection': {
 			const type = base as JSONOutput.IntersectionType;
 			value = type.types.map((t, i) => (
-				<React.Fragment key={t.type}>
+				<React.Fragment key={t.type + i}>
 					{i > 0 && <span className="tsd-signature-symbol"> &amp; </span>}
-					<Type needsParens type={t} />
+					<Type needsParens={wrapWithParens(t)} type={t} />
 				</React.Fragment>
 			));
 			break;
@@ -162,13 +168,13 @@ export function Type({ needsParens, type: base }: TypeProps) {
 			break;
 		}
 
-		// TODO url???
 		case 'reference': {
 			const type = base as JSONOutput.ReferenceType;
+			const ref = type.id ? reflections[type.id] : null;
 			value = (
 				<>
-					{false ? (
-						<a href="#" className="tsd-signature-type" data-tsd-kind={type.kindString}>
+					{ref?.permalink ? (
+						<a href={ref.permalink} className="tsd-signature-type" data-tsd-kind={ref.kindString}>
 							{type.name}
 						</a>
 					) : (
@@ -178,7 +184,7 @@ export function Type({ needsParens, type: base }: TypeProps) {
 						<>
 							<span className="tsd-signature-symbol">&lt;</span>
 							{type.typeArguments.map((t, i) => (
-								<React.Fragment key={t.type}>
+								<React.Fragment key={t.type + i}>
 									{i > 0 && <span className="tsd-signature-symbol">, </span>}
 									<Type type={t} />
 								</React.Fragment>
@@ -192,7 +198,45 @@ export function Type({ needsParens, type: base }: TypeProps) {
 		}
 
 		case 'reflection': {
-			// TODO
+			const type = base as JSONOutput.ReflectionType;
+			const decl = type.declaration;
+
+			// object literal
+			if (decl.children?.length > 0) {
+				value = (
+					<>
+						<span className="tsd-signature-symbol">{'{ '}</span>
+						{decl.children.map((child, i) => (
+							<React.Fragment key={child.id ?? i}>
+								{i > 0 && <span className="tsd-signature-symbol">; </span>}
+								<span>
+									{child.name}
+									<span className="tsd-signature-symbol">{child.flags?.isOptional}?: </span>
+									{child.type ? <Type type={child.type} /> : 'any'}
+								</span>
+							</React.Fragment>
+						))}
+						<span className="tsd-signature-symbol">{' }'}</span>
+					</>
+				);
+			} else if (decl.signatures?.length === 1) {
+				value = <MemberSignatureTitle hideName useArrow sig={decl.signatures[0]} />;
+			} else if (decl.signatures?.length > 0) {
+				value = (
+					<>
+						<span className="tsd-signature-symbol">{'{ '}</span>
+						{decl.signatures.map((sig, i) => (
+							<React.Fragment key={sig.id ?? i}>
+								{i > 0 && <span className="tsd-signature-symbol">; </span>}
+								<MemberSignatureTitle sig={sig} />
+							</React.Fragment>
+						))}
+						<span className="tsd-signature-symbol">{' }'}</span>
+					</>
+				);
+			} else {
+				value = '{}';
+			}
 			break;
 		}
 
@@ -213,7 +257,7 @@ export function Type({ needsParens, type: base }: TypeProps) {
 				<>
 					<span className="tsd-signature-symbol">[</span>
 					{type.elements.map((t, i) => (
-						<React.Fragment key={t.type}>
+						<React.Fragment key={t.type + i}>
 							{i > 0 && <span className="tsd-signature-symbol">, </span>}
 							<Type type={t} />
 						</React.Fragment>
@@ -244,9 +288,9 @@ export function Type({ needsParens, type: base }: TypeProps) {
 		case 'union': {
 			const type = base as JSONOutput.UnionType;
 			value = type.types.map((t, i) => (
-				<React.Fragment key={t.type}>
+				<React.Fragment key={t.type + i}>
 					{i > 0 && <span className="tsd-signature-symbol"> | </span>}
-					<Type needsParens type={t} />
+					<Type needsParens={wrapWithParens(t)} type={t} />
 				</React.Fragment>
 			));
 			break;

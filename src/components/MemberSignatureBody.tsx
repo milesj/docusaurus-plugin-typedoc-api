@@ -1,68 +1,73 @@
-// https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.signatures.hbs
-// https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.signature.title.hbs
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.signature.body.hbs
 
 import React from 'react';
 import { JSONOutput } from 'typedoc';
 import { Comment } from './Comment';
+import { DefaultValue } from './DefaultValue';
 import { Flags } from './Flags';
 import { Markdown } from './Markdown';
+import { MemberSources } from './MemberSources';
+import { Parameter } from './Parameter';
 import { Type } from './Type';
 import { TypeParameters } from './TypeParameters';
 
 export interface MemberSignatureBodyProps {
+	hideSources?: boolean;
 	sig: JSONOutput.SignatureReflection;
 }
 
-export function MemberSignatureBody({ sig }: MemberSignatureBodyProps) {
+export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyProps) {
 	return (
 		<>
-			{'TODO sources'}
-
 			<Comment comment={sig.comment} />
 
-			{sig.typeParameter && <TypeParameters params={sig.typeParameter} />}
+			{sig.typeParameter && (
+				<div>
+					<h4 className="tsd-type-parameters-title">Type parameters</h4>
+
+					<TypeParameters params={sig.typeParameter} />
+				</div>
+			)}
 
 			{sig.parameters && (
-				<>
+				<div>
 					<h4 className="tsd-parameters-title">Parameters</h4>
+
 					<ul className="tsd-parameters">
 						{sig.parameters.map((param) => (
 							<li key={param.id}>
 								<h5>
 									<Flags flags={param.flags} />
 
-									{param.flags.isRest && <span className="tsd-signature-symbol">...</span>}
+									{param.flags?.isRest && <span className="tsd-signature-symbol">...</span>}
 
 									{`${param.name}: `}
 
 									<Type type={param.type} />
 
-									{'defaultValue' in param && (
-										<span className="tsd-signature-symbol"> = {param.defaultValue}</span>
-									)}
+									<DefaultValue type={param.defaultValue} />
 								</h5>
 
 								<Comment comment={param.comment} />
-
-								{'TODO declaration'}
 							</li>
 						))}
 					</ul>
-				</>
+				</div>
 			)}
 
 			{sig.type && (
-				<>
+				<div>
 					<h4 className="tsd-returns-title">
 						Returns <Type type={sig.type} />
 					</h4>
 
 					{sig.comment?.returns && <Markdown content={sig.comment.returns} />}
 
-					{'TODO declaration'}
-				</>
+					{sig.type.declaration && <Parameter param={sig.type.declaration} />}
+				</div>
 			)}
+
+			{!hideSources && <MemberSources reflection={sig} />}
 		</>
 	);
 }

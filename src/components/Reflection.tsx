@@ -1,8 +1,10 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/templates/reflection.hbs
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { JSONOutput } from 'typedoc';
+import { createHierarchy } from '../utils/hierarchy';
 import { Comment, hasComment } from './Comment';
+import { Hierarchy } from './Hierarchy';
 import { Members } from './Members';
 import { MemberSignatures } from './MemberSignatures';
 import { Type } from './Type';
@@ -16,11 +18,13 @@ export interface ReflectionProps {
 }
 
 // TODO:
-// - typeHierarchy
 // - indexSignatures
 // - readme
+// eslint-disable-next-line complexity
 export function Reflection({ reflection }: ReflectionProps) {
-	console.log(reflection);
+	console.log('Reflection', reflection);
+
+	const hierarchy = useMemo(() => createHierarchy(reflection), [reflection]);
 
 	return (
 		<>
@@ -30,16 +34,22 @@ export function Reflection({ reflection }: ReflectionProps) {
 				</section>
 			)}
 
-			{'typeParameter' in reflection && reflection.typeParameter && (
+			{'typeParameter' in reflection && reflection.typeParameter.length > 0 && (
 				<section className="tsd-panel tsd-type-parameters">
 					<h3>Type parameters</h3>
 					<TypeParameters params={reflection.typeParameter} />
 				</section>
 			)}
 
-			{/* typeHierarchy */}
+			{(('extendedBy' in reflection && reflection.extendedBy.length > 0) ||
+				('extendedTypes' in reflection && reflection.extendedTypes.length > 0)) && (
+				<section className="tsd-panel tsd-hierarchy">
+					<h3>Hierarchy</h3>
+					<Hierarchy tree={hierarchy} />
+				</section>
+			)}
 
-			{'implementedTypes' in reflection && reflection.implementedTypes && (
+			{'implementedTypes' in reflection && reflection.implementedTypes.length > 0 && (
 				<section className="tsd-panel tsd-implemented-types">
 					<h3>Implements</h3>
 					<ul className="tsd-hierarchy">
@@ -52,7 +62,7 @@ export function Reflection({ reflection }: ReflectionProps) {
 				</section>
 			)}
 
-			{'implementedBy' in reflection && reflection.implementedBy && (
+			{'implementedBy' in reflection && reflection.implementedBy.length > 0 && (
 				<section className="tsd-panel tsd-implemented-by">
 					<h3>Implemented by</h3>
 					<ul className="tsd-hierarchy">

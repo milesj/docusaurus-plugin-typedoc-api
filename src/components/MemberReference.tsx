@@ -2,13 +2,21 @@
 
 import React from 'react';
 import { JSONOutput } from 'typedoc';
+import { useReflection } from '../hooks/useReflection';
 
 export interface MemberReferenceProps {
 	ref: JSONOutput.ReferenceReflection;
 }
 
+// TODO deep links
 export function MemberReference({ ref }: MemberReferenceProps) {
-	// TODO deep links
+	const reflection = useReflection(ref.target || ref.id);
+
+	console.log('MemberReference', ref, reflection);
+
+	if (!reflection) {
+		return null;
+	}
 
 	return <>Re-exports {ref.name}</>;
 }

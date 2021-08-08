@@ -44,12 +44,15 @@ export function getKindIcon(kind: ReflectionKind, name: string): string {
 	return icon;
 }
 
+// eslint-disable-next-line complexity
 export function getKindIconColor(kind: ReflectionKind): string {
 	switch (kind) {
 		// Function
 		case 64:
 		// Method
 		case 2048:
+		// Accessor
+		case 262_144:
 			return 'var(--ifm-color-primary)';
 
 		// Variable

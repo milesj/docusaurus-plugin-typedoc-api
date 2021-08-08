@@ -1,3 +1,4 @@
+import './types/docusaurus.d';
 import type { JSONOutput } from 'typedoc';
 import type { PropSidebarItem } from '@docusaurus/plugin-content-docs-types';
 
@@ -6,22 +7,29 @@ export type SidebarItem = PropSidebarItem;
 export interface ApiMetadata {
 	id: number;
 	name: string;
-	slug: string;
-	permalink: string;
+	slug?: string;
+	permalink?: string;
 	previousId?: number;
 	nextId?: number;
 }
 
-export interface DeclarationInfo
-	extends Omit<JSONOutput.DeclarationReflection, 'children'>,
-		ApiMetadata {
-	children?: DeclarationInfo[];
-}
+export type DeclarationReflectionMap = Record<number, JSONOutput.DeclarationReflection>;
 
-export type DeclarationInfoMap = Record<number, DeclarationInfo>;
+declare module 'typedoc/dist/lib/serialization/schema' {
+	interface Reflection extends ApiMetadata {
+		// Not typed but used in the templates
+		declaration?: DeclarationReflection;
+		// Added by us for convenience
+		parentId?: number;
+	}
 
-export interface PackageInfo extends Omit<JSONOutput.ProjectReflection, 'children'>, ApiMetadata {
-	children?: DeclarationInfo[];
-	packageName: string;
-	packageVersion: string;
+	interface ProjectReflection extends ApiMetadata {
+		packageName: string;
+		packageVersion: string;
+	}
+
+	interface Type {
+		// Not typed but used in the templates
+		declaration?: DeclarationReflection;
+	}
 }

@@ -1,4 +1,4 @@
 import { createContext } from 'react';
-import { DeclarationInfoMap } from '../types';
+import { DeclarationReflectionMap } from '../types';
 
-export const ApiDataContext = createContext<DeclarationInfoMap>({});
+export const ApiDataContext = createContext<DeclarationReflectionMap>({});

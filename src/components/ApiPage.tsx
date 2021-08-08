@@ -1,32 +1,41 @@
+/* eslint-disable no-param-reassign */
+
 import '@vscode/codicons/dist/codicon.css';
 import React, { useMemo } from 'react';
 import { JSONOutput } from 'typedoc';
 import DocPage, { Props as DocPageProps } from '@theme/DocPage';
-import { DeclarationInfo, DeclarationInfoMap, PackageInfo } from '../types';
+import { DeclarationReflectionMap } from '../types';
 import { ApiDataContext } from './ApiDataContext';
 
 function isObject(value: unknown): value is JSONOutput.Reflection {
 	return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-function deepMapReflections(data: JSONOutput.Reflection, map: DeclarationInfoMap) {
+function deepMapReflections(
+	data: JSONOutput.Reflection,
+	map: DeclarationReflectionMap,
+	parent?: JSONOutput.Reflection,
+) {
 	Object.entries(data).forEach(([key, value]) => {
 		if (key === 'id') {
 			const hasType = 'type' in data;
 
 			// Dont overwrite with reference nodes
 			if (!hasType || (hasType && (data as unknown as { type: string }).type !== 'reference')) {
-				// eslint-disable-next-line no-param-reassign
-				map[Number(value)] = data as DeclarationInfo;
+				map[Number(value)] = data;
+
+				if (parent) {
+					data.parentId = parent.id;
+				}
 			}
 		} else if (Array.isArray(value)) {
 			value.forEach((val) => {
 				if (isObject(val)) {
-					deepMapReflections(val, map);
+					deepMapReflections(val, map, data);
 				}
 			});
 		} else if (isObject(value)) {
-			deepMapReflections(value, map);
+			deepMapReflections(value, map, data);
 		}
 	});
 
@@ -34,7 +43,7 @@ function deepMapReflections(data: JSONOutput.Reflection, map: DeclarationInfoMap
 }
 
 export interface ApiPageProps extends DocPageProps {
-	data: PackageInfo;
+	data: JSONOutput.ProjectReflection;
 }
 
 function ApiPage({ data, ...props }: ApiPageProps) {
