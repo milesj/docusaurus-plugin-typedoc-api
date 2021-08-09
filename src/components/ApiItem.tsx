@@ -17,6 +17,7 @@ import { useReflection } from '../hooks/useReflection';
 import { ApiMetadata } from '../types';
 import { getKindIconHtml } from '../utils/icons';
 import { Reflection } from './Reflection';
+import { TypeParametersGeneric } from './TypeParametersGeneric';
 
 function extractTOC(item: JSONOutput.DeclarationReflection): TOCItem[] {
 	const toc: TOCItem[] = [];
@@ -73,7 +74,10 @@ export default function ApiItem({ content }: ApiItemProps) {
 							{/* renderTocMobile && <TOCCollapsible toc={toc} className={styles.tocMobile} /> */}
 
 							<div className="markdown">
-								<MainHeading>{content.name}</MainHeading>
+								<MainHeading>
+									{content.name}
+									<TypeParametersGeneric params={item.typeParameter} />
+								</MainHeading>
 								<Reflection reflection={item} />
 							</div>
 						</article>

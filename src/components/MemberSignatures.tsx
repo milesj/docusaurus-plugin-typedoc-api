@@ -1,32 +1,47 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.signatures.hbs
 
-import React from 'react';
+import React, { useState } from 'react';
 import { JSONOutput } from 'typedoc';
+import { Icon } from './Icon';
 import { MemberSignatureBody } from './MemberSignatureBody';
 import { MemberSignatureTitle } from './MemberSignatureTitle';
 
 export interface MemberSignaturesProps {
+	inPanel?: boolean;
 	sigs: JSONOutput.SignatureReflection[];
 }
 
-export function MemberSignatures({ sigs }: MemberSignaturesProps) {
+export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
+	const [activeIndex, setActiveIndex] = useState(0);
+
 	return (
 		<>
-			<ul className="tsd-signatures {{cssClasses}}">
-				{sigs.map((sig) => (
-					<li key={sig.id} className="tsd-signature tsd-kind-icon">
-						<MemberSignatureTitle sig={sig} />
-					</li>
-				))}
-			</ul>
+			<div className={inPanel ? 'tsd-panel-content' : ''}>
+				<ul className="tsd-signatures {{cssClasses}}">
+					{sigs.map((sig, i) => (
+						<li
+							key={sig.id}
+							className={`tsd-signature tsd-pressable tsd-kind-icon ${
+								i !== activeIndex && 'tsd-signature-inactive'
+							}`}
+							onClick={() => {
+								setActiveIndex(i);
+							}}
+						>
+							<Icon reflection={sig} />
+							<MemberSignatureTitle sig={sig} />
+						</li>
+					))}
+				</ul>
+			</div>
 
-			<ul className="tsd-descriptions">
-				{sigs.map((sig) => (
-					<li key={sig.id} className="tsd-description">
-						<MemberSignatureBody sig={sig} />
+			<div className={inPanel ? 'tsd-panel-content' : ''}>
+				<ul className="tsd-descriptions">
+					<li key={sigs[activeIndex].id} className="tsd-description">
+						<MemberSignatureBody sig={sigs[activeIndex]} />
 					</li>
-				))}
-			</ul>
+				</ul>
+			</div>
 		</>
 	);
 }

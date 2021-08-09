@@ -5,8 +5,10 @@ import { JSONOutput } from 'typedoc';
 import { createHierarchy } from '../utils/hierarchy';
 import { Comment, hasComment } from './Comment';
 import { Hierarchy } from './Hierarchy';
+import { Icon } from './Icon';
 import { Members } from './Members';
 import { MemberSignatures } from './MemberSignatures';
+import { Parameter } from './Parameter';
 import { Type } from './Type';
 import { TypeParameters } from './TypeParameters';
 
@@ -18,7 +20,6 @@ export interface ReflectionProps {
 }
 
 // TODO:
-// - indexSignatures
 // - readme
 // eslint-disable-next-line complexity
 export function Reflection({ reflection }: ReflectionProps) {
@@ -29,60 +30,104 @@ export function Reflection({ reflection }: ReflectionProps) {
 	return (
 		<>
 			{hasComment(reflection.comment) && (
-				<section className="tsd-panel tsd-comment">
-					<Comment comment={reflection.comment} />
+				<section className="tsd-panel">
+					<div className="tsd-panel-content">
+						<Comment comment={reflection.comment} />
+					</div>
 				</section>
 			)}
 
-			{'typeParameter' in reflection && reflection.typeParameter.length > 0 && (
-				<section className="tsd-panel tsd-type-parameters">
-					<h3>Type parameters</h3>
-					<TypeParameters params={reflection.typeParameter} />
-				</section>
-			)}
+			{'typeParameter' in reflection &&
+				reflection.typeParameter.length > 0 &&
+				// Class
+				reflection.kind !== 128 && (
+					<section className="tsd-panel">
+						<h3 className="tsd-panel-header">Type parameters</h3>
+
+						<div className="tsd-panel-content">
+							<TypeParameters params={reflection.typeParameter} />
+						</div>
+					</section>
+				)}
 
 			{(('extendedBy' in reflection && reflection.extendedBy.length > 0) ||
 				('extendedTypes' in reflection && reflection.extendedTypes.length > 0)) && (
-				<section className="tsd-panel tsd-hierarchy">
-					<h3>Hierarchy</h3>
-					<Hierarchy tree={hierarchy} />
+				<section className="tsd-panel">
+					<h3 className="tsd-panel-header">Hierarchy</h3>
+
+					<div className="tsd-panel-content">
+						<Hierarchy tree={hierarchy} />
+					</div>
 				</section>
 			)}
 
 			{'implementedTypes' in reflection && reflection.implementedTypes.length > 0 && (
-				<section className="tsd-panel tsd-implemented-types">
-					<h3>Implements</h3>
-					<ul className="tsd-hierarchy">
-						{reflection.implementedTypes.map((type) => (
-							<li key={type.type}>
-								<Type type={type} />
-							</li>
-						))}
-					</ul>
+				<section className="tsd-panel">
+					<h3 className="tsd-panel-header">Implements</h3>
+
+					<div className="tsd-panel-content">
+						<ul className="tsd-hierarchy">
+							{reflection.implementedTypes.map((type) => (
+								<li key={type.type}>
+									<Type type={type} />
+								</li>
+							))}
+						</ul>
+					</div>
 				</section>
 			)}
 
 			{'implementedBy' in reflection && reflection.implementedBy.length > 0 && (
-				<section className="tsd-panel tsd-implemented-by">
-					<h3>Implemented by</h3>
-					<ul className="tsd-hierarchy">
-						{reflection.implementedBy.map((type) => (
-							<li key={type.name}>
-								<Type type={type} />
-							</li>
-						))}
-					</ul>
+				<section className="tsd-panel">
+					<h3 className="tsd-panel-header">Implemented by</h3>
+
+					<div className="tsd-panel-content">
+						<ul className="tsd-hierarchy">
+							{reflection.implementedBy.map((type) => (
+								<li key={type.name}>
+									<Type type={type} />
+								</li>
+							))}
+						</ul>
+					</div>
 				</section>
 			)}
 
 			{'signatures' in reflection && reflection.signatures && (
-				<section className="tsd-panel tsd-signatures">
-					<h3 className="tsd-before-signature">Callable</h3>
-					<MemberSignatures sigs={reflection.signatures} />
+				<section className="tsd-panel">
+					<h3 className="tsd-panel-header tsd-before-signature">Callable</h3>
+
+					<div className="tsd-panel-content">
+						<MemberSignatures sigs={reflection.signatures} />
+					</div>
 				</section>
 			)}
 
-			{/* indexSignature */}
+			{'indexSignature' in reflection && reflection.indexSignature && (
+				<section className="tsd-panel">
+					<h3 className="tsd-panel-header tsd-before-signature">Indexable</h3>
+
+					<div className="tsd-panel-content">
+						<div className="tsd-signature tsd-kind-icon">
+							<Icon reflection={reflection.indexSignature} />
+							<span className="tsd-signature-symbol">[</span>
+							{reflection.indexSignature.parameters?.map((param) => (
+								<span>
+									{param.name}
+									{': '}
+									<Type type={param.type} />
+								</span>
+							))}
+							<span className="tsd-signature-symbol">]: </span>
+							<Type type={reflection.indexSignature.type} />
+						</div>
+
+						<Comment comment={reflection.indexSignature.comment} />
+
+						<Parameter param={reflection.indexSignature.type?.declaration} />
+					</div>
+				</section>
+			)}
 
 			{/* README */}
 

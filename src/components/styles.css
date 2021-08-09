@@ -1,0 +1,166 @@
+:root {
+	--tsd-muted-text: var(--ifm-color-secondary-darkest);
+	--tsd-font-small: var(--ifm-h6-font-size);
+	--tsd-spacing-vertical: 0.75rem;
+	--tsd-spacing-vertical-full: 2rem;
+	--tsd-spacing-horizontal: 1rem;
+}
+
+.tsd-panel {
+	border: 1px solid var(--ifm-card-background-color);
+	border-radius: var(--ifm-global-radius);
+	margin-bottom: var(--ifm-spacing-vertical);
+}
+
+.tsd-panel > .tsd-panel {
+	margin: var(--tsd-spacing-horizontal);
+}
+
+.tsd-panel-header {
+	background-color: var(--ifm-card-background-color);
+	border-top-left-radius: var(--ifm-global-radius);
+	border-top-right-radius: var(--ifm-global-radius);
+	padding: var(--tsd-spacing-vertical) var(--tsd-spacing-horizontal);
+	margin: 0;
+}
+
+.tsd-panel-content {
+	margin: 0;
+	padding: var(--tsd-spacing-vertical) var(--tsd-spacing-horizontal);
+	border-bottom: 1px solid var(--ifm-card-background-color);
+}
+
+.tsd-panel-content:last-child {
+	border-bottom: 0;
+}
+
+.tsd-panel-content > *:first-child {
+	margin-top: 0;
+}
+
+.tsd-panel-group {
+	margin-top: var(--tsd-spacing-vertical-full);
+}
+
+.tsd-anchor {
+	float: right;
+}
+
+/* LISTS */
+
+.tsd-hierarchy,
+.tsd-type-parameters {
+	list-style: square;
+	margin: 0;
+}
+
+.tsd-signatures,
+.tsd-descriptions,
+.tsd-sources ul,
+.tsd-sources p {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* SPACING */
+
+.tsd-parameters h5 {
+	margin: 0;
+}
+
+.tsd-comment,
+.tsd-sources,
+.tsd-descriptions,
+.tsd-type-declaration,
+.tsd-type-parameters,
+.tsd-type-parameters-title,
+.tsd-parameters,
+.tsd-parameters-title,
+.tsd-returns-title {
+	margin-top: var(--tsd-spacing-vertical);
+	margin-bottom: 0;
+}
+
+/* SOURCES */
+
+.tsd-sources {
+	color: var(--tsd-muted-text);
+	font-size: var(--tsd-font-small);
+}
+
+.tsd-sources ul,
+.tsd-sources p {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.tsd-sources a {
+	color: var(--tsd-muted-text);
+	text-decoration: underline;
+}
+
+.tsd-sources a:hover {
+	color: var(--ifm-link-color);
+}
+
+/* SIGNATURES */
+
+.tsd-description > *,
+.tsd-parameters {
+	margin-top: var(--tsd-spacing-vertical);
+}
+
+.tsd-description > *:first-child {
+	margin-top: 0;
+}
+
+.tsd-signature-inactive {
+	opacity: 0.35;
+}
+
+/* FLAGS */
+
+.tsd-flag {
+	display: inline-block;
+	padding: 3px 6px;
+	border-radius: var(--ifm-global-radius);
+	color: var(--ifm-footer-title-color);
+	background-color: var(--ifm-footer-background-color);
+	text-indent: 0;
+	font-size: var(--tsd-font-small);
+	font-weight: normal;
+	margin-top: -1px;
+	margin-right: 0.5rem;
+	opacity: 0.65;
+	vertical-align: middle;
+}
+
+/* SYNTAX */
+
+.tsd-generics {
+	font-weight: normal;
+}
+
+.tsd-signature-symbol {
+	color: var(--tsd-muted-text);
+	font-weight: normal;
+}
+
+.tsd-signature-type {
+	font-style: italic;
+	font-weight: normal;
+}
+
+.tsd-pressable {
+	cursor: pointer;
+}
+
+.tsd-kind-icon .codicon {
+	margin-right: 0.5rem;
+}
+
+.codicon {
+	vertical-align: middle;
+}

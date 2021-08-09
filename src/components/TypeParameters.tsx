@@ -15,17 +15,15 @@ export function TypeParameters({ params }: TypeParametersProps) {
 		<ul className="tsd-type-parameters">
 			{params.map((param) => (
 				<li key={param.id}>
-					<h4>
-						{param.name}
+					<strong>{param.name}</strong>
 
-						{param.type && (
-							<>
-								<span className="tsd-signature-symbol">:</span> <Type type={param.type} />
-							</>
-						)}
+					{param.type && (
+						<>
+							<span className="tsd-signature-symbol">:</span> <Type type={param.type} />
+						</>
+					)}
 
-						<DefaultValue type={param.default} />
-					</h4>
+					<DefaultValue type={param.default} />
 
 					<Comment comment={param.comment} />
 				</li>

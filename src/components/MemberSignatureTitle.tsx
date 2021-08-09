@@ -4,6 +4,7 @@
 import React from 'react';
 import { JSONOutput } from 'typedoc';
 import { Type } from './Type';
+import { TypeParametersGeneric } from './TypeParametersGeneric';
 
 export interface MemberSignatureTitleProps {
 	useArrow?: boolean;
@@ -23,9 +24,7 @@ export function MemberSignatureTitle({ useArrow, hideName, sig }: MemberSignatur
 				</>
 			) : null}
 
-			{sig.typeParameter && (
-				<span>&lt;{sig.typeParameter.map((param) => param.name).join(', ')}&gt;</span>
-			)}
+			<TypeParametersGeneric params={sig.typeParameter} />
 
 			<span className="tsd-signature-symbol">(</span>
 

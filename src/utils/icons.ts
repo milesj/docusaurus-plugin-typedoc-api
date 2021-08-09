@@ -18,15 +18,15 @@ const KIND_ICONS: Record<ReflectionKind, string> = {
 	512: 'symbol-constructor', // Constructor
 	1024: 'symbol-property', // Property
 	2048: 'symbol-method', // Method
-	4096: 'symbol-keyword', // CallSignature
-	8192: 'symbol-keyword', // IndexSignature
-	16_384: 'symbol-keyword', // ConstructorSignature
+	4096: 'symbol-method', // CallSignature
+	8192: 'json', // IndexSignature
+	16_384: 'symbol-method', // ConstructorSignature
 	32_768: 'symbol-property', // Parameter
 	65_536: 'symbol-keyword', // TypeLiteral
 	131_072: 'symbol-type-parameter', // TypeParameter
 	262_144: 'symbol-constant', // Accessor
-	524_288: 'symbol-keyword', // GetSignature
-	1_048_576: 'symbol-keyword', // SetSignature
+	524_288: 'symbol-property', // GetSignature
+	1_048_576: 'symbol-property', // SetSignature
 	2_097_152: 'json', // ObjectLiteral
 	4_194_304: 'symbol-parameter', // TypeAlias
 	8_388_608: 'symbol-event', // Event
@@ -49,23 +49,29 @@ export function getKindIconColor(kind: ReflectionKind): string {
 	switch (kind) {
 		// Function
 		case 64:
+		// Constructor
+		case 512:
 		// Method
 		case 2048:
+		// CallSignature
+		case 4096:
+		// ConstructorSignature
+		case 16_384:
 		// Accessor
 		case 262_144:
-			return 'var(--ifm-color-primary)';
+			return 'var(--ifm-color-info)';
 
+		// EnumMember
+		case 16:
 		// Variable
 		case 32:
 		// Property
 		case 1024:
-			return 'var(--ifm-color-success-light)';
-
-		// Enum
-		case 4:
-		// Constructor
-		case 512:
-			return 'var(--ifm-color-info)';
+		// GetSignature
+		case 524_288:
+		// SetSignature
+		case 1_048_576:
+			return 'var(--ifm-color-success-lighter)';
 
 		// Namespace
 		case 2:
@@ -73,6 +79,8 @@ export function getKindIconColor(kind: ReflectionKind): string {
 		case 128:
 			return 'var(--ifm-color-warning)';
 
+		// Enum
+		case 4:
 		// Interface
 		case 256:
 		// TypeAlias
@@ -93,5 +101,5 @@ export function getKindIconHtml(kind: ReflectionKind, name: string): string {
 
 	const color = getKindIconColor(kind);
 
-	return `<i class="codicon codicon-${icon}" style="color:${color};vertical-align:middle"></i>`;
+	return `<i class="codicon codicon-${icon}" style="color:${color};"></i>`;
 }

@@ -15,9 +15,9 @@ export function Hierarchy({ tree }: HierarchyProps) {
 			{tree.types.map((type, i) => (
 				<li>
 					{tree.isTarget ? (
-						<strong className="target">
+						<em className="tsd-target">
 							{type.type === 'reference' ? (type as JSONOutput.ReferenceType).name : 'UNKNOWN'}
-						</strong>
+						</em>
 					) : (
 						<Type type={type} />
 					)}

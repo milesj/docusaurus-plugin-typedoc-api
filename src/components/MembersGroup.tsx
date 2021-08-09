@@ -31,7 +31,7 @@ export function MembersGroup({ group }: MembersGroupProps) {
 
 	return (
 		<section className="tsd-panel-group tsd-member-group {{cssClasses}}">
-			<h2>{group.title}</h2>
+			<h2>{group.title || 'UNKNOWN'}</h2>
 
 			{group.children?.map((child) =>
 				hasOwnDocument(child, reflections) ? null : <Member key={child} id={child} />,

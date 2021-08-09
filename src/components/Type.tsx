@@ -12,13 +12,17 @@ function wrapWithParens(type: JSONOutput.SomeType): boolean {
 
 export interface TypeProps {
 	needsParens?: boolean;
-	type: JSONOutput.SomeType;
+	type?: JSONOutput.SomeType;
 }
 
 // eslint-disable-next-line complexity
 export function Type({ needsParens, type: base }: TypeProps) {
 	const reflections = useReflectionMap();
 	let value: React.ReactNode;
+
+	if (!base) {
+		return null;
+	}
 
 	switch (base.type) {
 		case 'array': {

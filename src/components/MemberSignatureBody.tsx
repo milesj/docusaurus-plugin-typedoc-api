@@ -19,18 +19,19 @@ export interface MemberSignatureBodyProps {
 export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyProps) {
 	return (
 		<>
+			{!hideSources && <MemberSources reflection={sig} />}
+
 			<Comment comment={sig.comment} />
 
 			{sig.typeParameter && (
-				<div>
+				<>
 					<h4 className="tsd-type-parameters-title">Type parameters</h4>
-
 					<TypeParameters params={sig.typeParameter} />
-				</div>
+				</>
 			)}
 
 			{sig.parameters && (
-				<div>
+				<>
 					<h4 className="tsd-parameters-title">Parameters</h4>
 
 					<ul className="tsd-parameters">
@@ -52,22 +53,20 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 							</li>
 						))}
 					</ul>
-				</div>
+				</>
 			)}
 
 			{sig.type && (
-				<div>
+				<>
 					<h4 className="tsd-returns-title">
 						Returns <Type type={sig.type} />
 					</h4>
 
 					{sig.comment?.returns && <Markdown content={sig.comment.returns} />}
 
-					{sig.type.declaration && <Parameter param={sig.type.declaration} />}
-				</div>
+					<Parameter param={sig.type.declaration} />
+				</>
 			)}
-
-			{!hideSources && <MemberSources reflection={sig} />}
 		</>
 	);
 }

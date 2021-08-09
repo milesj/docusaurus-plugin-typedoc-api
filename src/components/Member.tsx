@@ -24,10 +24,14 @@ export function Member({ id }: MemberProps) {
 	let content: React.ReactNode = null;
 
 	if (reflection.signatures) {
-		content = <MemberSignatures sigs={reflection.signatures} />;
+		content = <MemberSignatures sigs={reflection.signatures} inPanel />;
 	} else if (reflection.getSignature || reflection.setSignature) {
 		content = (
-			<MemberGetterSetter getter={reflection.getSignature} setter={reflection.setSignature} />
+			<MemberGetterSetter
+				getter={reflection.getSignature}
+				setter={reflection.setSignature}
+				inPanel
+			/>
 		);
 	} else if (String(reflection.type) === 'reference') {
 		console.log('WHAT TO DO HERE?');
@@ -38,9 +42,11 @@ export function Member({ id }: MemberProps) {
 
 	return (
 		<section className="tsd-panel tsd-member {{cssClasses}}">
-			<a id={reflection.name} className="tsd-anchor"></a>
+			<h3 className="tsd-panel-header">
+				<a id={reflection.name} href={`#${reflection.name}`} className="tsd-anchor">
+					<i className="codicon codicon-symbol-numeric" />
+				</a>
 
-			<h3>
 				<Flags flags={reflection.flags} />
 				{reflection.name}
 			</h3>

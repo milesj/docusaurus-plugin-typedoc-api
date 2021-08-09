@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 
 import '@vscode/codicons/dist/codicon.css';
+import './styles.css';
 import React, { useMemo } from 'react';
 import { JSONOutput } from 'typedoc';
 import DocPage, { Props as DocPageProps } from '@theme/DocPage';

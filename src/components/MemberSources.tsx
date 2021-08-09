@@ -12,6 +12,15 @@ export interface MemberSourcesProps {
 export function MemberSources({ reflection }: MemberSourcesProps) {
 	const { siteConfig } = useDocusaurusContext();
 
+	if (
+		!reflection.implementationOf &&
+		!reflection.inheritedFrom &&
+		!reflection.overwrites &&
+		!reflection.sources
+	) {
+		return null;
+	}
+
 	return (
 		<aside className="tsd-sources">
 			{reflection.implementationOf && (

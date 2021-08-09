@@ -5,17 +5,22 @@ import React from 'react';
 import { JSONOutput } from 'typedoc';
 import { Comment } from './Comment';
 import { Flags } from './Flags';
+import { Icon } from './Icon';
 import { MemberSignatureBody } from './MemberSignatureBody';
 import { MemberSignatures } from './MemberSignatures';
 import { MemberSignatureTitle } from './MemberSignatureTitle';
 import { Type } from './Type';
 
 export interface ParameterProps {
-	param: JSONOutput.DeclarationReflection;
+	param?: JSONOutput.DeclarationReflection;
 }
 
 // eslint-disable-next-line complexity
 function ParameterChild({ param }: ParameterProps) {
+	if (!param) {
+		return null;
+	}
+
 	if (param.signatures?.length > 0) {
 		return (
 			<li className="tsd-parameter">
@@ -48,7 +53,7 @@ function ParameterChild({ param }: ParameterProps) {
 					<Parameter param={child} />
 				))}
 
-				{param.type.declaration && <Parameter param={param.type.declaration} />}
+				<Parameter param={param.type.declaration} />
 			</li>
 		);
 	}
@@ -99,6 +104,10 @@ function ParameterChild({ param }: ParameterProps) {
 }
 
 export function Parameter({ param }: ParameterProps) {
+	if (!param) {
+		return null;
+	}
+
 	return (
 		<ul className="tsd-parameters">
 			{param.signatures?.length > 0 && (
@@ -106,6 +115,7 @@ export function Parameter({ param }: ParameterProps) {
 					<ul className="tsd-signatures {{cssClasses}}">
 						{param.signatures.map((sig) => (
 							<li className="tsd-signature tsd-kind-icon">
+								<Icon reflection={sig} />
 								<MemberSignatureTitle sig={sig} hideName />
 							</li>
 						))}
@@ -137,9 +147,7 @@ export function Parameter({ param }: ParameterProps) {
 
 					<Comment comment={param.indexSignature.comment} />
 
-					{param.indexSignature.declaration && (
-						<Parameter param={param.indexSignature.declaration} />
-					)}
+					<Parameter param={param.indexSignature.declaration} />
 				</li>
 			)}
 
