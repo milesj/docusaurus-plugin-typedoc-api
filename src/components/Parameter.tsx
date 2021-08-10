@@ -112,7 +112,7 @@ export function Parameter({ param }: ParameterProps) {
 		<ul className="tsd-parameters">
 			{param.signatures?.length > 0 && (
 				<li className="tsd-parameter-signature">
-					<ul className="tsd-signatures {{cssClasses}}">
+					<ul className="tsd-signatures">
 						{param.signatures.map((sig) => (
 							<li className="tsd-signature tsd-kind-icon">
 								<Icon reflection={sig} />

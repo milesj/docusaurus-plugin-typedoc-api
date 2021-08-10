@@ -4,6 +4,7 @@ import React from 'react';
 import { JSONOutput } from 'typedoc';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { hasOwnDocument } from '../utils/visibility';
+import { Anchor } from './Anchor';
 import { Member } from './Member';
 
 export interface MembersGroupProps {
@@ -17,8 +18,10 @@ export function MembersGroup({ group }: MembersGroupProps) {
 		return (
 			<>
 				{group.categories.map((category) => (
-					<section key={category.title} className="tsd-panel-group tsd-member-group {{cssClasses}}">
-						<h2>{category.title || 'UNKNOWN'}</h2>
+					<section key={category.title} className="tsd-panel-group tsd-member-group">
+						<h2>
+							{category.title} <Anchor id={category.title} />
+						</h2>
 
 						{category.children?.map((child) =>
 							hasOwnDocument(child, reflections) ? null : <Member key={child} id={child} />,
@@ -30,8 +33,10 @@ export function MembersGroup({ group }: MembersGroupProps) {
 	}
 
 	return (
-		<section className="tsd-panel-group tsd-member-group {{cssClasses}}">
-			<h2>{group.title || 'UNKNOWN'}</h2>
+		<section className="tsd-panel-group tsd-member-group">
+			<h2>
+				{group.title} <Anchor id={group.title} />
+			</h2>
 
 			{group.children?.map((child) =>
 				hasOwnDocument(child, reflections) ? null : <Member key={child} id={child} />,

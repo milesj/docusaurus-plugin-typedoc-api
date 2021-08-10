@@ -23,7 +23,7 @@ export function MemberGetterSetter({
 	return (
 		<>
 			<div className={inPanel ? 'tsd-panel-content' : ''}>
-				<ul className="tsd-signatures {{cssClasses}}">
+				<ul className="tsd-signatures">
 					{getter && (
 						<li className="tsd-signature tsd-kind-icon">
 							<Icon reflection={getter} />

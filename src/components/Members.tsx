@@ -8,6 +8,7 @@ import {
 	allGroupChildrenHaveOwnDocument,
 	hasOwnDocument,
 } from '../utils/visibility';
+import { Anchor } from './Anchor';
 import { Member } from './Member';
 import { MembersGroup } from './MembersGroup';
 
@@ -27,11 +28,10 @@ export function Members({ reflection }: MembersProps) {
 					}
 
 					return (
-						<section
-							key={category.title}
-							className="tsd-panel-group tsd-member-group {{cssClasses}}"
-						>
-							<h2>{category.title}</h2>
+						<section key={category.title} className="tsd-panel-group tsd-member-group">
+							<h2>
+								{category.title} <Anchor id={category.title} />
+							</h2>
 
 							{category.children?.map((child) => {
 								if (hasOwnDocument(child, reflections)) {

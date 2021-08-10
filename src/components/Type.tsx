@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { JSONOutput } from 'typedoc';
+import Link from '@docusaurus/Link';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { MemberSignatureTitle } from './MemberSignatureTitle';
 
@@ -178,9 +179,9 @@ export function Type({ needsParens, type: base }: TypeProps) {
 			value = (
 				<>
 					{ref?.permalink ? (
-						<a href={ref.permalink} className="tsd-signature-type" data-tsd-kind={ref.kindString}>
+						<Link to={ref.permalink} className="tsd-signature-type" data-tsd-kind={ref.kindString}>
 							{type.name}
-						</a>
+						</Link>
 					) : (
 						<span className="tsd-signature-type">{type.name}</span>
 					)}

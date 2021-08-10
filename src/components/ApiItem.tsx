@@ -75,9 +75,10 @@ export default function ApiItem({ content }: ApiItemProps) {
 
 							<div className="markdown">
 								<MainHeading>
-									{content.name}
+									{(item as JSONOutput.ProjectReflection).packageName ?? item.name ?? content.name}
 									<TypeParametersGeneric params={item.typeParameter} />
 								</MainHeading>
+
 								<Reflection reflection={item} />
 							</div>
 						</article>

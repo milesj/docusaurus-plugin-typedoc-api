@@ -6,6 +6,7 @@ import { createHierarchy } from '../utils/hierarchy';
 import { Comment, hasComment } from './Comment';
 import { Hierarchy } from './Hierarchy';
 import { Icon } from './Icon';
+import { Index } from './Index';
 import { Members } from './Members';
 import { MemberSignatures } from './MemberSignatures';
 import { Parameter } from './Parameter';
@@ -21,6 +22,7 @@ export interface ReflectionProps {
 
 // TODO:
 // - readme
+// - markdown
 // eslint-disable-next-line complexity
 export function Reflection({ reflection }: ReflectionProps) {
 	console.log('Reflection', reflection);
@@ -129,8 +131,7 @@ export function Reflection({ reflection }: ReflectionProps) {
 				</section>
 			)}
 
-			{/* README */}
-
+			<Index reflection={reflection} />
 			<Members reflection={reflection} />
 		</>
 	);

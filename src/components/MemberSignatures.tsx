@@ -17,7 +17,7 @@ export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
 	return (
 		<>
 			<div className={inPanel ? 'tsd-panel-content' : ''}>
-				<ul className="tsd-signatures {{cssClasses}}">
+				<ul className="tsd-signatures">
 					{sigs.map((sig, i) => (
 						<li
 							key={sig.id}

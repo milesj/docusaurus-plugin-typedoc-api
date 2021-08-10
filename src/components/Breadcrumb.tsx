@@ -2,37 +2,40 @@
 
 import React from 'react';
 import { JSONOutput } from 'typedoc';
+import Link from '@docusaurus/Link';
 import { useReflection } from '../hooks/useReflection';
 
 export interface BreadcrumbProps {
 	reflection: JSONOutput.Reflection;
+	root?: boolean;
 }
 
-export function Breadcrumb({ reflection }: BreadcrumbProps) {
+export function Breadcrumb({ reflection, root = true }: BreadcrumbProps) {
 	const parent = useReflection(reflection.parentId);
+	let content: React.ReactNode = null;
 
 	if (parent) {
-		return (
+		content = (
 			<>
-				<Breadcrumb reflection={parent} />
+				<Breadcrumb reflection={parent} root={false} />
 				<li>
 					{reflection.permalink ? (
-						<a href={reflection.permalink}>{reflection.name}</a>
+						<Link to={reflection.permalink}>{reflection.name}</Link>
 					) : (
 						<span>{reflection.name}</span>
 					)}
 				</li>
 			</>
 		);
-	}
-
-	if (reflection.permalink) {
-		return (
+	} else if (reflection.permalink) {
+		content = (
 			<li>
-				<a href={reflection.permalink}>{reflection.name}</a>
+				<Link to={reflection.permalink}>{reflection.name}</Link>
 			</li>
 		);
+	} else {
+		return null;
 	}
 
-	return null;
+	return <>{root ? <ul className="tsd-breadcrumb">{content}</ul> : content}</>;
 }

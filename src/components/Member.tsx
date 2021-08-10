@@ -4,6 +4,7 @@ import React from 'react';
 import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { hasOwnDocument } from '../utils/visibility';
+import { Anchor } from './Anchor';
 import { Flags } from './Flags';
 import { MemberDeclaration } from './MemberDeclaration';
 import { MemberGetterSetter } from './MemberGetterSetter';
@@ -41,12 +42,9 @@ export function Member({ id }: MemberProps) {
 	}
 
 	return (
-		<section className="tsd-panel tsd-member {{cssClasses}}">
+		<section className="tsd-panel tsd-member">
 			<h3 className="tsd-panel-header">
-				<a id={reflection.name} href={`#${reflection.name}`} className="tsd-anchor">
-					<i className="codicon codicon-symbol-numeric" />
-				</a>
-
+				<Anchor id={reflection.name} />
 				<Flags flags={reflection.flags} />
 				{reflection.name}
 			</h3>
