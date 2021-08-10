@@ -26,6 +26,7 @@ declare module 'typedoc/dist/lib/serialization/schema' {
 	interface ProjectReflection extends ApiMetadata {
 		packageName: string;
 		packageVersion: string;
+		readme?: string;
 	}
 
 	interface Type {

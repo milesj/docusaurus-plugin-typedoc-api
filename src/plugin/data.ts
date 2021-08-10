@@ -16,16 +16,23 @@ export function createReflectionMap(
 	return map;
 }
 
-async function loadPackageJson(initialDir: string) {
+async function loadPackageJsonAndReadme(initialDir: string) {
 	let currentDir = initialDir;
 
 	while (!fs.existsSync(path.join(currentDir, 'package.json'))) {
 		currentDir = path.dirname(currentDir);
 	}
 
-	return JSON.parse(await fs.promises.readFile(path.join(currentDir, 'package.json'), 'utf8')) as {
-		name: string;
-		version: string;
+	const readmePath = path.join(currentDir, 'README.md');
+
+	return {
+		package: JSON.parse(
+			await fs.promises.readFile(path.join(currentDir, 'package.json'), 'utf8'),
+		) as {
+			name: string;
+			version: string;
+		},
+		readme: fs.existsSync(readmePath) ? await fs.promises.readFile(readmePath, 'utf8') : '',
 	};
 }
 
@@ -34,13 +41,14 @@ export async function addMetadataToDeclarations(
 	pkgBase: JSONOutput.DeclarationReflection,
 ): Promise<JSONOutput.ProjectReflection> {
 	const pkg = pkgBase as JSONOutput.ProjectReflection;
-	const pkgJson = await loadPackageJson(
+	const pkgMeta = await loadPackageJsonAndReadme(
 		path.join(projectRoot, path.dirname(String(pkgBase.sources?.[0].fileName))),
 	);
 
 	pkg.name = pkg.name.replace('/src', '');
-	pkg.packageName = pkgJson.name;
-	pkg.packageVersion = pkgJson.version;
+	pkg.packageName = pkgMeta.package.name;
+	pkg.packageVersion = pkgMeta.package.version;
+	pkg.readme = pkgMeta.readme;
 
 	const slug = `/${pkg.name}`;
 	const permalink = `/api${slug}`;

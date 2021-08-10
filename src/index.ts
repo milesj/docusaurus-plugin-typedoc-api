@@ -33,8 +33,6 @@ export default function typedocApiPlugin(
 				return import(filePath);
 			}
 
-			console.log('loadContent', context);
-
 			const app = new TypeDoc.Application();
 
 			app.options.addReader(new TypeDoc.TSConfigReader());
@@ -65,8 +63,6 @@ export default function typedocApiPlugin(
 			if (!content) {
 				return;
 			}
-
-			console.log('contentLoaded');
 
 			const { createData, addRoute } = actions;
 			const apiPackages = await addMetadataToPackages(projectRoot, content);

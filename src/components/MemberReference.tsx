@@ -12,8 +12,6 @@ export interface MemberReferenceProps {
 export function MemberReference({ ref }: MemberReferenceProps) {
 	const reflection = useReflection(ref.target || ref.id);
 
-	console.log('MemberReference', ref, reflection);
-
 	if (!reflection) {
 		return null;
 	}

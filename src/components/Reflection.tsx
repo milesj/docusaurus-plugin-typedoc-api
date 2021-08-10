@@ -7,6 +7,7 @@ import { Comment, hasComment } from './Comment';
 import { Hierarchy } from './Hierarchy';
 import { Icon } from './Icon';
 import { Index } from './Index';
+import { Markdown } from './Markdown';
 import { Members } from './Members';
 import { MemberSignatures } from './MemberSignatures';
 import { Parameter } from './Parameter';
@@ -21,16 +22,19 @@ export interface ReflectionProps {
 }
 
 // TODO:
-// - readme
 // - markdown
 // eslint-disable-next-line complexity
 export function Reflection({ reflection }: ReflectionProps) {
-	console.log('Reflection', reflection);
-
 	const hierarchy = useMemo(() => createHierarchy(reflection), [reflection]);
 
 	return (
 		<>
+			{'readme' in reflection && (
+				<section className="tsd-readme">
+					<Markdown content={(reflection as JSONOutput.ProjectReflection).readme} />
+				</section>
+			)}
+
 			{hasComment(reflection.comment) && (
 				<section className="tsd-panel">
 					<div className="tsd-panel-content">

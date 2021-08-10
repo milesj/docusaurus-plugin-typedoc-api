@@ -55,8 +55,6 @@ export default function ApiItem({ content }: ApiItemProps) {
 	const versionMetadata = { banner: 'none', label: '' };
 	const showVersionBadge = false;
 
-	console.log('ApiItem', content, item);
-
 	return (
 		<>
 			<Seo title={content.name} description={item.comment?.shortText ?? item.comment?.text} />

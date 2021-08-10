@@ -20,8 +20,6 @@ export function Member({ id }: MemberProps) {
 	const reflections = useReflectionMap();
 	const reflection = useReflection(id);
 
-	console.log('Member', id, reflection);
-
 	let content: React.ReactNode = null;
 
 	if (reflection.signatures) {
@@ -35,7 +33,7 @@ export function Member({ id }: MemberProps) {
 			/>
 		);
 	} else if (String(reflection.type) === 'reference') {
-		console.log('WHAT TO DO HERE?');
+		console.debug('WHAT TO DO HERE?');
 		content = null; // <MemberReference ref={reflection} />;
 	} else {
 		content = <MemberDeclaration id={id} />;
