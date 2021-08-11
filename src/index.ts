@@ -8,18 +8,24 @@ import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs-types'
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
 import { addMetadataToPackages, extractMetadata } from './plugin/data';
 import { extractSidebar, extractSidebarPermalinks } from './plugin/sidebar';
-import { DeclarationInfo, PackageInfo } from './types';
 
 export interface DocusaurusPluginTypedocApiOptions {
-	id?: string;
 	exclude?: string[];
+	id?: string;
+	includeReadmes?: boolean;
 	packageEntryPoints: string[];
 	projectRoot: string;
 }
 
 export default function typedocApiPlugin(
 	context: LoadContext,
-	{ exclude = [], packageEntryPoints, projectRoot, ...options }: DocusaurusPluginTypedocApiOptions,
+	{
+		exclude = [],
+		includeReadmes,
+		packageEntryPoints,
+		projectRoot,
+		...options
+	}: DocusaurusPluginTypedocApiOptions,
 ): Plugin<JSONOutput.ProjectReflection> {
 	const pluginId = options.id ?? 'default';
 
@@ -84,7 +90,7 @@ export default function typedocApiPlugin(
 				JSON.stringify(versionMetadata),
 			);
 
-			async function createRoute(info: DeclarationInfo | PackageInfo): Promise<RouteConfig> {
+			async function createRoute(info: JSONOutput.Reflection): Promise<RouteConfig> {
 				const reflection = extractMetadata(info);
 				const reflectionData = await createData(
 					`reflection-${reflection.id}.json`,
@@ -97,13 +103,17 @@ export default function typedocApiPlugin(
 					component: path.join(__dirname, './components/ApiItem.js'),
 					modules: {
 						content: reflectionData,
+						readme:
+							includeReadmes && 'readmePath' in info
+								? (info as JSONOutput.ProjectReflection).readmePath
+								: undefined,
 					},
 					// @ts-expect-error This is required in `DocPage`
 					sidebar: 'api',
 				};
 			}
 
-			async function createDeclarationRoutes(pkg: PackageInfo) {
+			async function createDeclarationRoutes(pkg: JSONOutput.ProjectReflection) {
 				// Map a route for every declaration in the package (the exported APIs)
 				const routes = await Promise.all(pkg.children.map(async (decl) => createRoute(decl)));
 
@@ -129,6 +139,35 @@ export default function typedocApiPlugin(
 					});
 				}),
 			);
+		},
+
+		configureWebpack(config, isServer, utils) {
+			if (!includeReadmes) {
+				return {};
+			}
+
+			return {
+				module: {
+					rules: [
+						{
+							test: /\.mdx?$/,
+							include: `${projectRoot}/`,
+							use: [
+								utils.getJSLoader({ isServer }),
+								{
+									loader: require.resolve('@docusaurus/mdx-loader'),
+									options: {
+										staticDir: path.join(context.siteDir, 'static'),
+										// Since this isnt a doc/blog page, we can get
+										// away with it being a partial!
+										isMDXPartial: () => true,
+									},
+								},
+							],
+						},
+					],
+				},
+			};
 		},
 	};
 }

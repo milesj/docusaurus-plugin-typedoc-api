@@ -7,7 +7,6 @@ import { Comment, hasComment } from './Comment';
 import { Hierarchy } from './Hierarchy';
 import { Icon } from './Icon';
 import { Index } from './Index';
-import { Markdown } from './Markdown';
 import { Members } from './Members';
 import { MemberSignatures } from './MemberSignatures';
 import { Parameter } from './Parameter';
@@ -29,12 +28,6 @@ export function Reflection({ reflection }: ReflectionProps) {
 
 	return (
 		<>
-			{'readme' in reflection && (
-				<section className="tsd-readme">
-					<Markdown content={(reflection as JSONOutput.ProjectReflection).readme} />
-				</section>
-			)}
-
 			{hasComment(reflection.comment) && (
 				<section className="tsd-panel">
 					<div className="tsd-panel-content">

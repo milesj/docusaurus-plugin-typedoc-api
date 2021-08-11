@@ -32,7 +32,7 @@ async function loadPackageJsonAndReadme(initialDir: string) {
 			name: string;
 			version: string;
 		},
-		readme: fs.existsSync(readmePath) ? await fs.promises.readFile(readmePath, 'utf8') : '',
+		readmePath: fs.existsSync(readmePath) ? readmePath : '',
 	};
 }
 
@@ -48,7 +48,7 @@ export async function addMetadataToDeclarations(
 	pkg.name = pkg.name.replace('/src', '');
 	pkg.packageName = pkgMeta.package.name;
 	pkg.packageVersion = pkgMeta.package.version;
-	pkg.readme = pkgMeta.readme;
+	pkg.readmePath = pkgMeta.readmePath;
 
 	const slug = `/${pkg.name}`;
 	const permalink = `/api${slug}`;

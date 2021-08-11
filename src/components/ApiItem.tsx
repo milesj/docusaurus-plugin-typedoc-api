@@ -37,9 +37,10 @@ function extractTOC(item: JSONOutput.DeclarationReflection): TOCItem[] {
 
 export interface ApiItemProps {
 	content: ApiMetadata;
+	readme?: React.ComponentType;
 }
 
-export default function ApiItem({ content }: ApiItemProps) {
+export default function ApiItem({ content, readme: Readme }: ApiItemProps) {
 	const item = useReflection(content.id)!;
 	const prevItem = useReflection(content.previousId);
 	const nextItem = useReflection(content.nextId);
@@ -76,6 +77,12 @@ export default function ApiItem({ content }: ApiItemProps) {
 									{(item as JSONOutput.ProjectReflection).packageName ?? item.name ?? content.name}
 									<TypeParametersGeneric params={item.typeParameter} />
 								</MainHeading>
+
+								{Readme && (
+									<section className="tsd-readme">
+										<Readme />
+									</section>
+								)}
 
 								<Reflection reflection={item} />
 							</div>
