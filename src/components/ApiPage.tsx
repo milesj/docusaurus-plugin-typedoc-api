@@ -3,8 +3,6 @@
 import '@vscode/codicons/dist/codicon.css';
 import './styles.css';
 import React, { useMemo } from 'react';
-import rp from 'react/package.json';
-import rdp from 'react-dom/package.json';
 import { JSONOutput } from 'typedoc';
 import DocPage, { Props as DocPageProps } from '@theme/DocPage';
 import { DeclarationReflectionMap } from '../types';
@@ -51,8 +49,6 @@ export interface ApiPageProps extends DocPageProps {
 
 function ApiPage({ data, ...props }: ApiPageProps) {
 	const value = useMemo(() => deepMapReflections(data, {}), [data]);
-
-	console.log('ApiPage', rp.version, rdp.version);
 
 	return (
 		<ApiDataContext.Provider value={value}>
