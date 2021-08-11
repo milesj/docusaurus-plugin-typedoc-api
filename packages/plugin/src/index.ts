@@ -83,6 +83,7 @@ export default function typedocApiPlugin(
 				banner: 'none',
 				isLast: true,
 				docsSidebars: { api: await extractSidebar(apiPackages) },
+				// @ts-expect-error Old versions
 				permalinkToSidebar: await extractSidebarPermalinks(apiPackages),
 			};
 			const versionMetadataData = await createData(
@@ -111,7 +112,6 @@ export default function typedocApiPlugin(
 					exact: true,
 					component: path.join(__dirname, './components/ApiItem.js'),
 					modules,
-					// @ts-expect-error Required for DocPage
 					sidebar: 'api',
 				};
 			}

@@ -107,7 +107,7 @@ module.exports = {
 	],
 	plugins: [
 		[
-			path.join(__dirname, '../lib/index.js'),
+			'docusaurus-plugin-typedoc-api',
 			{
 				projectRoot: path.join(__dirname, '../../boost'),
 				packageEntryPoints: [

@@ -5,8 +5,7 @@
     "check": "yarn run type && yarn run lint",
     "clean": "packemon clean",
     "docs": "cd website && yarn run start",
-    "build": "beemo babel src/ --out-dir lib/",
-    "build2": "packemon build --addEngines",
+    "build": "packemon build --addEngines",
     "pack": "NODE_ENV=production packemon pack --addEngines --declaration=standard",
     "format": "beemo prettier",
     "lint": "beemo eslint",
@@ -17,6 +16,8 @@
     "@beemo/cli": "^2.0.1",
     "@beemo/core": "^2.0.1",
     "@beemo/dev": "^1.4.0",
+    "@types/react": "^17.0.17",
+    "packemon": "^1.3.0",
     "react": "^17.0.2"
   },
   "workspaces": [

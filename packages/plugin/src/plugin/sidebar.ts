@@ -17,7 +17,7 @@ export function groupSidebarItems(
 
 			items.push({
 				collapsed: index > 0,
-				// collapsible: true,
+				collapsible: true,
 				items: group.children.map((id) => {
 					const child = map[id];
 
