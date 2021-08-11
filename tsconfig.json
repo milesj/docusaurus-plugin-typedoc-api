@@ -9,9 +9,6 @@
     },
     {
       "path": "packages/plugin"
-    },
-    {
-      "path": "packages/plugin/tests"
     }
   ]
 }

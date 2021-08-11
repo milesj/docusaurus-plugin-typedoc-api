@@ -3,7 +3,6 @@ export default {
 	drivers: [
 		'babel',
 		'eslint',
-		'jest',
 		'prettier',
 		[
 			'typescript',
