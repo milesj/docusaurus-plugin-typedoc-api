@@ -16,7 +16,7 @@ export interface MemberDeclarationProps {
 }
 
 export function MemberDeclaration({ id }: MemberDeclarationProps) {
-	const reflection = useReflection(id);
+	const reflection = useReflection(id)!;
 
 	return (
 		<>

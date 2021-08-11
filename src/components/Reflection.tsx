@@ -37,6 +37,7 @@ export function Reflection({ reflection }: ReflectionProps) {
 			)}
 
 			{'typeParameter' in reflection &&
+				reflection.typeParameter &&
 				reflection.typeParameter.length > 0 &&
 				// Class
 				reflection.kind !== 128 && (
@@ -49,8 +50,10 @@ export function Reflection({ reflection }: ReflectionProps) {
 					</section>
 				)}
 
-			{(('extendedBy' in reflection && reflection.extendedBy.length > 0) ||
-				('extendedTypes' in reflection && reflection.extendedTypes.length > 0)) && (
+			{(('extendedBy' in reflection && reflection.extendedBy && reflection.extendedBy.length > 0) ||
+				('extendedTypes' in reflection &&
+					reflection.extendedTypes &&
+					reflection.extendedTypes.length > 0)) && (
 				<section className="tsd-panel">
 					<h3 className="tsd-panel-header">Hierarchy</h3>
 
@@ -60,39 +63,43 @@ export function Reflection({ reflection }: ReflectionProps) {
 				</section>
 			)}
 
-			{'implementedTypes' in reflection && reflection.implementedTypes.length > 0 && (
-				<section className="tsd-panel">
-					<h3 className="tsd-panel-header">Implements</h3>
+			{'implementedTypes' in reflection &&
+				reflection.implementedTypes &&
+				reflection.implementedTypes.length > 0 && (
+					<section className="tsd-panel">
+						<h3 className="tsd-panel-header">Implements</h3>
 
-					<div className="tsd-panel-content">
-						<ul className="tsd-hierarchy">
-							{reflection.implementedTypes.map((type) => (
-								<li key={type.type}>
-									<Type type={type} />
-								</li>
-							))}
-						</ul>
-					</div>
-				</section>
-			)}
+						<div className="tsd-panel-content">
+							<ul className="tsd-hierarchy">
+								{reflection.implementedTypes.map((type) => (
+									<li key={type.type}>
+										<Type type={type} />
+									</li>
+								))}
+							</ul>
+						</div>
+					</section>
+				)}
 
-			{'implementedBy' in reflection && reflection.implementedBy.length > 0 && (
-				<section className="tsd-panel">
-					<h3 className="tsd-panel-header">Implemented by</h3>
+			{'implementedBy' in reflection &&
+				reflection.implementedBy &&
+				reflection.implementedBy.length > 0 && (
+					<section className="tsd-panel">
+						<h3 className="tsd-panel-header">Implemented by</h3>
 
-					<div className="tsd-panel-content">
-						<ul className="tsd-hierarchy">
-							{reflection.implementedBy.map((type) => (
-								<li key={type.name}>
-									<Type type={type} />
-								</li>
-							))}
-						</ul>
-					</div>
-				</section>
-			)}
+						<div className="tsd-panel-content">
+							<ul className="tsd-hierarchy">
+								{reflection.implementedBy.map((type) => (
+									<li key={type.name}>
+										<Type type={type} />
+									</li>
+								))}
+							</ul>
+						</div>
+					</section>
+				)}
 
-			{'signatures' in reflection && reflection.signatures && (
+			{'signatures' in reflection && reflection.signatures && reflection.signatures.length > 0 && (
 				<section className="tsd-panel">
 					<h3 className="tsd-panel-header tsd-before-signature">Callable</h3>
 

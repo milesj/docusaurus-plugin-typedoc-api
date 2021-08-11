@@ -4,6 +4,7 @@
 
 import React, { useMemo } from 'react';
 import type { JSONOutput } from 'typedoc';
+import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs-types';
 import styles from '@docusaurus/theme-classic/lib/theme/DocItem/styles.module.css';
 import { TOCItem } from '@docusaurus/types';
 import DocPaginator from '@theme/DocPaginator';
@@ -50,22 +51,38 @@ export default function ApiItem({ content, readme: Readme }: ApiItemProps) {
 	const toc = useMemo(() => extractTOC(item), [item]);
 	const canRenderTOC = toc.length > 0;
 	// const renderTocMobile = canRenderTOC && (windowSize === 'mobile' || windowSize === 'ssr');
-	const renderTocDesktop = canRenderTOC && (windowSize === 'desktop' || windowSize === 'ssr');
+	// const renderTocDesktop = canRenderTOC && (windowSize === 'desktop' || windowSize === 'ssr');
+	const renderTocDesktop = canRenderTOC && windowSize === 'desktop';
 
 	// Enable once we support versioning
 	const showVersionBadge = false;
-	const versionMetadata = useMemo(() => ({ banner: 'none', label: '' }), []);
+	const versionMetadata: PropVersionMetadata = useMemo(
+		() => ({
+			banner: 'none',
+			label: '',
+			pluginId: 'default',
+			version: 'current',
+			isLast: true,
+			docsSidebars: {},
+			permalinkToSidebar: {},
+		}),
+		[],
+	);
 
 	const pagingMetadata = useMemo(
 		() => ({
-			next: nextItem && {
-				permalink: nextItem.permalink,
-				title: nextItem.name,
-			},
-			previous: prevItem && {
-				permalink: prevItem.permalink,
-				title: prevItem.name,
-			},
+			next: nextItem
+				? {
+						permalink: nextItem.permalink,
+						title: nextItem.name,
+				  }
+				: undefined,
+			previous: prevItem
+				? {
+						permalink: prevItem.permalink,
+						title: prevItem.name,
+				  }
+				: undefined,
 		}),
 		[nextItem, prevItem],
 	);

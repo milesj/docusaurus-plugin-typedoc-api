@@ -19,7 +19,7 @@ export interface MembersProps {
 export function Members({ reflection }: MembersProps) {
 	const reflections = useReflectionMap();
 
-	if (reflection.categories?.length > 0) {
+	if (reflection.categories && reflection.categories.length > 0) {
 		return (
 			<>
 				{reflection.categories.map((category) => {

@@ -72,10 +72,10 @@ export function extractSidebarPermalinks(
 	}
 
 	packages.forEach((pkg) => {
-		map[pkg.permalink] = 'api';
+		map[pkg.permalink!] = 'api';
 
 		pkg.children?.forEach((child) => {
-			map[child.permalink] = 'api';
+			map[child.permalink!] = 'api';
 		});
 	});
 

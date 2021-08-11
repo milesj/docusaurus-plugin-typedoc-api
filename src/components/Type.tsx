@@ -186,7 +186,7 @@ export function Type({ needsParens, type: base }: TypeProps) {
 					) : (
 						<span className="tsd-signature-type">{type.name}</span>
 					)}
-					{type.typeArguments?.length > 0 && (
+					{type.typeArguments && type.typeArguments.length > 0 && (
 						<>
 							<span className="tsd-signature-symbol">&lt;</span>
 							{type.typeArguments.map((t, i) => (
@@ -208,7 +208,7 @@ export function Type({ needsParens, type: base }: TypeProps) {
 			const decl = type.declaration;
 
 			// object literal
-			if (decl.children?.length > 0) {
+			if (decl?.children && decl.children.length > 0) {
 				value = (
 					<>
 						<span className="tsd-signature-symbol">{'{ '}</span>
@@ -225,9 +225,9 @@ export function Type({ needsParens, type: base }: TypeProps) {
 						<span className="tsd-signature-symbol">{' }'}</span>
 					</>
 				);
-			} else if (decl.signatures?.length === 1) {
+			} else if (decl?.signatures && decl.signatures.length === 1) {
 				value = <MemberSignatureTitle hideName useArrow sig={decl.signatures[0]} />;
-			} else if (decl.signatures?.length > 0) {
+			} else if (decl?.signatures && decl.signatures.length > 0) {
 				value = (
 					<>
 						<span className="tsd-signature-symbol">{'{ '}</span>
@@ -262,7 +262,7 @@ export function Type({ needsParens, type: base }: TypeProps) {
 			value = (
 				<>
 					<span className="tsd-signature-symbol">[</span>
-					{type.elements.map((t, i) => (
+					{type.elements?.map((t, i) => (
 						<React.Fragment key={t.type + i}>
 							{i > 0 && <span className="tsd-signature-symbol">, </span>}
 							<Type type={t} />

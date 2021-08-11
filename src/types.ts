@@ -1,4 +1,3 @@
-import './types/docusaurus.d';
 import type { JSONOutput } from 'typedoc';
 import type { PropSidebarItem } from '@docusaurus/plugin-content-docs-types';
 
@@ -8,7 +7,7 @@ export interface ApiMetadata {
 	id: number;
 	name: string;
 	slug?: string;
-	permalink?: string;
+	permalink: string;
 	previousId?: number;
 	nextId?: number;
 }

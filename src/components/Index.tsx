@@ -10,7 +10,7 @@ export interface IndexChildProps {
 }
 
 function IndexChild({ id }: IndexChildProps) {
-	const reflection = useReflection(id);
+	const reflection = useReflection(id)!;
 
 	return (
 		<li>
@@ -27,7 +27,7 @@ export interface IndexProps {
 }
 
 export function Index({ reflection }: IndexProps) {
-	if (reflection.categories?.length > 0) {
+	if (reflection.categories && reflection.categories.length > 0) {
 		return (
 			<section className="tsd-panel-group tsd-index-group">
 				<h2>
@@ -54,7 +54,7 @@ export function Index({ reflection }: IndexProps) {
 		);
 	}
 
-	if (reflection.groups?.length > 0) {
+	if (reflection.groups && reflection.groups.length > 0) {
 		return (
 			<section className="tsd-panel-group tsd-index-group">
 				<h2>
@@ -65,7 +65,7 @@ export function Index({ reflection }: IndexProps) {
 					<div className="tsd-index-content">
 						{reflection.groups.map((group) => (
 							<section key={group.title} className="tsd-index-section">
-								{group.categories?.length > 0 ? (
+								{group.categories && group.categories.length > 0 ? (
 									group.categories.map((category) => (
 										<React.Fragment key={category.title}>
 											<h3 className="tsd-panel-header">{category.title}</h3>

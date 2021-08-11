@@ -56,8 +56,8 @@ export async function addMetadataToDeclarations(
 
 	if (pkg.children) {
 		pkg.children.forEach((child, index) => {
-			const previousId = pkg.children[index - 1]?.id ?? undefined;
-			const nextId = pkg.children[index + 1]?.id ?? undefined;
+			const previousId = pkg.children?.[index - 1]?.id ?? undefined;
+			const nextId = pkg.children?.[index + 1]?.id ?? undefined;
 			const kindSlugPart = getKindSlug(child);
 			const childSlug = kindSlugPart ? `${slug}/${kindSlugPart}/${child.name}` : slug;
 			const childPermalink = `/api${childSlug + (kindSlugPart ? '' : `#${child.name}`)}`;

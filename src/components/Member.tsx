@@ -18,7 +18,7 @@ export interface MemberProps {
 // TODO reference???
 export function Member({ id }: MemberProps) {
 	const reflections = useReflectionMap();
-	const reflection = useReflection(id);
+	const reflection = useReflection(id)!;
 
 	let content: React.ReactNode = null;
 

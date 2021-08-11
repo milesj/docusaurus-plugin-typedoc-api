@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/triple-slash-reference */
 
-/// <reference path="../../node_modules/@docusaurus/plugin-content-docs/src/plugin-content-docs.d.ts" />
+/// <reference path="@docusaurus/theme-classic/src/types.d.ts" />
 
 declare module '*.css';
 

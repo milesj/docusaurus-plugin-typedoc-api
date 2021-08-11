@@ -96,26 +96,31 @@ export default function typedocApiPlugin(
 					`reflection-${reflection.id}.json`,
 					JSON.stringify(reflection),
 				);
+				const modules = {
+					content: reflectionData,
+				};
+
+				if (includeReadmes && 'readmePath' in info) {
+					Object.assign(modules, {
+						readme: (info as JSONOutput.ProjectReflection).readmePath,
+					});
+				}
 
 				return {
 					path: reflection.permalink,
 					exact: true,
 					component: path.join(__dirname, './components/ApiItem.js'),
-					modules: {
-						content: reflectionData,
-						readme:
-							includeReadmes && 'readmePath' in info
-								? (info as JSONOutput.ProjectReflection).readmePath
-								: undefined,
-					},
-					// @ts-expect-error This is required in `DocPage`
+					modules,
+					// @ts-expect-error Required for DocPage
 					sidebar: 'api',
 				};
 			}
 
 			async function createDeclarationRoutes(pkg: JSONOutput.ProjectReflection) {
 				// Map a route for every declaration in the package (the exported APIs)
-				const routes = await Promise.all(pkg.children.map(async (decl) => createRoute(decl)));
+				const routes = await Promise.all(
+					pkg.children ? pkg.children.map(async (decl) => createRoute(decl)) : [],
+				);
 
 				// Map a top-level package route, otherwise `DocPage` shows a page not found
 				routes.push(await createRoute(pkg));

@@ -21,7 +21,7 @@ function ParameterChild({ param }: ParameterProps) {
 		return null;
 	}
 
-	if (param.signatures?.length > 0) {
+	if (param.signatures && param.signatures.length > 0) {
 		return (
 			<li className="tsd-parameter">
 				<h5>
@@ -110,7 +110,7 @@ export function Parameter({ param }: ParameterProps) {
 
 	return (
 		<ul className="tsd-parameters">
-			{param.signatures?.length > 0 && (
+			{param.signatures && param.signatures.length > 0 && (
 				<li className="tsd-parameter-signature">
 					<ul className="tsd-signatures">
 						{param.signatures.map((sig) => (

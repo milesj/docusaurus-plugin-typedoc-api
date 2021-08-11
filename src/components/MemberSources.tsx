@@ -41,14 +41,15 @@ export function MemberSources({ reflection }: MemberSourcesProps) {
 				</p>
 			)}
 
-			{reflection.sources?.length > 0 && (
+			{reflection.sources && reflection.sources.length > 0 && (
 				<ul>
 					{reflection.sources.map((source) => (
 						<li key={source.fileName}>
 							Defined in{' '}
 							<a
 								href={`https://github.com/${siteConfig.organizationName}/${siteConfig.projectName}/blob/master/${source.fileName}#L${source.line}`}
-								rel="noreferrer" target="_blank"
+								rel="noreferrer"
+								target="_blank"
 							>
 								{source.fileName}:{source.line}
 							</a>

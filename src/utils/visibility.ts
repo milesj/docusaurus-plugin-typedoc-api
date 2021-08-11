@@ -27,5 +27,5 @@ export function allGroupChildrenHaveOwnDocument(
 	group: JSONOutput.ReflectionGroup,
 	reflections: DeclarationReflectionMap,
 ): boolean {
-	return group.children?.every((child) => hasOwnDocument(child, reflections));
+	return Boolean(group.children?.every((child) => hasOwnDocument(child, reflections)));
 }

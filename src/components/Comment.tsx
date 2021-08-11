@@ -5,7 +5,7 @@ import { JSONOutput } from 'typedoc';
 import { Markdown } from './Markdown';
 
 export interface CommentProps {
-	comment: JSONOutput.Comment;
+	comment?: JSONOutput.Comment;
 }
 
 export function hasComment(comment?: JSONOutput.Comment): boolean {
@@ -13,12 +13,11 @@ export function hasComment(comment?: JSONOutput.Comment): boolean {
 		return false;
 	}
 
-	// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-	return Boolean(comment.text || comment.shortText || comment.tags?.length > 0);
+	return Boolean(comment.text || comment.shortText || (comment.tags && comment.tags?.length > 0));
 }
 
 export function Comment({ comment }: CommentProps) {
-	if (!hasComment(comment)) {
+	if (!comment || !hasComment(comment)) {
 		return null;
 	}
 
@@ -32,7 +31,7 @@ export function Comment({ comment }: CommentProps) {
 
 			{!!comment.text && <Markdown content={comment.text} />}
 
-			{comment.tags?.length > 0 && (
+			{comment.tags && comment.tags.length > 0 && (
 				<dl className="tsd-comment-tags">
 					{comment.tags.map((tag) => (
 						<React.Fragment key={tag.tag}>

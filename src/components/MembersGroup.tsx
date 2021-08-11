@@ -14,7 +14,7 @@ export interface MembersGroupProps {
 export function MembersGroup({ group }: MembersGroupProps) {
 	const reflections = useReflectionMap();
 
-	if (group.categories?.length > 0) {
+	if (group.categories && group.categories.length > 0) {
 		return (
 			<>
 				{group.categories.map((category) => (
