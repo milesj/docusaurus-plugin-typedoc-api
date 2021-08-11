@@ -14,7 +14,7 @@ function IndexChild({ id }: IndexChildProps) {
 
 	return (
 		<li>
-			<Link to={reflection.permalink ?? `#${reflection.name}`} className="tsd-kind-icon">
+			<Link className="tsd-kind-icon" to={reflection.permalink ?? `#${reflection.name}`}>
 				<Icon reflection={reflection} />
 				{reflection.name ?? <em>{reflection.kindString}</em>}
 			</Link>

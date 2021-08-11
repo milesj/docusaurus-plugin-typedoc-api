@@ -37,5 +37,5 @@ export function Breadcrumb({ reflection, root = true }: BreadcrumbProps) {
 		return null;
 	}
 
-	return <>{root ? <ul className="tsd-breadcrumb">{content}</ul> : content}</>;
+	return root ? <ul className="tsd-breadcrumb">{content}</ul> : <>{content}</>;
 }

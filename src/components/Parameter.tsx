@@ -50,7 +50,7 @@ function ParameterChild({ param }: ParameterProps) {
 				<Comment comment={param.comment} />
 
 				{param.children?.map((child) => (
-					<Parameter param={child} />
+					<Parameter key={child.id} param={child} />
 				))}
 
 				<Parameter param={param.type.declaration} />
@@ -85,7 +85,7 @@ function ParameterChild({ param }: ParameterProps) {
 						{setter.name}
 						<span className="tsd-signature-symbol">(</span>
 						{setter.parameters?.map((p, i) => (
-							<span>
+							<span key={p.id}>
 								{i > 0 && ', '}
 								{p.name}
 								<span className="tsd-signature-symbol">: </span>
@@ -114,17 +114,17 @@ export function Parameter({ param }: ParameterProps) {
 				<li className="tsd-parameter-signature">
 					<ul className="tsd-signatures">
 						{param.signatures.map((sig) => (
-							<li className="tsd-signature tsd-kind-icon">
+							<li key={sig.id} className="tsd-signature tsd-kind-icon">
 								<Icon reflection={sig} />
-								<MemberSignatureTitle sig={sig} hideName />
+								<MemberSignatureTitle hideName sig={sig} />
 							</li>
 						))}
 					</ul>
 
 					<ul className="tsd-descriptions">
 						{param.signatures.map((sig) => (
-							<li className="tsd-description">
-								<MemberSignatureBody sig={sig} hideSources />
+							<li key={sig.id} className="tsd-description">
+								<MemberSignatureBody hideSources sig={sig} />
 							</li>
 						))}
 					</ul>
@@ -136,10 +136,10 @@ export function Parameter({ param }: ParameterProps) {
 					<h5>
 						<span className="tsd-signature-symbol">[</span>
 						{param.indexSignature.parameters?.map((p) => (
-							<>
+							<span key={p.id}>
 								{p.flags?.isRest && <span className="tsd-signature-symbol">...</span>}
 								{p.name} <Type type={p.type} />
-							</>
+							</span>
 						))}
 						<span className="tsd-signature-symbol">]: </span>
 						<Type type={param.indexSignature.type} />
@@ -152,7 +152,7 @@ export function Parameter({ param }: ParameterProps) {
 			)}
 
 			{param.children?.map((child) => (
-				<ParameterChild param={child} />
+				<ParameterChild key={child.id} param={child} />
 			))}
 		</ul>
 	);

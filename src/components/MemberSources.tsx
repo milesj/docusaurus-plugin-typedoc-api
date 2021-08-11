@@ -48,7 +48,7 @@ export function MemberSources({ reflection }: MemberSourcesProps) {
 							Defined in{' '}
 							<a
 								href={`https://github.com/${siteConfig.organizationName}/${siteConfig.projectName}/blob/master/${source.fileName}#L${source.line}`}
-								target="_blank"
+								rel="noreferrer" target="_blank"
 							>
 								{source.fileName}:{source.line}
 							</a>

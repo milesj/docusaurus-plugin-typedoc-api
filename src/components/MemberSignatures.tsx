@@ -24,12 +24,18 @@ export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
 							className={`tsd-signature tsd-pressable tsd-kind-icon ${
 								i !== activeIndex && 'tsd-signature-inactive'
 							}`}
-							onClick={() => {
-								setActiveIndex(i);
-							}}
 						>
-							<Icon reflection={sig} />
-							<MemberSignatureTitle sig={sig} />
+							<div
+								role="button"
+								tabIndex={-1}
+								// eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
+								onKeyDown={() => {
+									setActiveIndex(i);
+								}}
+							>
+								<Icon reflection={sig} />
+								<MemberSignatureTitle sig={sig} />
+							</div>
 						</li>
 					))}
 				</ul>

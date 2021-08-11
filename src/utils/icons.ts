@@ -1,4 +1,3 @@
-/* eslint-disable no-magic-numbers */
 /* eslint-disable no-fallthrough */
 
 import type { ReflectionKind } from 'typedoc';

@@ -38,7 +38,7 @@ export function Members({ reflection }: MembersProps) {
 									return null;
 								}
 
-								return <Member id={child} />;
+								return <Member key={child} id={child} />;
 							})}
 						</section>
 					);

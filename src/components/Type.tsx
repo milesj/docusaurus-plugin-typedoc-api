@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/type.hbs
 
@@ -179,7 +180,7 @@ export function Type({ needsParens, type: base }: TypeProps) {
 			value = (
 				<>
 					{ref?.permalink ? (
-						<Link to={ref.permalink} className="tsd-signature-type" data-tsd-kind={ref.kindString}>
+						<Link className="tsd-signature-type" data-tsd-kind={ref.kindString} to={ref.permalink}>
 							{type.name}
 						</Link>
 					) : (

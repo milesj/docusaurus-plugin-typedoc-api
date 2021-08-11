@@ -29,7 +29,7 @@ export function MemberGetterSetter({
 							<Icon reflection={getter} />
 							<span className="tsd-signature-symbol">get </span>
 							{getter.name}
-							<MemberSignatureTitle sig={getter} hideName />
+							<MemberSignatureTitle hideName sig={getter} />
 						</li>
 					)}
 
@@ -38,7 +38,7 @@ export function MemberGetterSetter({
 							<Icon reflection={setter} />
 							<span className="tsd-signature-symbol">set </span>
 							{setter.name}
-							<MemberSignatureTitle sig={setter} hideName />
+							<MemberSignatureTitle hideName sig={setter} />
 						</li>
 					)}
 				</ul>

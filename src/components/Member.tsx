@@ -23,17 +23,16 @@ export function Member({ id }: MemberProps) {
 	let content: React.ReactNode = null;
 
 	if (reflection.signatures) {
-		content = <MemberSignatures sigs={reflection.signatures} inPanel />;
+		content = <MemberSignatures inPanel sigs={reflection.signatures} />;
 	} else if (reflection.getSignature || reflection.setSignature) {
 		content = (
 			<MemberGetterSetter
+				inPanel
 				getter={reflection.getSignature}
 				setter={reflection.setSignature}
-				inPanel
 			/>
 		);
 	} else if (String(reflection.type) === 'reference') {
-		console.debug('WHAT TO DO HERE?');
 		content = null; // <MemberReference ref={reflection} />;
 	} else {
 		content = <MemberDeclaration id={id} />;

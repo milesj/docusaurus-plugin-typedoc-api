@@ -111,7 +111,7 @@ export function Reflection({ reflection }: ReflectionProps) {
 							<Icon reflection={reflection.indexSignature} />
 							<span className="tsd-signature-symbol">[</span>
 							{reflection.indexSignature.parameters?.map((param) => (
-								<span>
+								<span key={param.id}>
 									{param.name}
 									{': '}
 									<Type type={param.type} />

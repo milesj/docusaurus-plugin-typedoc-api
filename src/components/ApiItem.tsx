@@ -53,12 +53,26 @@ export default function ApiItem({ content, readme: Readme }: ApiItemProps) {
 	const renderTocDesktop = canRenderTOC && (windowSize === 'desktop' || windowSize === 'ssr');
 
 	// Enable once we support versioning
-	const versionMetadata = { banner: 'none', label: '' };
 	const showVersionBadge = false;
+	const versionMetadata = useMemo(() => ({ banner: 'none', label: '' }), []);
+
+	const pagingMetadata = useMemo(
+		() => ({
+			next: nextItem && {
+				permalink: nextItem.permalink,
+				title: nextItem.name,
+			},
+			previous: prevItem && {
+				permalink: prevItem.permalink,
+				title: prevItem.name,
+			},
+		}),
+		[nextItem, prevItem],
+	);
 
 	return (
 		<>
-			<Seo title={content.name} description={item.comment?.shortText ?? item.comment?.text} />
+			<Seo description={item.comment?.shortText ?? item.comment?.text} title={content.name} />
 
 			<div className="row">
 				<div className={`col ${styles.docItemCol}`}>
@@ -88,18 +102,7 @@ export default function ApiItem({ content, readme: Readme }: ApiItemProps) {
 							</div>
 						</article>
 
-						<DocPaginator
-							metadata={{
-								next: nextItem && {
-									permalink: nextItem.permalink,
-									title: nextItem.name,
-								},
-								previous: prevItem && {
-									permalink: prevItem.permalink,
-									title: prevItem.name,
-								},
-							}}
-						/>
+						<DocPaginator metadata={pagingMetadata} />
 					</div>
 				</div>
 
