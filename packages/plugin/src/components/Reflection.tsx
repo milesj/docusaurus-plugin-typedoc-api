@@ -136,7 +136,16 @@ export function Reflection({ reflection }: ReflectionProps) {
 			)}
 
 			<Index reflection={reflection} />
+
 			<Members reflection={reflection} />
+
+			<footer className="tsd-footer">
+				Powered by{' '}
+				<a href="https://github.com/milesj/docusaurus-plugin-typedoc-api">
+					docusaurus-plugin-typedoc-api
+				</a>{' '}
+				and <a href="https://typedoc.org/">TypeDoc</a>.
+			</footer>
 		</>
 	);
 }
