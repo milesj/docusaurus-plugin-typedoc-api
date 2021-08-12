@@ -116,34 +116,32 @@ export default function typedocApiPlugin(
 				};
 			}
 
-			async function createDeclarationRoutes(pkg: JSONOutput.ProjectReflection) {
-				// Map a route for every declaration in the package (the exported APIs)
-				const routes = await Promise.all(
-					pkg.children ? pkg.children.map(async (decl) => createRoute(decl)) : [],
-				);
-
-				// Map a top-level package route, otherwise `DocPage` shows a page not found
-				routes.push(await createRoute(pkg));
-
-				return routes.sort((a, b) => a.path.localeCompare(b.path));
-			}
+			const routes: RouteConfig[] = [];
 
 			await Promise.all(
 				apiPackages.map(async (pkg) => {
-					const pkgData = await createData(`package-${pkg.name}.json`, JSON.stringify(pkg));
+					// Map a route for every declaration in the package (the exported APIs)
+					const pkgRoutes = await Promise.all(
+						pkg.children ? pkg.children.map(async (decl) => createRoute(decl)) : [],
+					);
 
-					addRoute({
-						path: pkg.permalink,
-						exact: false,
-						component: path.join(__dirname, './components/ApiPage.js'),
-						routes: await createDeclarationRoutes(pkg),
-						modules: {
-							data: pkgData,
-							versionMetadata: versionMetadataData,
-						},
-					});
+					// Map a top-level package route, otherwise `DocPage` shows a page not found
+					pkgRoutes.push(await createRoute(pkg));
+
+					routes.push(...pkgRoutes);
 				}),
 			);
+
+			addRoute({
+				path: '/api',
+				exact: false,
+				component: path.join(__dirname, './components/ApiPage.js'),
+				routes,
+				modules: {
+					packages: await createData('packages.json', JSON.stringify(apiPackages)),
+					versionMetadata: versionMetadataData,
+				},
+			});
 		},
 
 		configureWebpack(config, isServer, utils) {

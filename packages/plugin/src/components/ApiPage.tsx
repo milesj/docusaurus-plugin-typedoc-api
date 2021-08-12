@@ -7,6 +7,7 @@ import { JSONOutput } from 'typedoc';
 import DocPage, { Props as DocPageProps } from '@theme/DocPage';
 import { DeclarationReflectionMap } from '../types';
 import { ApiDataContext } from './ApiDataContext';
+import ApiIndex from './ApiIndex';
 
 function isObject(value: unknown): value is JSONOutput.Reflection {
 	return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -43,12 +44,33 @@ function deepMapReflections(
 	return map;
 }
 
-export interface ApiPageProps extends DocPageProps {
-	data: JSONOutput.ProjectReflection;
+function mapPackagesToReflection(
+	packages: JSONOutput.ProjectReflection[],
+): DeclarationReflectionMap {
+	const map: DeclarationReflectionMap = {};
+
+	packages.forEach((pkg) => {
+		deepMapReflections(pkg, map);
+	});
+
+	return map;
 }
 
-function ApiPage({ data, ...props }: ApiPageProps) {
-	const value = useMemo(() => deepMapReflections(data, {}), [data]);
+export interface ApiPageProps extends DocPageProps {
+	packages: JSONOutput.ProjectReflection[];
+}
+
+function ApiPage({ packages, ...props }: ApiPageProps) {
+	const value = useMemo(() => mapPackagesToReflection(packages), [packages]);
+
+	// Define an index here instead of the plugin
+	props.route.routes.push({
+		// eslint-disable-next-line react/no-unstable-nested-components
+		component: () => <ApiIndex packages={packages} />,
+		exact: true,
+		path: '/api',
+		sidebar: 'api',
+	});
 
 	return (
 		<ApiDataContext.Provider value={value}>

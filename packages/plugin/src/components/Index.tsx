@@ -34,7 +34,7 @@ export function Index({ reflection }: IndexProps) {
 					Index <Anchor id="Index" />
 				</h2>
 
-				<section className="tsd-index-panel">
+				<section className="tsd-panel tsd-index-panel">
 					<div className="tsd-index-content">
 						{reflection.categories.map((category) => (
 							<section key={category.title} className="tsd-index-section">

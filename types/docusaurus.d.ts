@@ -2,8 +2,6 @@
 
 /// <reference path="../node_modules/@docusaurus/theme-classic/src/types.d.ts" />
 
-declare module '*.css';
-
 declare module '@docusaurus/useDocusaurusContext' {
 	import { DocusaurusContext } from '@docusaurus/types';
 

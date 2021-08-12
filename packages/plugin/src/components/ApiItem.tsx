@@ -5,7 +5,6 @@
 import React, { useMemo } from 'react';
 import type { JSONOutput } from 'typedoc';
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs-types';
-import styles from '@docusaurus/theme-classic/lib/theme/DocItem/styles.module.css';
 import { TOCItem } from '@docusaurus/types';
 import DocPaginator from '@theme/DocPaginator';
 import DocVersionBanner from '@theme/DocVersionBanner';
@@ -13,7 +12,7 @@ import { MainHeading } from '@theme/Heading';
 import useWindowSize from '@theme/hooks/useWindowSize';
 import Seo from '@theme/Seo';
 import TOC from '@theme/TOC';
-// import TOCCollapsible from '@theme/TOCCollapsible';
+import TOCCollapsible from '@theme/TOCCollapsible';
 import { useReflection } from '../hooks/useReflection';
 import { ApiMetadata } from '../types';
 import { getKindIconHtml } from '../utils/icons';
@@ -26,11 +25,13 @@ function extractTOC(item: JSONOutput.DeclarationReflection): TOCItem[] {
 	item.children?.forEach((child) => {
 		const iconHtml = getKindIconHtml(child.kind, child.name);
 
-		toc.push({
-			children: [],
-			id: child.name,
-			value: iconHtml ? `${iconHtml} ${child.name}` : child.name,
-		});
+		if (!child.permalink || child.permalink.includes('#')) {
+			toc.push({
+				children: [],
+				id: child.name,
+				value: iconHtml ? `${iconHtml} ${child.name}` : child.name,
+			});
+		}
 	});
 
 	return toc;
@@ -41,6 +42,7 @@ export interface ApiItemProps {
 	readme?: React.ComponentType;
 }
 
+// eslint-disable-next-line complexity
 export default function ApiItem({ content, readme: Readme }: ApiItemProps) {
 	const item = useReflection(content.id)!;
 	const prevItem = useReflection(content.previousId);
@@ -50,9 +52,8 @@ export default function ApiItem({ content, readme: Readme }: ApiItemProps) {
 	// Table of contents
 	const toc = useMemo(() => extractTOC(item), [item]);
 	const canRenderTOC = toc.length > 0;
-	// const renderTocMobile = canRenderTOC && (windowSize === 'mobile' || windowSize === 'ssr');
-	// const renderTocDesktop = canRenderTOC && (windowSize === 'desktop' || windowSize === 'ssr');
-	const renderTocDesktop = canRenderTOC && windowSize === 'desktop';
+	const renderTocMobile = canRenderTOC && (windowSize === 'mobile' || windowSize === 'ssr');
+	const renderTocDesktop = canRenderTOC && (windowSize === 'desktop' || windowSize === 'ssr');
 
 	// Enable once we support versioning
 	const showVersionBadge = false;
@@ -92,16 +93,16 @@ export default function ApiItem({ content, readme: Readme }: ApiItemProps) {
 			<Seo description={item.comment?.shortText ?? item.comment?.text} title={content.name} />
 
 			<div className="row">
-				<div className={`col ${styles.docItemCol}`}>
+				<div className="col apiItemCol">
 					<DocVersionBanner versionMetadata={versionMetadata} />
 
-					<div className={styles.docItemContainer}>
+					<div className="apiItemContainer">
 						<article>
 							{showVersionBadge && (
 								<span className="badge badge--secondary">Version: {versionMetadata.label}</span>
 							)}
 
-							{/* renderTocMobile && <TOCCollapsible toc={toc} className={styles.tocMobile} /> */}
+							{renderTocMobile && <TOCCollapsible className="apiTocMobile" toc={toc} />}
 
 							<div className="markdown">
 								<MainHeading>

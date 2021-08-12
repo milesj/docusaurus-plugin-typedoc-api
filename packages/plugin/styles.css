@@ -194,3 +194,19 @@ html[data-theme='light'] .tsd-panel-content {
 .codicon {
 	vertical-align: middle;
 }
+
+/*
+	This is copied from Docusaurus:
+	https://github.com/facebook/docusaurus/blob/master/packages/docusaurus-theme-classic/src/theme/DocItem/styles.module.css#L19
+*/
+
+@media only screen and (min-width: 997px) {
+	.apiItemCol {
+		max-width: 75% !important;
+	}
+
+	/* Prevent hydration FOUC, as the mobile TOC needs to be server-rendered */
+	.apiTocMobile {
+		display: none;
+	}
+}
