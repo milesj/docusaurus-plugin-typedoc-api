@@ -166,6 +166,9 @@ export default function typedocApiPlugin(
 										isMDXPartial: () => true,
 									},
 								},
+								{
+									loader: path.resolve(__dirname, './markdownLoader.js'),
+								},
 							],
 						},
 					],
