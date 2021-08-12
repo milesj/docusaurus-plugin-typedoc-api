@@ -28,6 +28,7 @@ export default function typedocApiPlugin(
 	}: DocusaurusPluginTypedocApiOptions,
 ): Plugin<JSONOutput.ProjectReflection> {
 	const pluginId = options.id ?? 'default';
+	const apiPackages: JSONOutput.ProjectReflection[] = [];
 
 	return {
 		name: 'docusaurus-plugin-typedoc-api',
@@ -71,7 +72,8 @@ export default function typedocApiPlugin(
 			}
 
 			const { createData, addRoute } = actions;
-			const apiPackages = await addMetadataToPackages(projectRoot, content);
+
+			apiPackages.push(...(await addMetadataToPackages(projectRoot, content)));
 
 			// Define version metadata for all pages. We need to use the same structure as
 			// "docs" so that we can utilize the same React components.
@@ -149,12 +151,18 @@ export default function typedocApiPlugin(
 				return {};
 			}
 
+			// Whitelist the folders that this webpack rule applies to,
+			// otherwise we collide with the native docs/blog plugins.
+			const include = apiPackages
+				.filter((pkg) => !!pkg.readmePath)
+				.map((pkg) => `${path.dirname(pkg.readmePath!)}/`);
+
 			return {
 				module: {
 					rules: [
 						{
 							test: /\.mdx?$/,
-							include: `${projectRoot}/`,
+							include,
 							use: [
 								utils.getJSLoader({ isServer }),
 								{
