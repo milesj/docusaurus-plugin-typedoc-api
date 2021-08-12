@@ -10,14 +10,44 @@ A Docusaurus plugin for generating source code `/api/*` routes, powered by
 The plugin has been designed to _only_ document your public API (anything exported from a package's
 entry point), so any private, protected, or internal code will not be generated.
 
+## Requirements
+
+- `@docusaurus/core` >= 2.0.0-beta.4
+- `@docusaurus/preset-classic` >= 2.0.0-beta.4
+
 ## Installation
 
 ```
 yarn add --dev docusaurus-plugin-typedoc-api
 ```
 
-Add the plugin to your `plugins` list in your `docusaurus.config.js`. The `projectRoot` and
-`packageEntryPoints` options are required.
+Open your `docusaurus.config.js` and make the following changes:
+
+- Add a link to the API route under `themeConfig.navbar.items` and `themeConfig.footer.links` (if
+  you wish).
+
+```js
+module.exports = {
+	// ...
+	themeConfig: {
+		// ...
+		navbar: {
+			// ...
+			items: [
+				// ...
+				{
+					to: 'api',
+					label: 'API',
+					position: 'left',
+				},
+			],
+		},
+	},
+};
+```
+
+- Add the plugin to your `plugins` list in your `docusaurus.config.js`. The `projectRoot` and
+  `packageEntryPoints` options are required.
 
 ```js
 module.exports = {

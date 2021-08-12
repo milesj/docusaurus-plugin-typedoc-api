@@ -27,7 +27,11 @@ module.exports = {
 					position: 'left',
 					label: 'Tutorial',
 				},
-				{ to: '/api', label: 'API', position: 'left' },
+				{
+					to: 'api',
+					label: 'API',
+					position: 'left',
+				},
 				{
 					href: 'https://github.com/facebook/docusaurus',
 					label: 'GitHub',
