@@ -12,6 +12,11 @@ export interface ApiMetadata {
 	nextId?: number;
 }
 
+export interface ApiOptions {
+	minimal: boolean;
+	pluginId: string;
+}
+
 export type DeclarationReflectionMap = Record<number, JSONOutput.DeclarationReflection>;
 
 declare module 'typedoc/dist/lib/serialization/schema' {

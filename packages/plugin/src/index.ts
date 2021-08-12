@@ -13,6 +13,7 @@ export interface DocusaurusPluginTypedocApiOptions {
 	exclude?: string[];
 	id?: string;
 	includeReadmes?: boolean;
+	minimal?: boolean;
 	packageEntryPoints: string[];
 	projectRoot: string;
 }
@@ -22,6 +23,7 @@ export default function typedocApiPlugin(
 	{
 		exclude = [],
 		includeReadmes,
+		minimal,
 		packageEntryPoints,
 		projectRoot,
 		...options
@@ -134,12 +136,15 @@ export default function typedocApiPlugin(
 				}),
 			);
 
+			const optionsData = await createData('options.json', JSON.stringify({ minimal, pluginId }));
+
 			addRoute({
 				path: '/api',
 				exact: false,
 				component: path.join(__dirname, './components/ApiPage.js'),
 				routes,
 				modules: {
+					options: optionsData,
 					packages: await createData('packages.json', JSON.stringify(apiPackages)),
 					versionMetadata: versionMetadataData,
 				},

@@ -3,5 +3,5 @@ import { ApiDataContext } from '../components/ApiDataContext';
 import { DeclarationReflectionMap } from '../types';
 
 export function useReflectionMap(): DeclarationReflectionMap {
-	return useContext(ApiDataContext);
+	return useContext(ApiDataContext).reflections;
 }

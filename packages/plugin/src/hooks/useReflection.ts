@@ -3,14 +3,14 @@ import { JSONOutput } from 'typedoc';
 import { ApiDataContext } from '../components/ApiDataContext';
 
 export function useReflection<T = JSONOutput.DeclarationReflection>(id?: number): T | null {
-	const data = useContext(ApiDataContext);
+	const { reflections } = useContext(ApiDataContext);
 
 	if (!id) {
 		return null;
 	}
 
-	if (data[id]) {
-		return data[id] as unknown as T;
+	if (reflections[id]) {
+		return reflections[id] as unknown as T;
 	}
 
 	throw new Error(`Unable to find declaration with ID ${id}`);

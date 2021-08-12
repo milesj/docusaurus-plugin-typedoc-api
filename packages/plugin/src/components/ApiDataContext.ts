@@ -1,4 +1,10 @@
 import { createContext } from 'react';
-import { DeclarationReflectionMap } from '../types';
+import { ApiOptions, DeclarationReflectionMap } from '../types';
 
-export const ApiDataContext = createContext<DeclarationReflectionMap>({});
+export const ApiDataContext = createContext<{
+	options: ApiOptions;
+	reflections: DeclarationReflectionMap;
+}>({
+	options: { minimal: false, pluginId: 'default' },
+	reflections: {},
+});

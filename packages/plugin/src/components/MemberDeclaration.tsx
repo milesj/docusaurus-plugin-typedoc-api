@@ -1,6 +1,7 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.declaration.hbs
 
 import React from 'react';
+import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { useReflection } from '../hooks/useReflection';
 import { Comment } from './Comment';
 import { DefaultValue } from './DefaultValue';
@@ -17,6 +18,7 @@ export interface MemberDeclarationProps {
 
 export function MemberDeclaration({ id }: MemberDeclarationProps) {
 	const reflection = useReflection(id)!;
+	const minimal = useMinimalLayout();
 
 	return (
 		<>
@@ -43,7 +45,7 @@ export function MemberDeclaration({ id }: MemberDeclarationProps) {
 					</div>
 				)}
 
-				{reflection.type?.declaration && (
+				{!minimal && reflection.type?.declaration && (
 					<div className="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<Parameter param={reflection.type.declaration} />

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { JSONOutput } from 'typedoc';
+import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { Comment } from './Comment';
 import { DefaultValue } from './DefaultValue';
 import { Flags } from './Flags';
@@ -17,6 +18,8 @@ export interface MemberSignatureBodyProps {
 }
 
 export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyProps) {
+	const minimal = useMinimalLayout();
+
 	return (
 		<>
 			{!hideSources && <MemberSources reflection={sig} />}
@@ -30,7 +33,7 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 				</>
 			)}
 
-			{sig.parameters && (
+			{!minimal && sig.parameters && sig.parameters.length > 0 && (
 				<>
 					<h4 className="tsd-parameters-title">Parameters</h4>
 
@@ -56,7 +59,7 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 				</>
 			)}
 
-			{sig.type && (
+			{!minimal && sig.type && (
 				<>
 					<h4 className="tsd-returns-title">
 						Returns <Type type={sig.type} />

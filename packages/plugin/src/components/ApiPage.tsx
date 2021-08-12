@@ -5,7 +5,7 @@ import 'docusaurus-plugin-typedoc-api/styles.css';
 import React, { useMemo } from 'react';
 import { JSONOutput } from 'typedoc';
 import DocPage, { Props as DocPageProps } from '@theme/DocPage';
-import { DeclarationReflectionMap } from '../types';
+import { ApiOptions, DeclarationReflectionMap } from '../types';
 import { ApiDataContext } from './ApiDataContext';
 import ApiIndex from './ApiIndex';
 
@@ -57,11 +57,15 @@ function mapPackagesToReflection(
 }
 
 export interface ApiPageProps extends DocPageProps {
+	options: ApiOptions;
 	packages: JSONOutput.ProjectReflection[];
 }
 
-function ApiPage({ packages, ...props }: ApiPageProps) {
-	const value = useMemo(() => mapPackagesToReflection(packages), [packages]);
+function ApiPage({ options, packages, ...props }: ApiPageProps) {
+	const value = useMemo(
+		() => ({ options, reflections: mapPackagesToReflection(packages) }),
+		[options, packages],
+	);
 
 	// Define an index here instead of the plugin
 	props.route.routes.push({

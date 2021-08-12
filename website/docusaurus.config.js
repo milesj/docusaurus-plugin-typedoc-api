@@ -130,6 +130,7 @@ module.exports = {
 				].map((pkg) => `packages/${pkg}/src/index.ts`),
 				exclude: ['**/themes/*', '**/website/*'],
 				includeReadmes: false,
+				minimal: true,
 			},
 		],
 	],

@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { JSONOutput } from 'typedoc';
+import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { Comment } from './Comment';
 import { Flags } from './Flags';
 import { Icon } from './Icon';
@@ -104,7 +105,9 @@ function ParameterChild({ param }: ParameterProps) {
 }
 
 export function Parameter({ param }: ParameterProps) {
-	if (!param) {
+	const minimal = useMinimalLayout();
+
+	if (!param || minimal) {
 		return null;
 	}
 

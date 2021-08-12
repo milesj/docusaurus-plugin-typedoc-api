@@ -4,8 +4,8 @@
 
 import React, { useMemo } from 'react';
 import type { JSONOutput } from 'typedoc';
-import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs-types';
 import { TOCItem } from '@docusaurus/types';
+import type { Props as DocItemProps } from '@theme/DocItem';
 import DocPaginator from '@theme/DocPaginator';
 import DocVersionBanner from '@theme/DocVersionBanner';
 import { MainHeading } from '@theme/Heading';
@@ -37,13 +37,13 @@ function extractTOC(item: JSONOutput.DeclarationReflection): TOCItem[] {
 	return toc;
 }
 
-export interface ApiItemProps {
+export interface ApiItemProps extends Omit<DocItemProps, 'content'> {
 	content: ApiMetadata;
 	readme?: React.ComponentType;
 }
 
 // eslint-disable-next-line complexity
-export default function ApiItem({ content, readme: Readme }: ApiItemProps) {
+export default function ApiItem({ content, readme: Readme, versionMetadata }: ApiItemProps) {
 	const item = useReflection(content.id)!;
 	const prevItem = useReflection(content.previousId);
 	const nextItem = useReflection(content.nextId);
@@ -57,19 +57,6 @@ export default function ApiItem({ content, readme: Readme }: ApiItemProps) {
 
 	// Enable once we support versioning
 	const showVersionBadge = false;
-	const versionMetadata: PropVersionMetadata = useMemo(
-		() => ({
-			banner: 'none',
-			label: '',
-			pluginId: 'default',
-			version: 'current',
-			isLast: true,
-			docsSidebars: {},
-			permalinkToSidebar: {},
-		}),
-		[],
-	);
-
 	const pagingMetadata = useMemo(
 		() => ({
 			next: nextItem
