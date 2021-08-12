@@ -12,20 +12,20 @@ import { extractSidebar, extractSidebarPermalinks } from './plugin/sidebar';
 export interface DocusaurusPluginTypedocApiOptions {
 	exclude?: string[];
 	id?: string;
-	includeReadmes?: boolean;
 	minimal?: boolean;
 	packageEntryPoints: string[];
 	projectRoot: string;
+	readmes?: boolean;
 }
 
 export default function typedocApiPlugin(
 	context: LoadContext,
 	{
 		exclude = [],
-		includeReadmes,
 		minimal,
 		packageEntryPoints,
 		projectRoot,
+		readmes,
 		...options
 	}: DocusaurusPluginTypedocApiOptions,
 ): Plugin<JSONOutput.ProjectReflection> {
@@ -105,7 +105,7 @@ export default function typedocApiPlugin(
 					content: reflectionData,
 				};
 
-				if (includeReadmes && 'readmePath' in info) {
+				if (readmes && 'readmePath' in info) {
 					Object.assign(modules, {
 						readme: (info as JSONOutput.ProjectReflection).readmePath,
 					});
@@ -152,7 +152,7 @@ export default function typedocApiPlugin(
 		},
 
 		configureWebpack(config, isServer, utils) {
-			if (!includeReadmes) {
+			if (!readmes) {
 				return {};
 			}
 

@@ -76,5 +76,5 @@ The following options are available to the plugin:
   when using TypeScript project references.
 - `minimal` (`boolean`) - Render a minimal layout and reduce the amount of information displayed.
   Defaults to `false`.
-- `includeReadmes` (`boolean`) - Include and render the `README.md` file from every package.
-  Defaults to `false`.
+- `readmes` (`boolean`) - Include and render the `README.md` file from every package. Defaults to
+  `false`.
