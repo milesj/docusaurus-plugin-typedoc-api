@@ -10,13 +10,14 @@
     "format": "beemo prettier",
     "lint": "beemo eslint",
     "type": "beemo typescript --build",
-    "release": "yarn run pack && yarn run check && npx np --yolo"
+    "release": "yarn run pack && yarn run check && yarn beemo run-script lerna-release"
   },
   "devDependencies": {
     "@beemo/cli": "^2.0.1",
     "@beemo/core": "^2.0.1",
     "@beemo/dev": "^1.4.0",
     "@types/react": "^17.0.17",
+    "lerna": "^4.0.0",
     "packemon": "^1.3.0",
     "react": "^17.0.2"
   },
