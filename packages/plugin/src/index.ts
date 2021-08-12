@@ -120,10 +120,10 @@ export default function typedocApiPlugin(
 
 			await Promise.all(
 				apiPackages.map(async (pkg) => {
+					const children = pkg.children?.filter((child) => !child.permalink?.includes('#')) ?? [];
+
 					// Map a route for every declaration in the package (the exported APIs)
-					const pkgRoutes = await Promise.all(
-						pkg.children ? pkg.children.map(async (decl) => createRoute(decl)) : [],
-					);
+					const pkgRoutes = await Promise.all(children.map(async (child) => createRoute(child)));
 
 					// Map a top-level package route, otherwise `DocPage` shows a page not found
 					pkgRoutes.push(await createRoute(pkg));
