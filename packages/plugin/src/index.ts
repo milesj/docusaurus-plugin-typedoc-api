@@ -49,6 +49,7 @@ export default function typedocApiPlugin(
 
 			app.bootstrap({
 				tsconfig: path.join(projectRoot, 'tsconfig.json'),
+				emit: true,
 				entryPoints: packageEntryPoints.map((entry) => path.join(projectRoot, entry)),
 				exclude,
 				excludeExternals: true,

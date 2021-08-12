@@ -129,7 +129,7 @@ module.exports = {
 					'translate',
 				].map((pkg) => `packages/${pkg}/src/index.ts`),
 				exclude: ['**/themes/*', '**/website/*'],
-				minimal: true,
+				minimal: false,
 				readmes: false,
 			},
 		],

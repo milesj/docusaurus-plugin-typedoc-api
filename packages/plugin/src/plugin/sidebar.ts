@@ -7,30 +7,53 @@ export function groupSidebarItems(
 	groups: JSONOutput.ReflectionGroup[],
 ): SidebarItem[] {
 	const items: SidebarItem[] = [];
+	const sortedGroups = groups.sort((a, b) => a.title.localeCompare(b.title));
 
-	groups
-		.sort((a, b) => a.title.localeCompare(b.title))
-		.forEach((group, index) => {
-			if (!group.children || group.children.length === 0) {
-				return;
-			}
+	function getLastItemInGroup(index: number) {
+		const length = sortedGroups[index]?.children?.length;
 
-			items.push({
-				collapsed: index > 0,
-				collapsible: true,
-				items: group.children.map((id) => {
-					const child = map[id];
+		return length ? length - 1 : undefined;
+	}
 
-					return {
-						href: child.permalink,
-						label: child.name,
-						type: 'link',
-					};
-				}),
-				label: group.title,
-				type: 'category',
-			});
+	sortedGroups.forEach((group, groupIndex) => {
+		const { children } = group;
+
+		if (!children || children.length === 0) {
+			return;
+		}
+
+		items.push({
+			collapsed: true,
+			collapsible: true,
+			items: children.map((id, index) => {
+				const child = map[id];
+
+				// We map previous/next from here since the sidebar is grouped by type,
+				// and we only want to link based on this order.
+				const previousId = index === 0 ? getLastItemInGroup(groupIndex - 1) : children[index - 1];
+				const nextId =
+					index === children.length - 1
+						? groups[groupIndex + 1]?.children?.[0]
+						: children[index + 1];
+
+				if (previousId) {
+					child.previousId = previousId;
+				}
+
+				if (nextId) {
+					child.nextId = nextId;
+				}
+
+				return {
+					href: child.permalink,
+					label: child.name,
+					type: 'link',
+				};
+			}),
+			label: group.title,
+			type: 'category',
 		});
+	});
 
 	return items;
 }

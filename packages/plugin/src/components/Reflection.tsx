@@ -144,7 +144,7 @@ export function Reflection({ reflection }: ReflectionProps) {
 				<a href="https://github.com/milesj/docusaurus-plugin-typedoc-api">
 					docusaurus-plugin-typedoc-api
 				</a>{' '}
-				and <a href="https://typedoc.org/">TypeDoc</a>.
+				and <a href="https://typedoc.org/">TypeDoc</a>
 			</footer>
 		</>
 	);
