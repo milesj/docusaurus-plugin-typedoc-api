@@ -13,6 +13,7 @@ export interface MemberSignaturesProps {
 
 export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
 	const [activeIndex, setActiveIndex] = useState(0);
+	const hasMultiple = sigs.length > 1;
 	const body = sigs[activeIndex];
 
 	return (
@@ -23,16 +24,20 @@ export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
 						<li
 							key={sig.id}
 							className={`tsd-signature tsd-pressable tsd-kind-icon ${
-								i !== activeIndex && 'tsd-signature-inactive'
+								i !== activeIndex && hasMultiple && 'tsd-signature-inactive'
 							}`}
 						>
 							<div
 								role="button"
 								tabIndex={-1}
-								// eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
-								onKeyDown={() => {
-									setActiveIndex(i);
-								}}
+								onKeyDown={
+									hasMultiple
+										? // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
+										  () => {
+												setActiveIndex(i);
+										  }
+										: undefined
+								}
 							>
 								<Icon reflection={sig} />
 								<MemberSignatureTitle sig={sig} />
