@@ -5,6 +5,11 @@ import { JSONOutput } from 'typedoc';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { TypeAndParent } from './TypeAndParent';
 
+function replaceWithSrc(url: string): string {
+	// Always link the source file
+	return url.replace(/\/(dts|dist|lib|build|esm|mjs|cjs)\//, '/src/');
+}
+
 export interface MemberSourcesProps {
 	reflection: JSONOutput.DeclarationReflection;
 }
@@ -47,7 +52,9 @@ export function MemberSources({ reflection }: MemberSourcesProps) {
 						<li key={source.fileName}>
 							Defined in{' '}
 							<a
-								href={`https://github.com/${siteConfig.organizationName}/${siteConfig.projectName}/blob/master/${source.fileName}#L${source.line}`}
+								href={`https://github.com/${siteConfig.organizationName}/${
+									siteConfig.projectName
+								}/blob/master/${replaceWithSrc(source.fileName)}#L${source.line}`}
 								rel="noreferrer"
 								target="_blank"
 							>
