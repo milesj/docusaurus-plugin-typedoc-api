@@ -13,6 +13,7 @@ export interface MemberSignaturesProps {
 
 export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
 	const [activeIndex, setActiveIndex] = useState(0);
+	const body = sigs[activeIndex];
 
 	return (
 		<>
@@ -41,13 +42,15 @@ export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
 				</ul>
 			</div>
 
-			<div className={inPanel ? 'tsd-panel-content' : ''}>
-				<ul className="tsd-descriptions">
-					<li key={sigs[activeIndex].id} className="tsd-description">
-						<MemberSignatureBody sig={sigs[activeIndex]} />
-					</li>
-				</ul>
-			</div>
+			{!!body && (
+				<div className={inPanel ? 'tsd-panel-content' : ''}>
+					<ul className="tsd-descriptions">
+						<li key={body.id} className="tsd-description">
+							<MemberSignatureBody sig={body} />
+						</li>
+					</ul>
+				</div>
+			)}
 		</>
 	);
 }

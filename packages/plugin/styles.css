@@ -117,6 +117,11 @@ html[data-theme='light'] .tsd-panel-content {
 	margin-bottom: 0;
 }
 
+.tsd-typography {
+	margin-top: 0;
+	margin-bottom: var(--tsd-spacing-vertical-full);
+}
+
 /* SOURCES */
 
 .tsd-sources,

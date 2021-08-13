@@ -28,13 +28,7 @@ export function Reflection({ reflection }: ReflectionProps) {
 
 	return (
 		<>
-			{hasComment(reflection.comment) && (
-				<section className="tsd-panel">
-					<div className="tsd-panel-content">
-						<Comment comment={reflection.comment} />
-					</div>
-				</section>
-			)}
+			{hasComment(reflection.comment) && <Comment comment={reflection.comment} />}
 
 			{'typeParameter' in reflection &&
 				reflection.typeParameter &&

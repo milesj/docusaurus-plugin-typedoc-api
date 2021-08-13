@@ -20,6 +20,10 @@ export function MemberGetterSetter({
 	const [getter] = baseGetter ?? [];
 	const [setter] = baseSetter ?? [];
 
+	if (!getter && !setter) {
+		return null;
+	}
+
 	return (
 		<>
 			<div className={inPanel ? 'tsd-panel-content' : ''}>
