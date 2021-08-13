@@ -29,6 +29,10 @@
 	border-bottom: 1px solid var(--ifm-card-background-color);
 }
 
+.tsd-panel-content:empty {
+	display: none;
+}
+
 .tsd-panel-content:last-child {
 	border-bottom: 0;
 }
@@ -43,6 +47,7 @@
 }
 
 .tsd-panel-header .tsd-anchor {
+	margin-left: 0.5rem;
 	float: right;
 }
 
@@ -100,7 +105,10 @@ html[data-theme='light'] .tsd-panel-content {
 
 /* SPACING */
 
-.tsd-parameters h5 {
+.tsd-parameters h5,
+.tsd-type-parameters-title,
+.tsd-parameters-title,
+.tsd-returns-title {
 	margin: 0;
 }
 
@@ -109,15 +117,12 @@ html[data-theme='light'] .tsd-panel-content {
 .tsd-descriptions,
 .tsd-type-declaration,
 .tsd-type-parameters,
-.tsd-type-parameters-title,
-.tsd-parameters,
-.tsd-parameters-title,
-.tsd-returns-title {
+.tsd-parameters {
 	margin-top: var(--tsd-spacing-vertical);
 	margin-bottom: 0;
 }
 
-.tsd-typography {
+.tsd-comment-root {
 	margin-top: 0;
 	margin-bottom: var(--tsd-spacing-vertical-full);
 }

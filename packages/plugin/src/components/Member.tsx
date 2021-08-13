@@ -4,12 +4,13 @@ import React from 'react';
 import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { hasOwnDocument } from '../utils/visibility';
-import { Anchor } from './Anchor';
+import { AnchorLink } from './AnchorLink';
 import { Flags } from './Flags';
 import { MemberDeclaration } from './MemberDeclaration';
 import { MemberGetterSetter } from './MemberGetterSetter';
 // import { MemberReference } from './MemberReference';
 import { MemberSignatures } from './MemberSignatures';
+import { SourceLink } from './SourceLink';
 
 export interface MemberProps {
 	id: number;
@@ -41,7 +42,8 @@ export function Member({ id }: MemberProps) {
 	return (
 		<section className="tsd-panel tsd-member">
 			<h3 className="tsd-panel-header">
-				<Anchor id={reflection.name} />
+				<AnchorLink id={reflection.name} />
+				<SourceLink sources={reflection.sources} />
 				<Flags flags={reflection.flags} />
 				{reflection.name}
 			</h3>

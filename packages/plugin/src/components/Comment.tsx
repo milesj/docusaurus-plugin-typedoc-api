@@ -6,6 +6,7 @@ import { Markdown } from './Markdown';
 
 export interface CommentProps {
 	comment?: JSONOutput.Comment;
+	root?: boolean;
 }
 
 export function hasComment(comment?: JSONOutput.Comment): boolean {
@@ -16,13 +17,13 @@ export function hasComment(comment?: JSONOutput.Comment): boolean {
 	return Boolean(comment.text || comment.shortText || (comment.tags && comment.tags?.length > 0));
 }
 
-export function Comment({ comment }: CommentProps) {
+export function Comment({ comment, root }: CommentProps) {
 	if (!comment || !hasComment(comment)) {
 		return null;
 	}
 
 	return (
-		<div className="tsd-comment tsd-typography">
+		<div className={`tsd-comment tsd-typography ${root && 'tsd-comment-root'}`}>
 			{!!comment.shortText && (
 				<div className="lead">
 					<Markdown content={comment.shortText} />

@@ -2,7 +2,7 @@ import React from 'react';
 import { JSONOutput } from 'typedoc';
 import Link from '@docusaurus/Link';
 import { useReflection } from '../hooks/useReflection';
-import { Anchor } from './Anchor';
+import { AnchorLink } from './AnchorLink';
 import { Icon } from './Icon';
 
 export interface IndexChildProps {
@@ -31,7 +31,7 @@ export function Index({ reflection }: IndexProps) {
 		return (
 			<section className="tsd-panel-group tsd-index-group">
 				<h2>
-					Index <Anchor id="Index" />
+					Index <AnchorLink id="Index" />
 				</h2>
 
 				<section className="tsd-panel tsd-index-panel">
@@ -58,7 +58,7 @@ export function Index({ reflection }: IndexProps) {
 		return (
 			<section className="tsd-panel-group tsd-index-group">
 				<h2>
-					Index <Anchor id="Index" />
+					Index <AnchorLink id="Index" />
 				</h2>
 
 				<section className="tsd-panel tsd-index-panel">

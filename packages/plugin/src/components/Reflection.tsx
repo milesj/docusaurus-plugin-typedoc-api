@@ -28,7 +28,7 @@ export function Reflection({ reflection }: ReflectionProps) {
 
 	return (
 		<>
-			{hasComment(reflection.comment) && <Comment comment={reflection.comment} />}
+			{hasComment(reflection.comment) && <Comment root comment={reflection.comment} />}
 
 			{'typeParameter' in reflection &&
 				reflection.typeParameter &&

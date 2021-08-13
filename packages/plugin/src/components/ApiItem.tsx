@@ -25,10 +25,16 @@ function extractTOC(
 	map: DeclarationReflectionMap,
 ): TOCItem[] {
 	const toc: TOCItem[] = [];
+	const mapped = new Set<string>();
 
 	item.groups?.forEach((group) => {
 		group.children?.forEach((childId) => {
 			const child = map[childId]!;
+
+			if (mapped.has(child.name)) {
+				return;
+			}
+
 			const iconHtml = getKindIconHtml(child.kind, child.name);
 
 			if (!child.permalink || child.permalink.includes('#')) {
@@ -37,6 +43,8 @@ function extractTOC(
 					id: child.name,
 					value: iconHtml ? `${iconHtml} ${child.name}` : child.name,
 				});
+
+				mapped.add(child.name);
 			}
 		});
 	});
@@ -56,6 +64,7 @@ export default function ApiItem({ content, readme: Readme, versionMetadata }: Ap
 	const nextItem = useReflection(content.nextId);
 	const reflections = useReflectionMap();
 	const windowSize = useWindowSize();
+	const title = (item as JSONOutput.ProjectReflection).packageName ?? item.name ?? content.name;
 
 	// Table of contents
 	const toc = useMemo(() => extractTOC(item, reflections), [item, reflections]);
@@ -85,7 +94,7 @@ export default function ApiItem({ content, readme: Readme, versionMetadata }: Ap
 
 	return (
 		<>
-			<Seo description={item.comment?.shortText ?? item.comment?.text} title={content.name} />
+			<Seo description={item.comment?.shortText ?? item.comment?.text} title={`${title} | API`} />
 
 			<div className="row">
 				<div className="col apiItemCol">
@@ -101,8 +110,7 @@ export default function ApiItem({ content, readme: Readme, versionMetadata }: Ap
 
 							<div className="markdown">
 								<MainHeading>
-									{(item as JSONOutput.ProjectReflection).packageName ?? item.name ?? content.name}
-									<TypeParametersGeneric params={item.typeParameter} />
+									{title} <TypeParametersGeneric params={item.typeParameter} />
 								</MainHeading>
 
 								{Readme && (

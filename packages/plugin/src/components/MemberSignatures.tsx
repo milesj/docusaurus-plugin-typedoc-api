@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.signatures.hbs
 
 import React, { useState } from 'react';
@@ -23,25 +25,20 @@ export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
 					{sigs.map((sig, i) => (
 						<li
 							key={sig.id}
-							className={`tsd-signature tsd-pressable tsd-kind-icon ${
-								i !== activeIndex && hasMultiple && 'tsd-signature-inactive'
-							}`}
+							className={`tsd-signature tsd-kind-icon ${
+								i !== activeIndex && 'tsd-signature-inactive'
+							} ${hasMultiple && 'tsd-pressable'}`}
+							onClick={
+								hasMultiple
+									? // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
+									  () => {
+											setActiveIndex(i);
+									  }
+									: undefined
+							}
 						>
-							<div
-								role="button"
-								tabIndex={-1}
-								onKeyDown={
-									hasMultiple
-										? // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
-										  () => {
-												setActiveIndex(i);
-										  }
-										: undefined
-								}
-							>
-								<Icon reflection={sig} />
-								<MemberSignatureTitle sig={sig} />
-							</div>
+							<Icon reflection={sig} />
+							<MemberSignatureTitle sig={sig} />
 						</li>
 					))}
 				</ul>

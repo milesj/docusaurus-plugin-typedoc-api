@@ -4,7 +4,7 @@ import React from 'react';
 import { JSONOutput } from 'typedoc';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { hasOwnDocument } from '../utils/visibility';
-import { Anchor } from './Anchor';
+import { AnchorLink } from './AnchorLink';
 import { Member } from './Member';
 
 export interface MembersGroupProps {
@@ -20,7 +20,7 @@ export function MembersGroup({ group }: MembersGroupProps) {
 				{group.categories.map((category) => (
 					<section key={category.title} className="tsd-panel-group tsd-member-group">
 						<h2>
-							{category.title} <Anchor id={category.title} />
+							{category.title} <AnchorLink id={category.title} />
 						</h2>
 
 						{category.children?.map((child) =>
@@ -35,7 +35,7 @@ export function MembersGroup({ group }: MembersGroupProps) {
 	return (
 		<section className="tsd-panel-group tsd-member-group">
 			<h2>
-				{group.title} <Anchor id={group.title} />
+				{group.title} <AnchorLink id={group.title} />
 			</h2>
 
 			{group.children?.map((child) =>
