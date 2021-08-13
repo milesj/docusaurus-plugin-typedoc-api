@@ -14,24 +14,31 @@ import Seo from '@theme/Seo';
 import TOC from '@theme/TOC';
 import TOCCollapsible from '@theme/TOCCollapsible';
 import { useReflection } from '../hooks/useReflection';
-import { ApiMetadata } from '../types';
+import { useReflectionMap } from '../hooks/useReflectionMap';
+import { ApiMetadata, DeclarationReflectionMap } from '../types';
 import { getKindIconHtml } from '../utils/icons';
 import { Reflection } from './Reflection';
 import { TypeParametersGeneric } from './TypeParametersGeneric';
 
-function extractTOC(item: JSONOutput.DeclarationReflection): TOCItem[] {
+function extractTOC(
+	item: JSONOutput.DeclarationReflection,
+	map: DeclarationReflectionMap,
+): TOCItem[] {
 	const toc: TOCItem[] = [];
 
-	item.children?.forEach((child) => {
-		const iconHtml = getKindIconHtml(child.kind, child.name);
+	item.groups?.forEach((group) => {
+		group.children?.forEach((childId) => {
+			const child = map[childId]!;
+			const iconHtml = getKindIconHtml(child.kind, child.name);
 
-		if (!child.permalink || child.permalink.includes('#')) {
-			toc.push({
-				children: [],
-				id: child.name,
-				value: iconHtml ? `${iconHtml} ${child.name}` : child.name,
-			});
-		}
+			if (!child.permalink || child.permalink.includes('#')) {
+				toc.push({
+					children: [],
+					id: child.name,
+					value: iconHtml ? `${iconHtml} ${child.name}` : child.name,
+				});
+			}
+		});
 	});
 
 	return toc;
@@ -47,10 +54,11 @@ export default function ApiItem({ content, readme: Readme, versionMetadata }: Ap
 	const item = useReflection(content.id)!;
 	const prevItem = useReflection(content.previousId);
 	const nextItem = useReflection(content.nextId);
+	const reflections = useReflectionMap();
 	const windowSize = useWindowSize();
 
 	// Table of contents
-	const toc = useMemo(() => extractTOC(item), [item]);
+	const toc = useMemo(() => extractTOC(item, reflections), [item, reflections]);
 	const canRenderTOC = toc.length > 0;
 	const renderTocMobile = canRenderTOC && (windowSize === 'mobile' || windowSize === 'ssr');
 	const renderTocDesktop = canRenderTOC && (windowSize === 'desktop' || windowSize === 'ssr');
