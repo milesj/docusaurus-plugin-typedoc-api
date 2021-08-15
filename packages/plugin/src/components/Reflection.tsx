@@ -65,8 +65,8 @@ export function Reflection({ reflection }: ReflectionProps) {
 
 						<div className="tsd-panel-content">
 							<ul className="tsd-hierarchy">
-								{reflection.implementedTypes.map((type) => (
-									<li key={type.type}>
+								{reflection.implementedTypes.map((type, i) => (
+									<li key={type.type + String(i)}>
 										<Type type={type} />
 									</li>
 								))}
@@ -83,8 +83,8 @@ export function Reflection({ reflection }: ReflectionProps) {
 
 						<div className="tsd-panel-content">
 							<ul className="tsd-hierarchy">
-								{reflection.implementedBy.map((type) => (
-									<li key={type.name}>
+								{reflection.implementedBy.map((type, i) => (
+									<li key={type.name + String(i)}>
 										<Type type={type} />
 									</li>
 								))}

@@ -49,7 +49,6 @@ export default function typedocApiPlugin(
 
 			app.bootstrap({
 				tsconfig: path.join(projectRoot, 'tsconfig.json'),
-				defaultCategory: 'Members',
 				emit: true,
 				entryPoints: packageEntryPoints.map((entry) => path.join(projectRoot, entry)),
 				exclude,
@@ -57,6 +56,8 @@ export default function typedocApiPlugin(
 				excludeInternal: true,
 				excludePrivate: true,
 				excludeProtected: true,
+				// We use an empty string so that we can fallback to the parent group
+				defaultCategory: '',
 			});
 
 			const project = app.convert();

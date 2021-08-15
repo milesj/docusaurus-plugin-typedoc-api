@@ -14,7 +14,7 @@ export function Hierarchy({ tree }: HierarchyProps) {
 	return (
 		<ul className="tsd-hierarchy">
 			{tree.types.map((type, i) => (
-				<li key={i}>
+				<li key={type.type + String(i)}>
 					{tree.isTarget ? (
 						<em className="tsd-target">
 							{type.type === 'reference' ? (type as JSONOutput.ReferenceType).name : 'UNKNOWN'}

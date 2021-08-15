@@ -39,6 +39,7 @@ export function Index({ reflection }: IndexProps) {
 						{reflection.categories.map((category) => (
 							<section key={category.title} className="tsd-index-section">
 								<h3 className="tsd-panel-header">{category.title}</h3>
+
 								<div className="tsd-panel-content">
 									<ul className="tsd-index-list">
 										{category.children?.map((child) => (
@@ -68,7 +69,8 @@ export function Index({ reflection }: IndexProps) {
 								{group.categories && group.categories.length > 0 ? (
 									group.categories.map((category) => (
 										<React.Fragment key={category.title}>
-											<h3 className="tsd-panel-header">{category.title}</h3>
+											<h3 className="tsd-panel-header">{category.title || group.title}</h3>
+
 											<div className="tsd-panel-content">
 												<ul className="tsd-index-list">
 													{category.children?.map((child) => (
@@ -81,6 +83,7 @@ export function Index({ reflection }: IndexProps) {
 								) : (
 									<>
 										<h3 className="tsd-panel-header">{group.title}</h3>
+
 										<div className="tsd-panel-content">
 											<ul className="tsd-index-list">
 												{group.children?.map((child) => (
