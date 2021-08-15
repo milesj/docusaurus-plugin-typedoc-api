@@ -26,8 +26,8 @@ export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
 						<li
 							key={sig.id}
 							className={`tsd-signature tsd-kind-icon ${
-								i !== activeIndex && 'tsd-signature-inactive'
-							} ${hasMultiple && 'tsd-pressable'}`}
+								i !== activeIndex ? 'tsd-signature-inactive' : ''
+							} ${hasMultiple ? 'tsd-pressable' : ''}`}
 							onClick={
 								hasMultiple
 									? // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
@@ -45,13 +45,17 @@ export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
 			</div>
 
 			{!!body && (
-				<div className={inPanel ? 'tsd-panel-content' : ''}>
-					<ul className="tsd-descriptions">
-						<li key={body.id} className="tsd-description">
-							<MemberSignatureBody sig={body} />
-						</li>
-					</ul>
-				</div>
+				<>
+					{!inPanel && <hr className="tsd-divider" />}
+
+					<div className={inPanel ? 'tsd-panel-content' : ''}>
+						<ul className="tsd-descriptions">
+							<li key={body.id} className="tsd-description">
+								<MemberSignatureBody sig={body} />
+							</li>
+						</ul>
+					</div>
+				</>
 			)}
 		</>
 	);

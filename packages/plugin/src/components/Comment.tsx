@@ -23,7 +23,7 @@ export function Comment({ comment, root }: CommentProps) {
 	}
 
 	return (
-		<div className={`tsd-comment tsd-typography ${root && 'tsd-comment-root'}`}>
+		<div className={`tsd-comment tsd-typography ${root ? 'tsd-comment-root' : ''}`}>
 			{!!comment.shortText && (
 				<div className="lead">
 					<Markdown content={comment.shortText} />

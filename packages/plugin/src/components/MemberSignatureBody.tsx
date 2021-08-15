@@ -3,7 +3,7 @@
 import React from 'react';
 import { JSONOutput } from 'typedoc';
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
-import { Comment } from './Comment';
+import { Comment, hasComment } from './Comment';
 import { DefaultValue } from './DefaultValue';
 import { Flags } from './Flags';
 import { Markdown } from './Markdown';
@@ -25,6 +25,8 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 			{!hideSources && <MemberSources reflection={sig} />}
 
 			<Comment comment={sig.comment} />
+
+			{hasComment(sig.comment) && <hr className="tsd-divider" />}
 
 			{sig.typeParameter && (
 				<>

@@ -51,6 +51,12 @@
 	float: right;
 }
 
+.tsd-divider {
+	margin: var(--tsd-spacing-vertical) -1rem;
+	border: 1px solid var(--ifm-card-background-color);
+	border-bottom: 0;
+}
+
 .tsd-footer {
 	text-align: center;
 }
@@ -113,6 +119,7 @@ html[data-theme='light'] .tsd-panel-content {
 }
 
 .tsd-comment,
+.tsd-comment > .markdown,
 .tsd-sources,
 .tsd-descriptions,
 .tsd-type-declaration,
