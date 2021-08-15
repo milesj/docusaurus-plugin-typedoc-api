@@ -69,7 +69,9 @@ export function Index({ reflection }: IndexProps) {
 								{group.categories && group.categories.length > 0 ? (
 									group.categories.map((category) => (
 										<React.Fragment key={category.title}>
-											<h3 className="tsd-panel-header">{category.title || group.title}</h3>
+											<h3 className="tsd-panel-header">
+												{category.title === 'CATEGORY' ? group.title : category.title}
+											</h3>
 
 											<div className="tsd-panel-content">
 												<ul className="tsd-index-list">
