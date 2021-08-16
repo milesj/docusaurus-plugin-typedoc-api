@@ -30,7 +30,8 @@ export function Members({ reflection }: MembersProps) {
 					return (
 						<section key={category.title} className="tsd-panel-group tsd-member-group">
 							<h2>
-								{category.title} <AnchorLink id={category.title} />
+								{category.title === 'CATEGORY' ? 'Other' : category.title}{' '}
+								<AnchorLink id={category.title} />
 							</h2>
 
 							{category.children?.map((child) => {

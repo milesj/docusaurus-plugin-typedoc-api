@@ -38,7 +38,9 @@ export function Index({ reflection }: IndexProps) {
 					<div className="tsd-index-content">
 						{reflection.categories.map((category) => (
 							<section key={category.title} className="tsd-index-section">
-								<h3 className="tsd-panel-header">{category.title}</h3>
+								<h3 className="tsd-panel-header">
+									{category.title === 'CATEGORY' ? 'Other' : category.title}
+								</h3>
 
 								<div className="tsd-panel-content">
 									<ul className="tsd-index-list">

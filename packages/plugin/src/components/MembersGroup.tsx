@@ -20,7 +20,8 @@ export function MembersGroup({ group }: MembersGroupProps) {
 				{group.categories.map((category) => (
 					<section key={category.title} className="tsd-panel-group tsd-member-group">
 						<h2>
-							{category.title} <AnchorLink id={category.title} />
+							{category.title === 'CATEGORY' ? 'Other' : category.title}{' '}
+							<AnchorLink id={category.title} />
 						</h2>
 
 						{category.children?.map((child) =>
