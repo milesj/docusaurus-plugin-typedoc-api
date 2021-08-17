@@ -128,29 +128,25 @@ module.exports = {
 					].map((pkg) => `packages/${pkg}`),
 					{
 						path: 'packages/cli',
-						entry: [
-							{ file: 'src/index.ts', label: 'Index' },
-							{ file: 'src/react.ts', label: 'Components & hooks' },
-							{ file: 'src/test.ts', label: 'Test utilities' },
-						],
+						entry: {
+							index: 'src/index.ts',
+							react: { path: 'src/react.ts', label: 'Components & hooks' },
+							test: { path: 'src/test.ts', label: 'Test utilities' },
+						},
 					},
 					{
 						path: 'packages/debug',
-						entry: [
-							{ file: 'src/index.ts', label: 'Index' },
-							{ file: 'src/test.ts', label: 'Test utilities' },
-						],
+						entry: {
+							index: { path: 'src/index.ts', label: 'Index' },
+							test: { path: 'src/test.ts', label: 'Test utilities' },
+						},
 					},
 					{
 						path: 'packages/log',
-						entry: [
-							{ file: 'src/index.ts', label: 'Index' },
-							{ file: 'src/test.ts', label: 'Test utilities' },
-						],
-					},
-					{
-						path: 'testing/foo',
-						entry: 'index.ts',
+						entry: {
+							index: { path: 'src/index.ts', label: 'Index' },
+							test: { path: 'src/test.ts', label: 'Test utilities' },
+						},
 					},
 				],
 				exclude: ['**/themes/*', '**/website/*'],

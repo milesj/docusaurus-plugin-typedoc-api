@@ -45,26 +45,27 @@ export default function typedocApiPlugin(
 	const entryPoints: string[] = [];
 	const packageConfigs: ResolvedPackageConfig[] = packages.map((pkgItem) => {
 		const pkgConfig = typeof pkgItem === 'string' ? { path: pkgItem } : pkgItem;
-		const entries: PackageEntryConfig[] = [];
+		const entries: Record<string, PackageEntryConfig> = {};
 
-		if (!pkgConfig.entry) {
-			entries.push({
+		if (!pkgConfig.entry || typeof pkgConfig.entry === 'string') {
+			entries.index = {
 				label: 'Index',
-				file: 'src/index.ts',
-			});
-		} else if (typeof pkgConfig.entry === 'string') {
-			entries.push({
-				label: 'Index',
-				file: pkgConfig.entry,
-			});
-		} else if (Array.isArray(pkgConfig.entry)) {
-			entries.push(...pkgConfig.entry);
+				path: pkgConfig.entry ?? 'src/index.ts',
+			};
 		} else {
-			entries.push(pkgConfig.entry);
+			Object.entries(pkgConfig.entry).forEach(([importPath, entryConfig]) => {
+				entries[importPath] =
+					typeof entryConfig === 'string'
+						? {
+								label: 'Index',
+								path: entryConfig,
+						  }
+						: entryConfig;
+			});
 		}
 
-		entries.forEach((entry) => {
-			entryPoints.push(path.join(projectRoot, pkgConfig.path, entry.file));
+		Object.values(entries).forEach((entryConfig) => {
+			entryPoints.push(path.join(projectRoot, pkgConfig.path, entryConfig.path));
 		});
 
 		return {

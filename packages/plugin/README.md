@@ -106,8 +106,9 @@ module.exports = {
 };
 ```
 
-We can also support multiple entry points by passing an array of objects to `entry`. Each entry
-object requires a `file` path and a `label`, which is used for categorizing and sidebars.
+We can also support multiple entry points by passing a map of objects to `entry`, where each key is
+a sub-path that can be imported from the package (excluding the `index`). Each entry object requires
+a `path` and a `label`, which is used for categorizing and sidebars.
 
 ```js
 module.exports = {
@@ -115,12 +116,15 @@ module.exports = {
 		'packages/core',
 		{
 			path: 'packages/react',
-			entry: [
-				{ file: 'src/index.tsx', label: 'Index' },
-				{ file: 'src/client.tsx', label: 'Client' },
-				{ file: 'src/server.tsx', label: 'Server' },
-			],
+			entry: {
+				index: 'src/index.tsx',
+				client: { file: 'src/client.tsx', label: 'Client' },
+				server: { file: 'src/server.tsx', label: 'Server' },
+				'server/test': { file: 'src/server/test-utils.tsx', label: 'Server test utils' },
+			},
 		},
 	],
 };
 ```
+
+> Index entry points don't require a label, so a file path can be passed directly.

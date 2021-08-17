@@ -83,8 +83,8 @@ export function flattenAndGroupPackages(
 		const relEntrySourceFile = mod.sources?.[0]?.fileName;
 
 		packageConfigs.some((cfg) =>
-			cfg.entryPoints.some((entry) => {
-				const relEntryPoint = path.join(cfg.packagePath, entry.file);
+			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
+				const relEntryPoint = path.join(cfg.packagePath, entry.path);
 
 				if (relEntrySourceFile !== relEntryPoint) {
 					return false;
@@ -103,19 +103,21 @@ export function flattenAndGroupPackages(
 				}
 
 				// Add metadata to package and children reflections
-				const urlSlug = getPackageSlug(cfg.packagePath, entry.file);
+				const urlSlug = getPackageSlug(cfg.packagePath, importPath);
 				const reflection = addMetadataToReflections(mod, urlSlug);
 
 				packages[cfg.packagePath].entryPoints.push({
-					index: entry.file.endsWith('index.ts'),
+					index: entry.path.includes('index.ts'),
 					label: entry.label,
 					reflection,
 					urlSlug,
 				});
 
-				// TODO
 				// Update the reflection name since its useless
-				reflection.name = path.join(packages[cfg.packagePath].packageName, entry.file);
+				reflection.name =
+					importPath === 'index'
+						? packages[cfg.packagePath].packageName
+						: path.join(packages[cfg.packagePath].packageName, importPath);
 
 				return true;
 			}),

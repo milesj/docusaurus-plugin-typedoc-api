@@ -5,17 +5,17 @@ import type { PropSidebarItem } from '@docusaurus/plugin-content-docs-types';
 
 export interface PackageEntryConfig {
 	label: string;
-	file: string;
+	path: string;
 }
 
 export interface PackageConfig {
 	path: string; // Folder relative to project root
-	entry?: PackageEntryConfig | PackageEntryConfig[] | string;
+	entry?: Record<string, PackageEntryConfig | string> | string;
 }
 
 export interface ResolvedPackageConfig {
 	absolutePath: string;
-	entryPoints: PackageEntryConfig[];
+	entryPoints: Record<string, PackageEntryConfig>;
 	packagePath: string;
 }
 

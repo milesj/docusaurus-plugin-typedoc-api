@@ -20,19 +20,16 @@ export function getKindSlug(decl: JSONOutput.DeclarationReflection): string {
 	}
 }
 
-export function getPackageSlug(packagePath: string, entryPoint: string): string {
+export function getPackageSlug(packagePath: string, importPath: string): string {
 	// packages/foo -> foo
 	const packageFolder = path.basename(packagePath);
 
-	// src/bar.ts -> bar
-	const entryName = entryPoint
-		.replace(/\.tsx?$/, '')
-		.replace(/(src|sources)\//, '')
-		.replace(/\\/g, '-');
+	// bar/baz -> bar-baz
+	const importName = importPath.replace(/\\/g, '-');
 
-	if (entryName === 'index') {
+	if (importName === 'index') {
 		return packageFolder;
 	}
 
-	return `${packageFolder}-${entryName}`;
+	return `${packageFolder}-${importName}`;
 }
