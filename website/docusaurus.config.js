@@ -130,22 +130,22 @@ module.exports = {
 						path: 'packages/cli',
 						entry: [
 							{ file: 'src/index.ts', label: 'Index' },
-							{ file: 'src/react.ts', label: 'React' },
-							{ file: 'src/test.ts', label: 'Testing' },
+							{ file: 'src/react.ts', label: 'Components & hooks' },
+							{ file: 'src/test.ts', label: 'Test utilities' },
 						],
 					},
 					{
 						path: 'packages/debug',
 						entry: [
 							{ file: 'src/index.ts', label: 'Index' },
-							{ file: 'src/test.ts', label: 'Testing' },
+							{ file: 'src/test.ts', label: 'Test utilities' },
 						],
 					},
 					{
 						path: 'packages/log',
 						entry: [
 							{ file: 'src/index.ts', label: 'Index' },
-							{ file: 'src/test.ts', label: 'Testing' },
+							{ file: 'src/test.ts', label: 'Test utilities' },
 						],
 					},
 					{

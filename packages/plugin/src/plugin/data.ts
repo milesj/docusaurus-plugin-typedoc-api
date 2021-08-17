@@ -104,13 +104,18 @@ export function flattenAndGroupPackages(
 
 				// Add metadata to package and children reflections
 				const urlSlug = getPackageSlug(cfg.packagePath, entry.file);
+				const reflection = addMetadataToReflections(mod, urlSlug);
 
 				packages[cfg.packagePath].entryPoints.push({
 					index: entry.file.endsWith('index.ts'),
 					label: entry.label,
-					reflection: addMetadataToReflections(mod, urlSlug),
+					reflection,
 					urlSlug,
 				});
+
+				// TODO
+				// Update the reflection name since its useless
+				reflection.name = path.join(packages[cfg.packagePath].packageName, entry.file);
 
 				return true;
 			}),
@@ -125,4 +130,8 @@ export function extractMetadata(data: JSONOutput.Reflection): ApiMetadata {
 	const { id, name, nextId, permalink, previousId } = data;
 
 	return { id, name, nextId, permalink, previousId };
+}
+
+export function formatPackagesWithoutHostInfo(packages: PackageReflectionGroup[]) {
+	return packages.map(({ readmePath, ...pkg }) => pkg);
 }

@@ -70,9 +70,12 @@ export function extractSidebar(packages: PackageReflectionGroup[]): SidebarItem[
 	const items: SidebarItem[] = packages.map((pkg) => {
 		const subItems: SidebarItem[] = [];
 
-		// Nest multiple entry points by their label
-		if (pkg.entryPoints.length > 1) {
-			pkg.entryPoints.forEach((entry) => {
+		pkg.entryPoints.forEach((entry) => {
+			// Index entry point should always bubble up reflection groups
+			if (entry.index) {
+				subItems.push(...extractReflectionSidebar(entry.reflection));
+				// Otherwise nest non-index entry points behind categories
+			} else {
 				subItems.push({
 					collapsed: true,
 					collapsible: true,
@@ -80,12 +83,8 @@ export function extractSidebar(packages: PackageReflectionGroup[]): SidebarItem[
 					label: entry.label,
 					type: 'category',
 				});
-			});
-
-			// Otherwise dont group and bubble up reflection groups
-		} else {
-			subItems.push(...extractReflectionSidebar(pkg.entryPoints[0].reflection));
-		}
+			}
+		});
 
 		// Always include the overview as the 1st item
 		subItems.unshift({

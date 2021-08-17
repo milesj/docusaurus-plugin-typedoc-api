@@ -6,7 +6,11 @@ import type { JSONOutput } from 'typedoc';
 import * as TypeDoc from 'typedoc';
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs-types';
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
-import { extractMetadata, flattenAndGroupPackages } from './plugin/data';
+import {
+	extractMetadata,
+	flattenAndGroupPackages,
+	formatPackagesWithoutHostInfo,
+} from './plugin/data';
 import { extractSidebar } from './plugin/sidebar';
 import {
 	PackageConfig,
@@ -121,9 +125,6 @@ export default function typedocApiPlugin(
 
 			apiPackages.push(...flattenAndGroupPackages(packageConfigs, content));
 
-			console.log(apiPackages);
-			console.log(apiPackages[1]);
-
 			// Define version metadata for all pages. We need to use the same structure as
 			// "docs" so that we can utilize the same React components.
 			// https://github.com/facebook/docusaurus/blob/master/packages/docusaurus-plugin-content-docs/src/index.ts#L337
@@ -135,15 +136,15 @@ export default function typedocApiPlugin(
 				isLast: true,
 				docsSidebars: { api: await extractSidebar(apiPackages) },
 			};
-			console.log(versionMetadata.docsSidebars.api);
-			console.log(versionMetadata.docsSidebars.api[0]);
-			console.log(versionMetadata.docsSidebars.api[1]);
 			const versionMetadataData = await createData(
 				`version-${versionMetadata.version}-metadata.json`,
 				JSON.stringify(versionMetadata),
 			);
 
-			async function createRoute(info: JSONOutput.Reflection): Promise<RouteConfig> {
+			async function createRoute(
+				info: JSONOutput.Reflection,
+				readmePath?: string,
+			): Promise<RouteConfig> {
 				const reflection = extractMetadata(info);
 				const reflectionData = await createData(
 					`reflection-${reflection.id}.json`,
@@ -153,11 +154,12 @@ export default function typedocApiPlugin(
 					content: reflectionData,
 				};
 
-				// if (readmes && 'readmePath' in info) {
-				// 	Object.assign(modules, {
-				// 		readme: (info as JSONOutput.ProjectReflection).readmePath,
-				// 	});
-				// }
+				// Rely on mdx to convert the file path to a component
+				if (readmes && readmePath) {
+					Object.assign(modules, {
+						readme: readmePath,
+					});
+				}
 
 				return {
 					path: reflection.permalink,
@@ -183,7 +185,9 @@ export default function typedocApiPlugin(
 							);
 
 							// Map a top-level package route, otherwise `DocPage` shows a page not found
-							subRoutes.push(await createRoute(entry.reflection));
+							subRoutes.push(
+								await createRoute(entry.reflection, entry.index ? pkg.readmePath : undefined),
+							);
 
 							routes.push(...subRoutes);
 						}),
@@ -200,7 +204,10 @@ export default function typedocApiPlugin(
 				routes,
 				modules: {
 					options: optionsData,
-					packages: await createData('packages.json', JSON.stringify(apiPackages)),
+					packages: await createData(
+						'packages.json',
+						JSON.stringify(formatPackagesWithoutHostInfo(apiPackages)),
+					),
 					versionMetadata: versionMetadataData,
 				},
 			});

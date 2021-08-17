@@ -57,14 +57,13 @@ export interface ApiItemProps extends Omit<DocItemProps, 'content'> {
 	readme?: React.ComponentType;
 }
 
-// eslint-disable-next-line complexity
 export default function ApiItem({ content, readme: Readme, versionMetadata }: ApiItemProps) {
 	const item = useReflection(content.id)!;
 	const prevItem = useReflection(content.previousId);
 	const nextItem = useReflection(content.nextId);
 	const reflections = useReflectionMap();
 	const windowSize = useWindowSize();
-	const title = (item as JSONOutput.ProjectReflection).packageName ?? item.name ?? content.name;
+	const title = item.name ?? content.name;
 
 	// Table of contents
 	const toc = useMemo(() => extractTOC(item, reflections), [item, reflections]);
