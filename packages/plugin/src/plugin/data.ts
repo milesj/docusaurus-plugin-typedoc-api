@@ -1,8 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import { JSONOutput, ReflectionKind } from 'typedoc';
-import { ApiMetadata, DeclarationReflectionMap } from '../types';
-import { getKindSlug } from './url';
+import {
+	ApiMetadata,
+	DeclarationReflectionMap,
+	PackageReflectionGroup,
+	ResolvedPackageConfig,
+} from '../types';
+import { getKindSlug, getPackageSlug } from './url';
 
 export function createReflectionMap(
 	items: JSONOutput.DeclarationReflection[] = [],
@@ -16,7 +21,7 @@ export function createReflectionMap(
 	return map;
 }
 
-async function loadPackageJsonAndReadme(initialDir: string) {
+function loadPackageJsonAndReadme(initialDir: string) {
 	let currentDir = initialDir;
 
 	while (!fs.existsSync(path.join(currentDir, 'package.json'))) {
@@ -26,9 +31,7 @@ async function loadPackageJsonAndReadme(initialDir: string) {
 	const readmePath = path.join(currentDir, 'README.md');
 
 	return {
-		package: JSON.parse(
-			await fs.promises.readFile(path.join(currentDir, 'package.json'), 'utf8'),
-		) as {
+		packageJson: JSON.parse(fs.readFileSync(path.join(currentDir, 'package.json'), 'utf8')) as {
 			name: string;
 			version: string;
 		},
@@ -36,61 +39,90 @@ async function loadPackageJsonAndReadme(initialDir: string) {
 	};
 }
 
-export async function addMetadataToDeclarations(
-	projectRoot: string,
-	pkgBase: JSONOutput.DeclarationReflection,
-): Promise<JSONOutput.ProjectReflection> {
-	const pkg = pkgBase as JSONOutput.ProjectReflection;
-	const pkgMeta = await loadPackageJsonAndReadme(
-		path.join(projectRoot, path.dirname(String(pkgBase.sources?.[0].fileName))),
-	);
-
-	pkg.name = pkg.name.replace('/src', '');
-	pkg.packageName = pkgMeta.package.name;
-	pkg.packageVersion = pkgMeta.package.version;
-	pkg.readmePath = pkgMeta.readmePath;
-
-	const slug = `/${pkg.name}`;
-	const permalink = `/api${slug}`;
+export function addMetadataToReflections(
+	project: JSONOutput.ProjectReflection,
+	packageSlug: string,
+): JSONOutput.ProjectReflection {
+	const permalink = `/api/${packageSlug}`;
 	const children: JSONOutput.DeclarationReflection[] = [];
 
-	if (pkg.children) {
-		pkg.children.forEach((child) => {
+	if (project.children) {
+		project.children.forEach((child) => {
 			const kindSlugPart = getKindSlug(child);
-			const childSlug = kindSlugPart ? `${slug}/${kindSlugPart}/${child.name}` : slug;
-			const childPermalink = `/api${childSlug + (kindSlugPart ? '' : `#${child.name}`)}`;
+			const childSlug = kindSlugPart ? `/${kindSlugPart}/${child.name}` : `#${child.name}`;
+			const childPermalink = permalink + childSlug;
 
 			children.push({
 				...child,
 				permalink: childPermalink,
-				slug: childSlug,
 			});
 		});
 	}
 
 	return {
-		...pkg,
+		...project,
 		children,
 		permalink,
-		slug,
 	};
 }
 
-export async function addMetadataToPackages(
-	projectRoot: string,
+export function flattenAndGroupPackages(
+	packageConfigs: ResolvedPackageConfig[],
 	project: JSONOutput.ProjectReflection,
-): Promise<JSONOutput.ProjectReflection[]> {
-	const packages = (
+): PackageReflectionGroup[] {
+	const modules = (
 		(project.kind === ReflectionKind.Project
 			? project.children ?? []
-			: [project]) as JSONOutput.DeclarationReflection[]
+			: [project]) as JSONOutput.ProjectReflection[]
 	).filter((pkg) => pkg.kind === ReflectionKind.Module);
 
-	return Promise.all(packages.map((child) => addMetadataToDeclarations(projectRoot, child)));
+	// Loop through every TypeDoc module and group based on package and entry point
+	const packages: Record<string, PackageReflectionGroup> = {};
+
+	modules.forEach((mod) => {
+		const relEntrySourceFile = mod.sources?.[0]?.fileName;
+
+		packageConfigs.some((cfg) =>
+			cfg.entryPoints.some((entry) => {
+				const relEntryPoint = path.join(cfg.packagePath, entry.file);
+
+				if (relEntrySourceFile !== relEntryPoint) {
+					return false;
+				}
+
+				// We have a matching entry point, so store the record
+				if (!packages[cfg.packagePath]) {
+					const { packageJson, readmePath } = loadPackageJsonAndReadme(cfg.absolutePath);
+
+					packages[cfg.packagePath] = {
+						entryPoints: [],
+						packageName: packageJson.name,
+						packageVersion: packageJson.version,
+						readmePath,
+					};
+				}
+
+				// Add metadata to package and children reflections
+				const urlSlug = getPackageSlug(cfg.packagePath, entry.file);
+
+				packages[cfg.packagePath].entryPoints.push({
+					index: entry.file.endsWith('index.ts'),
+					label: entry.label,
+					reflection: addMetadataToReflections(mod, urlSlug),
+					urlSlug,
+				});
+
+				return true;
+			}),
+		);
+	});
+
+	// Sort packages by name
+	return Object.values(packages).sort((a, b) => a.packageName.localeCompare(b.packageName));
 }
 
 export function extractMetadata(data: JSONOutput.Reflection): ApiMetadata {
-	const { id, name, nextId, permalink, previousId, slug } = data;
+	const { id, name, nextId, permalink, previousId } = data;
 
-	return { id, name, nextId, permalink, previousId, slug };
+	return { id, name, nextId, permalink, previousId };
 }

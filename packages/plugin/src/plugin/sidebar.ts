@@ -1,5 +1,5 @@
 import { JSONOutput } from 'typedoc';
-import { DeclarationReflectionMap, SidebarItem } from '../types';
+import { DeclarationReflectionMap, PackageReflectionGroup, SidebarItem } from '../types';
 import { createReflectionMap } from './data';
 
 export function groupSidebarItems(
@@ -58,23 +58,44 @@ export function groupSidebarItems(
 	return items;
 }
 
-export function extractSidebar(packages: JSONOutput.ProjectReflection[]): SidebarItem[] {
+export function extractReflectionSidebar(pkg: JSONOutput.ProjectReflection): SidebarItem[] {
+	return pkg.groups ? groupSidebarItems(createReflectionMap(pkg.children), pkg.groups) : [];
+}
+
+export function extractSidebar(packages: PackageReflectionGroup[]): SidebarItem[] {
 	if (packages.length === 0) {
 		return [];
 	}
 
-	const items: SidebarItem[] = packages.map((pkg, index) => {
-		const itemsMap = createReflectionMap(pkg.children);
-		const subItems = pkg.groups ? groupSidebarItems(itemsMap, pkg.groups) : [];
+	const items: SidebarItem[] = packages.map((pkg) => {
+		const subItems: SidebarItem[] = [];
 
+		// Nest multiple entry points by their label
+		if (pkg.entryPoints.length > 1) {
+			pkg.entryPoints.forEach((entry) => {
+				subItems.push({
+					collapsed: true,
+					collapsible: true,
+					items: extractReflectionSidebar(entry.reflection),
+					label: entry.label,
+					type: 'category',
+				});
+			});
+
+			// Otherwise dont group and bubble up reflection groups
+		} else {
+			subItems.push(...extractReflectionSidebar(pkg.entryPoints[0].reflection));
+		}
+
+		// Always include the overview as the 1st item
 		subItems.unshift({
-			href: pkg.permalink,
+			href: pkg.entryPoints.find((entry) => entry.index)?.reflection.permalink ?? '',
 			label: 'Overview',
 			type: 'link',
 		});
 
 		return {
-			collapsed: index > 0,
+			collapsed: true,
 			collapsible: true,
 			items: subItems,
 			label: pkg.packageName,
@@ -83,24 +104,4 @@ export function extractSidebar(packages: JSONOutput.ProjectReflection[]): Sideba
 	});
 
 	return items.filter((item) => 'items' in item && items.length > 0);
-}
-
-export function extractSidebarPermalinks(
-	packages: JSONOutput.ProjectReflection[],
-): Record<string, string> {
-	const map: Record<string, string> = {};
-
-	if (packages.length === 0) {
-		return map;
-	}
-
-	packages.forEach((pkg) => {
-		map[pkg.permalink] = 'api';
-
-		pkg.children?.forEach((child) => {
-			map[child.permalink] = 'api';
-		});
-	});
-
-	return map;
 }
