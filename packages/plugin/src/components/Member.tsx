@@ -1,6 +1,7 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/members.hbs
 
 import React from 'react';
+import { JSONOutput } from 'typedoc';
 import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { hasOwnDocument } from '../utils/visibility';
@@ -8,7 +9,7 @@ import { AnchorLink } from './AnchorLink';
 import { Flags } from './Flags';
 import { MemberDeclaration } from './MemberDeclaration';
 import { MemberGetterSetter } from './MemberGetterSetter';
-// import { MemberReference } from './MemberReference';
+import { MemberReference } from './MemberReference';
 import { MemberSignatures } from './MemberSignatures';
 import { SourceLink } from './SourceLink';
 
@@ -16,7 +17,6 @@ export interface MemberProps {
 	id: number;
 }
 
-// TODO reference???
 export function Member({ id }: MemberProps) {
 	const reflections = useReflectionMap();
 	const reflection = useReflection(id)!;
@@ -33,8 +33,8 @@ export function Member({ id }: MemberProps) {
 				setter={reflection.setSignature}
 			/>
 		);
-	} else if (String(reflection.type) === 'reference') {
-		content = null; // <MemberReference ref={reflection} />;
+	} else if ('target' in reflection && (reflection as JSONOutput.ReferenceReflection).target) {
+		content = <MemberReference reflection={reflection as JSONOutput.ReferenceReflection} />;
 	} else {
 		content = <MemberDeclaration id={id} />;
 	}
