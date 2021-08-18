@@ -82,8 +82,15 @@ export default function typedocApiPlugin(
 		name: 'docusaurus-plugin-typedoc-api',
 
 		async loadContent() {
-			const filePath = path.join(context.generatedFilesDir, 'typedoc.json');
+			const date = new Date();
+			const filePath = path.join(
+				context.generatedFilesDir,
+				`typedoc-${date.getFullYear() + date.getMonth() + date.getDay()}.json`,
+			);
 
+			// Running the TypeDoc compiler is pretty slow, so we cache and reuse the file.
+			// However, I'm not sure how to invalidate this cache as Docusaurus does not
+			// provide any contextual information to do so. So for now, I'm caching by date...
 			if (fs.existsSync(filePath)) {
 				return import(filePath);
 			}
