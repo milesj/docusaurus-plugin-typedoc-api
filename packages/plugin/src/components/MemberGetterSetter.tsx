@@ -2,8 +2,9 @@
 
 import React from 'react';
 import { JSONOutput } from 'typedoc';
+import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { Icon } from './Icon';
-import { MemberSignatureBody } from './MemberSignatureBody';
+import { hasSigBody, MemberSignatureBody } from './MemberSignatureBody';
 import { MemberSignatureTitle } from './MemberSignatureTitle';
 
 export interface MemberGetterSetterProps {
@@ -12,11 +13,13 @@ export interface MemberGetterSetterProps {
 	setter?: JSONOutput.DeclarationReflection['setSignature'];
 }
 
+// eslint-disable-next-line complexity
 export function MemberGetterSetter({
 	inPanel,
 	getter: baseGetter,
 	setter: baseSetter,
 }: MemberGetterSetterProps) {
+	const minimal = useMinimalLayout();
 	const [getter] = baseGetter ?? [];
 	const [setter] = baseSetter ?? [];
 
@@ -26,43 +29,47 @@ export function MemberGetterSetter({
 
 	return (
 		<>
-			<div className={inPanel ? 'tsd-panel-content' : ''}>
-				<ul className="tsd-signatures">
-					{getter && (
-						<li className="tsd-signature tsd-kind-icon">
-							<Icon reflection={getter} />
-							<span className="tsd-signature-symbol">get </span>
-							{getter.name}
-							<MemberSignatureTitle hideName sig={getter} />
-						</li>
-					)}
+			{(getter || setter) && (
+				<div className={inPanel ? 'tsd-panel-content' : ''}>
+					<ul className="tsd-signatures">
+						{getter && (
+							<li className="tsd-signature tsd-kind-icon">
+								<Icon reflection={getter} />
+								<span className="tsd-signature-symbol">get </span>
+								{getter.name}
+								<MemberSignatureTitle hideName sig={getter} />
+							</li>
+						)}
 
-					{setter && (
-						<li className="tsd-signature tsd-kind-icon">
-							<Icon reflection={setter} />
-							<span className="tsd-signature-symbol">set </span>
-							{setter.name}
-							<MemberSignatureTitle hideName sig={setter} />
-						</li>
-					)}
-				</ul>
-			</div>
+						{setter && (
+							<li className="tsd-signature tsd-kind-icon">
+								<Icon reflection={setter} />
+								<span className="tsd-signature-symbol">set </span>
+								{setter.name}
+								<MemberSignatureTitle hideName sig={setter} />
+							</li>
+						)}
+					</ul>
+				</div>
+			)}
 
-			<div className={inPanel ? 'tsd-panel-content' : ''}>
-				<ul className="tsd-descriptions">
-					{getter && (
-						<li className="tsd-description">
-							<MemberSignatureBody sig={getter} />
-						</li>
-					)}
+			{(hasSigBody(getter, minimal) || hasSigBody(setter, minimal)) && (
+				<div className={inPanel ? 'tsd-panel-content' : ''}>
+					<ul className="tsd-descriptions">
+						{getter && (
+							<li className="tsd-description">
+								<MemberSignatureBody sig={getter} />
+							</li>
+						)}
 
-					{setter && (
-						<li className="tsd-description">
-							<MemberSignatureBody sig={setter} />
-						</li>
-					)}
-				</ul>
-			</div>
+						{setter && (
+							<li className="tsd-description">
+								<MemberSignatureBody sig={setter} />
+							</li>
+						)}
+					</ul>
+				</div>
+			)}
 		</>
 	);
 }

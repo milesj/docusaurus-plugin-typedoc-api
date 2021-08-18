@@ -7,7 +7,7 @@ import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { Comment } from './Comment';
 import { Flags } from './Flags';
 import { Icon } from './Icon';
-import { MemberSignatureBody } from './MemberSignatureBody';
+import { hasSigBody, MemberSignatureBody } from './MemberSignatureBody';
 import { MemberSignatures } from './MemberSignatures';
 import { MemberSignatureTitle } from './MemberSignatureTitle';
 import { Type } from './Type';
@@ -111,6 +111,8 @@ export function Parameter({ param }: ParameterProps) {
 		return null;
 	}
 
+	const hasSomeBody = param.signatures?.some((sig) => hasSigBody(sig, minimal, true));
+
 	return (
 		<ul className="tsd-parameters">
 			{param.signatures && param.signatures.length > 0 && (
@@ -124,13 +126,15 @@ export function Parameter({ param }: ParameterProps) {
 						))}
 					</ul>
 
-					<ul className="tsd-descriptions">
-						{param.signatures.map((sig) => (
-							<li key={sig.id} className="tsd-description">
-								<MemberSignatureBody hideSources sig={sig} />
-							</li>
-						))}
-					</ul>
+					{hasSomeBody && (
+						<ul className="tsd-descriptions">
+							{param.signatures.map((sig) => (
+								<li key={sig.id} className="tsd-description">
+									<MemberSignatureBody hideSources sig={sig} />
+								</li>
+							))}
+						</ul>
+					)}
 				</li>
 			)}
 

@@ -4,8 +4,9 @@
 
 import React, { useState } from 'react';
 import { JSONOutput } from 'typedoc';
+import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { Icon } from './Icon';
-import { MemberSignatureBody } from './MemberSignatureBody';
+import { hasSigBody, MemberSignatureBody } from './MemberSignatureBody';
 import { MemberSignatureTitle } from './MemberSignatureTitle';
 
 export interface MemberSignaturesProps {
@@ -15,6 +16,7 @@ export interface MemberSignaturesProps {
 
 export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
 	const [activeIndex, setActiveIndex] = useState(0);
+	const minimal = useMinimalLayout();
 	const hasMultiple = sigs.length > 1;
 	const body = sigs[activeIndex];
 
@@ -44,7 +46,7 @@ export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
 				</ul>
 			</div>
 
-			{!!body && (
+			{hasSigBody(body, minimal) && (
 				<>
 					{!inPanel && <hr className="tsd-divider" />}
 
