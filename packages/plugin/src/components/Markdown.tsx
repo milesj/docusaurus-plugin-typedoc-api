@@ -1,28 +1,13 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useEffect, useRef, useState } from 'react';
-import type { TokensList } from 'marked';
+
+import React, { useState } from 'react';
+import marked, { TokensList } from 'marked';
 import MDX from '@theme/MDXComponents';
 
-let marked: typeof import('marked') | null = null;
-
-// This library is very very heavy, so import it dynamically
-// so that it can be chunked out if it's not used.
-async function loadMarked() {
-	if (marked) {
-		return;
-	}
-
-	try {
-		// eslint-disable-next-line require-atomic-updates
-		marked = (await import('marked')).default;
-		marked.setOptions({
-			gfm: true,
-			smartypants: true,
-		});
-	} catch {
-		// Ignore
-	}
-}
+marked.setOptions({
+	gfm: true,
+	smartypants: true,
+});
 
 const TOKEN_TO_TAG: Record<string, keyof JSX.IntrinsicElements> = {
 	blockquote: 'blockquote',
@@ -152,29 +137,9 @@ export interface MarkdownProps {
 
 // Too bad we cant use `@mdx-js` here...
 export function Markdown({ content }: MarkdownProps) {
-	const [ast, setAst] = useState<TokensList>();
-	const mounted = useRef(false);
+	const [ast] = useState<TokensList>(() => marked.lexer(content));
 
-	useEffect(() => {
-		mounted.current = true;
-
-		if (marked) {
-			setAst(marked.lexer(content));
-		} else {
-			// eslint-disable-next-line promise/prefer-await-to-then
-			void loadMarked().then(() => {
-				if (mounted.current) {
-					setAst(marked?.lexer(content));
-				}
-			});
-		}
-
-		return () => {
-			mounted.current = false;
-		};
-	}, [content]);
-
-	if (!content || !marked || !ast) {
+	if (!content) {
 		return null;
 	}
 
