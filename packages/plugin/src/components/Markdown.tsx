@@ -6,6 +6,8 @@ import MDX from '@theme/MDXComponents';
 
 marked.setOptions({
 	gfm: true,
+	headerIds: false,
+	smartLists: true,
 	smartypants: true,
 });
 
