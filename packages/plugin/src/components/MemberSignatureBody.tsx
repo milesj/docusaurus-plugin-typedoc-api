@@ -17,8 +17,13 @@ export interface MemberSignatureBodyProps {
 	sig: JSONOutput.SignatureReflection;
 }
 
+// eslint-disable-next-line complexity
 export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyProps) {
 	const minimal = useMinimalLayout();
+	const showParams = !minimal && sig.parameters && sig.parameters.length > 0;
+	const showReturn = !minimal && sig.type;
+	// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+	const hasFullContent = Boolean(sig.typeParameter || showParams || showReturn);
 
 	return (
 		<>
@@ -26,7 +31,7 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 
 			<Comment comment={sig.comment} />
 
-			{hasComment(sig.comment) && <hr className="tsd-divider" />}
+			{hasComment(sig.comment) && hasFullContent && <hr className="tsd-divider" />}
 
 			{sig.typeParameter && (
 				<>
@@ -35,12 +40,12 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 				</>
 			)}
 
-			{!minimal && sig.parameters && sig.parameters.length > 0 && (
+			{showParams && (
 				<>
 					<h4 className="tsd-parameters-title">Parameters</h4>
 
 					<ul className="tsd-parameters">
-						{sig.parameters.map((param) => (
+						{sig.parameters?.map((param) => (
 							<li key={param.id}>
 								<h5>
 									<Flags flags={param.flags} />
@@ -61,7 +66,7 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 				</>
 			)}
 
-			{!minimal && sig.type && (
+			{showReturn && (
 				<>
 					<h4 className="tsd-returns-title">
 						Returns <Type type={sig.type} />
@@ -69,7 +74,7 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 
 					{sig.comment?.returns && <Markdown content={sig.comment.returns} />}
 
-					<Parameter param={sig.type.declaration} />
+					<Parameter param={sig.type?.declaration} />
 				</>
 			)}
 		</>
