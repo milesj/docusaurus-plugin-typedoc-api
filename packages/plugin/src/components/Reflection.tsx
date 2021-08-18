@@ -20,8 +20,6 @@ export interface ReflectionProps {
 		| JSONOutput.SignatureReflection;
 }
 
-// TODO:
-// - markdown
 // eslint-disable-next-line complexity
 export function Reflection({ reflection }: ReflectionProps) {
 	const hierarchy = useMemo(() => createHierarchy(reflection), [reflection]);

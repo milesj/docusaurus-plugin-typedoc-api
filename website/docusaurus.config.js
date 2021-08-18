@@ -114,20 +114,41 @@ module.exports = {
 			'docusaurus-plugin-typedoc-api',
 			{
 				projectRoot: path.join(__dirname, '../../boost'),
-				packageEntryPoints: [
-					'args',
-					'cli',
-					'common',
-					'config',
-					'debug',
-					'decorators',
-					'event',
-					'log',
-					'pipeline',
-					'plugin',
-					'terminal',
-					'translate',
-				].map((pkg) => `packages/${pkg}/src/index.ts`),
+				packages: [
+					...[
+						'args',
+						'common',
+						'config',
+						'decorators',
+						'event',
+						'pipeline',
+						'plugin',
+						'terminal',
+						'translate',
+					].map((pkg) => `packages/${pkg}`),
+					{
+						path: 'packages/cli',
+						entry: {
+							index: 'src/index.ts',
+							react: { path: 'src/react.ts', label: 'Components & hooks' },
+							test: { path: 'src/test.ts', label: 'Test utilities' },
+						},
+					},
+					{
+						path: 'packages/debug',
+						entry: {
+							index: { path: 'src/index.ts', label: 'Index' },
+							test: { path: 'src/test.ts', label: 'Test utilities' },
+						},
+					},
+					{
+						path: 'packages/log',
+						entry: {
+							index: { path: 'src/index.ts', label: 'Index' },
+							test: { path: 'src/test.ts', label: 'Test utilities' },
+						},
+					},
+				],
 				exclude: ['**/themes/*', '**/website/*'],
 				minimal: false,
 				readmes: false,

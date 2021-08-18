@@ -1,3 +1,4 @@
+import path from 'path';
 import { JSONOutput, ReflectionKind } from 'typedoc';
 
 export function getKindSlug(decl: JSONOutput.DeclarationReflection): string {
@@ -17,4 +18,18 @@ export function getKindSlug(decl: JSONOutput.DeclarationReflection): string {
 		default:
 			return '';
 	}
+}
+
+export function getPackageSlug(packagePath: string, importPath: string): string {
+	// packages/foo -> foo
+	const packageFolder = path.basename(packagePath);
+
+	// bar/baz -> bar-baz
+	const importName = importPath.replace(/\\/g, '-');
+
+	if (importName === 'index') {
+		return packageFolder;
+	}
+
+	return `${packageFolder}-${importName}`;
 }

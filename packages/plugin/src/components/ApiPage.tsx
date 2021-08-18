@@ -5,7 +5,7 @@ import 'docusaurus-plugin-typedoc-api/styles.css';
 import React, { useMemo } from 'react';
 import { JSONOutput } from 'typedoc';
 import DocPage, { Props as DocPageProps } from '@theme/DocPage';
-import { ApiOptions, DeclarationReflectionMap } from '../types';
+import { ApiOptions, DeclarationReflectionMap, PackageReflectionGroup } from '../types';
 import { ApiDataContext } from './ApiDataContext';
 import ApiIndex from './ApiIndex';
 
@@ -44,13 +44,13 @@ function deepMapReflections(
 	return map;
 }
 
-function mapPackagesToReflection(
-	packages: JSONOutput.ProjectReflection[],
-): DeclarationReflectionMap {
+function mapPackagesToReflection(packages: PackageReflectionGroup[]): DeclarationReflectionMap {
 	const map: DeclarationReflectionMap = {};
 
 	packages.forEach((pkg) => {
-		deepMapReflections(pkg, map);
+		pkg.entryPoints.forEach((entry) => {
+			deepMapReflections(entry.reflection, map);
+		});
 	});
 
 	return map;
@@ -58,7 +58,7 @@ function mapPackagesToReflection(
 
 export interface ApiPageProps extends DocPageProps {
 	options: ApiOptions;
-	packages: JSONOutput.ProjectReflection[];
+	packages: PackageReflectionGroup[];
 }
 
 function ApiPage({ options, packages, ...props }: ApiPageProps) {

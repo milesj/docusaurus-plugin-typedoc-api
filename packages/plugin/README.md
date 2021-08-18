@@ -47,7 +47,7 @@ module.exports = {
 ```
 
 - Add the plugin to your `plugins` list in your `docusaurus.config.js`. The `projectRoot` and
-  `packageEntryPoints` options are required.
+  `packages` options are required.
 
 ```js
 module.exports = {
@@ -57,7 +57,7 @@ module.exports = {
 			'docusaurus-plugin-typedoc-api',
 			{
 				projectRoot: path.join(__dirname, '..'),
-				packageEntryPoints: ['packages/example/src/index.ts'],
+				packages: ['packages/example', 'packages/other'],
 			},
 		],
 	],
@@ -70,7 +70,7 @@ The following options are available to the plugin:
 
 - `projectRoot` (`string`) - Absolute path to the project root where `tsconfig.json` is located.
   _(Required)_
-- `packageEntryPoints` (`string[]`) - List of package entry points, relative to the project root.
+- `packages` (`(string | PackageConfig)[]`) - List of packages relative to the project root.
   _(Required)_
 - `exclude` (`string[]`) - List of glob patterns to exclude unwanted packages. This is necessary
   when using TypeScript project references.
@@ -78,3 +78,53 @@ The following options are available to the plugin:
   Defaults to `false`.
 - `readmes` (`boolean`) - Include and render the `README.md` file from every package. Defaults to
   `false`.
+
+### Packages
+
+The `packages` option has been designed to support multiple packages, with multiple entry points per
+package. By default the option accepts a list of strings, where each value is a relative path to a
+package folder, and a default entry point of `src/index.ts`.
+
+```js
+module.exports = {
+	packages: ['packages/core', 'packages/react'],
+};
+```
+
+However, an object can be provided to customize the entry point. All entry point file paths are
+relative to the package folder.
+
+```js
+module.exports = {
+	packages: [
+		'packages/core',
+		{
+			path: 'packages/react',
+			entry: 'src/index.tsx',
+		},
+	],
+};
+```
+
+We can also support multiple entry points by passing a map of objects to `entry`, where each key is
+a sub-path that can be imported from the package (excluding the `index`). Each entry object requires
+a `path` and a `label`, which is used for categorizing and sidebars.
+
+```js
+module.exports = {
+	packages: [
+		'packages/core',
+		{
+			path: 'packages/react',
+			entry: {
+				index: 'src/index.tsx',
+				client: { file: 'src/client.tsx', label: 'Client' },
+				server: { file: 'src/server.tsx', label: 'Server' },
+				'server/test': { file: 'src/server/test-utils.tsx', label: 'Server test utils' },
+			},
+		},
+	],
+};
+```
+
+> Index entry points don't require a label, so a file path can be passed directly.

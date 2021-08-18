@@ -1,10 +1,10 @@
 import React from 'react';
-import { JSONOutput } from 'typedoc';
 import Link from '@docusaurus/Link';
 import { MainHeading } from '@theme/Heading';
+import { PackageReflectionGroup } from '../types';
 
 export interface ApiIndexProps {
-	packages: JSONOutput.ProjectReflection[];
+	packages: PackageReflectionGroup[];
 }
 
 export default function ApiIndex({ packages }: ApiIndexProps) {
@@ -21,8 +21,11 @@ export default function ApiIndex({ packages }: ApiIndexProps) {
 								<div className="tsd-panel-content">
 									<ul className="tsd-index-list">
 										{packages.map((pkg) => (
-											<li key={pkg.name}>
-												<Link className="tsd-kind-icon" to={pkg.permalink}>
+											<li key={pkg.packageName}>
+												<Link
+													className="tsd-kind-icon"
+													to={pkg.entryPoints[0].reflection.permalink}
+												>
 													{pkg.packageName}{' '}
 													<span className="tsd-signature-symbol">v{pkg.packageVersion}</span>
 												</Link>

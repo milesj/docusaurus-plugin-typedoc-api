@@ -6,14 +6,24 @@ import type { JSONOutput } from 'typedoc';
 import * as TypeDoc from 'typedoc';
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs-types';
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
-import { addMetadataToPackages, extractMetadata } from './plugin/data';
-import { extractSidebar, extractSidebarPermalinks } from './plugin/sidebar';
+import {
+	extractMetadata,
+	flattenAndGroupPackages,
+	formatPackagesWithoutHostInfo,
+} from './plugin/data';
+import { extractSidebar } from './plugin/sidebar';
+import {
+	PackageConfig,
+	PackageEntryConfig,
+	PackageReflectionGroup,
+	ResolvedPackageConfig,
+} from './types';
 
 export interface DocusaurusPluginTypedocApiOptions {
 	exclude?: string[];
 	id?: string;
 	minimal?: boolean;
-	packageEntryPoints: string[];
+	packages: (PackageConfig | string)[];
 	projectRoot: string;
 	readmes?: boolean;
 }
@@ -23,14 +33,50 @@ export default function typedocApiPlugin(
 	{
 		exclude = [],
 		minimal,
-		packageEntryPoints,
+		packages,
 		projectRoot,
 		readmes,
 		...options
 	}: DocusaurusPluginTypedocApiOptions,
 ): Plugin<JSONOutput.ProjectReflection> {
 	const pluginId = options.id ?? 'default';
-	const apiPackages: JSONOutput.ProjectReflection[] = [];
+
+	// Determine entry points from configs
+	const entryPoints: string[] = [];
+	const packageConfigs: ResolvedPackageConfig[] = packages.map((pkgItem) => {
+		const pkgConfig = typeof pkgItem === 'string' ? { path: pkgItem } : pkgItem;
+		const entries: Record<string, PackageEntryConfig> = {};
+
+		if (!pkgConfig.entry || typeof pkgConfig.entry === 'string') {
+			entries.index = {
+				label: 'Index',
+				path: pkgConfig.entry ?? 'src/index.ts',
+			};
+		} else {
+			Object.entries(pkgConfig.entry).forEach(([importPath, entryConfig]) => {
+				entries[importPath] =
+					typeof entryConfig === 'string'
+						? {
+								label: 'Index',
+								path: entryConfig,
+						  }
+						: entryConfig;
+			});
+		}
+
+		Object.values(entries).forEach((entryConfig) => {
+			entryPoints.push(path.join(projectRoot, pkgConfig.path, entryConfig.path));
+		});
+
+		return {
+			absolutePath: path.join(projectRoot, pkgConfig.path),
+			entryPoints: entries,
+			packagePath: pkgConfig.path,
+		};
+	});
+
+	// Store API data for easy access
+	const apiPackages: PackageReflectionGroup[] = [];
 
 	return {
 		name: 'docusaurus-plugin-typedoc-api',
@@ -50,7 +96,7 @@ export default function typedocApiPlugin(
 			app.bootstrap({
 				tsconfig: path.join(projectRoot, 'tsconfig.json'),
 				emit: true,
-				entryPoints: packageEntryPoints.map((entry) => path.join(projectRoot, entry)),
+				entryPoints,
 				exclude,
 				excludeExternals: true,
 				excludeInternal: true,
@@ -78,7 +124,7 @@ export default function typedocApiPlugin(
 
 			const { createData, addRoute } = actions;
 
-			apiPackages.push(...(await addMetadataToPackages(projectRoot, content)));
+			apiPackages.push(...flattenAndGroupPackages(packageConfigs, content));
 
 			// Define version metadata for all pages. We need to use the same structure as
 			// "docs" so that we can utilize the same React components.
@@ -90,15 +136,16 @@ export default function typedocApiPlugin(
 				banner: 'none',
 				isLast: true,
 				docsSidebars: { api: await extractSidebar(apiPackages) },
-				// @ts-expect-error Old versions
-				permalinkToSidebar: await extractSidebarPermalinks(apiPackages),
 			};
 			const versionMetadataData = await createData(
 				`version-${versionMetadata.version}-metadata.json`,
 				JSON.stringify(versionMetadata),
 			);
 
-			async function createRoute(info: JSONOutput.Reflection): Promise<RouteConfig> {
+			async function createRoute(
+				info: JSONOutput.Reflection,
+				readmePath?: string,
+			): Promise<RouteConfig> {
 				const reflection = extractMetadata(info);
 				const reflectionData = await createData(
 					`reflection-${reflection.id}.json`,
@@ -108,9 +155,10 @@ export default function typedocApiPlugin(
 					content: reflectionData,
 				};
 
-				if (readmes && 'readmePath' in info) {
+				// Rely on mdx to convert the file path to a component
+				if (readmes && readmePath) {
 					Object.assign(modules, {
-						readme: (info as JSONOutput.ProjectReflection).readmePath,
+						readme: readmePath,
 					});
 				}
 
@@ -127,15 +175,24 @@ export default function typedocApiPlugin(
 
 			await Promise.all(
 				apiPackages.map(async (pkg) => {
-					const children = pkg.children?.filter((child) => !child.permalink?.includes('#')) ?? [];
+					await Promise.all(
+						pkg.entryPoints.map(async (entry) => {
+							const children =
+								entry.reflection.children?.filter((child) => !child.permalink?.includes('#')) ?? [];
 
-					// Map a route for every declaration in the package (the exported APIs)
-					const pkgRoutes = await Promise.all(children.map(async (child) => createRoute(child)));
+							// Map a route for every declaration in the package (the exported APIs)
+							const subRoutes = await Promise.all(
+								children.map(async (child) => createRoute(child)),
+							);
 
-					// Map a top-level package route, otherwise `DocPage` shows a page not found
-					pkgRoutes.push(await createRoute(pkg));
+							// Map a top-level package route, otherwise `DocPage` shows a page not found
+							subRoutes.push(
+								await createRoute(entry.reflection, entry.index ? pkg.readmePath : undefined),
+							);
 
-					routes.push(...pkgRoutes);
+							routes.push(...subRoutes);
+						}),
+					);
 				}),
 			);
 
@@ -148,7 +205,10 @@ export default function typedocApiPlugin(
 				routes,
 				modules: {
 					options: optionsData,
-					packages: await createData('packages.json', JSON.stringify(apiPackages)),
+					packages: await createData(
+						'packages.json',
+						JSON.stringify(formatPackagesWithoutHostInfo(apiPackages)),
+					),
 					versionMetadata: versionMetadataData,
 				},
 			});
@@ -161,9 +221,7 @@ export default function typedocApiPlugin(
 
 			// Whitelist the folders that this webpack rule applies to,
 			// otherwise we collide with the native docs/blog plugins.
-			const include = apiPackages
-				.filter((pkg) => !!pkg.readmePath)
-				.map((pkg) => `${path.dirname(pkg.readmePath!)}/`);
+			const include = packageConfigs.map((cfg) => cfg.absolutePath);
 
 			return {
 				module: {

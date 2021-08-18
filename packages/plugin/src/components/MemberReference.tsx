@@ -2,19 +2,42 @@
 
 import React from 'react';
 import { JSONOutput } from 'typedoc';
+import Link from '@docusaurus/Link';
 import { useReflection } from '../hooks/useReflection';
 
 export interface MemberReferenceProps {
-	ref: JSONOutput.ReferenceReflection;
+	reflection: JSONOutput.ReferenceReflection;
 }
 
-// TODO deep links
-export function MemberReference({ ref }: MemberReferenceProps) {
-	const reflection = useReflection(ref.target || ref.id);
+export function MemberReference({ reflection }: MemberReferenceProps) {
+	const target = useReflection(reflection.target);
+	let content: React.ReactNode = null;
 
-	if (!reflection) {
-		return null;
+	if (!target) {
+		content = (
+			<>
+				Re-exports <span className="tsd-signature-type">{reflection.name}</span>
+			</>
+		);
+	} else if (reflection.name === target.name) {
+		content = (
+			<>
+				Re-exports{' '}
+				<Link className="tsd-signature-type" to={target.permalink}>
+					{target.name}
+				</Link>
+			</>
+		);
+	} else {
+		content = (
+			<>
+				Renames and re-exports{' '}
+				<Link className="tsd-signature-type" to={target.permalink}>
+					{target.name}
+				</Link>
+			</>
+		);
 	}
 
-	return <>Re-exports {ref.name}</>;
+	return <div className="tsd-panel-content">{content}</div>;
 }
