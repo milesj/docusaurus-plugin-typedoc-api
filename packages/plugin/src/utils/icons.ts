@@ -21,15 +21,15 @@ const KIND_ICONS: Record<ReflectionKind, string> = {
 	8192: 'json', // IndexSignature
 	16_384: 'symbol-method', // ConstructorSignature
 	32_768: 'symbol-property', // Parameter
-	65_536: 'symbol-keyword', // TypeLiteral
+	65_536: 'symbol-key', // TypeLiteral
 	131_072: 'symbol-type-parameter', // TypeParameter
-	262_144: 'symbol-constant', // Accessor
-	524_288: 'symbol-property', // GetSignature
-	1_048_576: 'symbol-property', // SetSignature
+	262_144: 'symbol-field', // Accessor
+	524_288: 'symbol-field', // GetSignature
+	1_048_576: 'symbol-field', // SetSignature
 	2_097_152: 'json', // ObjectLiteral
 	4_194_304: 'symbol-parameter', // TypeAlias
 	8_388_608: 'symbol-event', // Event
-	16_777_216: 'symbol-key', // Reference
+	16_777_216: 'references', // Reference
 };
 
 export function getKindIcon(kind: ReflectionKind, name: string): string {
@@ -70,7 +70,7 @@ export function getKindIconColor(kind: ReflectionKind): string {
 		case 524_288:
 		// SetSignature
 		case 1_048_576:
-			return 'var(--ifm-color-success-lighter)';
+			return 'var(--ifm-color-success)';
 
 		// Namespace
 		case 2:
@@ -84,7 +84,7 @@ export function getKindIconColor(kind: ReflectionKind): string {
 		case 256:
 		// TypeAlias
 		case 4_194_304:
-			return 'var(--ifm-color-danger-light)';
+			return 'var(--ifm-color-danger)';
 
 		default:
 			return 'inherit';
