@@ -46,13 +46,23 @@ module.exports = {
 };
 ```
 
-- Add the plugin to your `plugins` list in your `docusaurus.config.js`. The `projectRoot` and
-  `packages` options are required.
+- Update `onBrokenLinks` to _not_ error or throw. There's an issue with
+  [custom routes not working properly with broken link detection](https://github.com/facebook/docusaurus/issues/5374).
 
 ```js
 module.exports = {
 	// ...
-	plugins: plugins: [
+	onBrokenLinks: 'warn',
+};
+```
+
+- Configure the plugin in your `plugins` list. The `projectRoot` and `packages` options are
+  required.
+
+```js
+module.exports = {
+	// ...
+	plugins: [
 		[
 			'docusaurus-plugin-typedoc-api',
 			{
