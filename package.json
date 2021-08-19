@@ -4,7 +4,7 @@
   "scripts": {
     "check": "yarn run type && yarn run lint",
     "clean": "packemon clean",
-    "docs": "cd website && yarn run start",
+    "docs": "yarn run build && cd website && yarn run start",
     "build": "packemon build --addEngines",
     "pack": "NODE_ENV=production packemon pack --addEngines --declaration=standard",
     "format": "beemo prettier",

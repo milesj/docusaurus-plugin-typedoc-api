@@ -9,4 +9,30 @@ A Docusaurus plugin for generating source code `/api/*` routes, powered by
 
 ## Documentation
 
-View the [official readme](./packages/plugin/README.md) for more information.
+View the [official readme](./packages/plugin/README.md) for more information on installation and
+usage.
+
+## Contributing
+
+Since this repository doesn't have a public API, nor is its source code organized in a way to
+utilize TypeDoc, we rely on the types provided by [Boost](https://github.com/milesj/boost). To
+contribute, you'll need to clone the Boost project relative to this project as a sibling.
+
+```bash
+# Setup plugin
+git clone git@github.com:milesj/docusaurus-plugin-typedoc-api.git
+cd docusaurus-plugin-typedoc-api
+yarn install
+yarn run pack
+
+# Setup Boost
+cd ..
+git clone git@github.com:milesj/boost.git
+cd boost
+yarn install
+yarn run pack
+```
+
+After both projects are setup, you can make modifications to this project and then verify the
+changes by starting the Docusaurus server with `yarn run docs`. _However_, hot reloading does not
+work, so you'll unfortunately need to run this command over and over again...
