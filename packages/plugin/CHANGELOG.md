@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 1.0.0-alpha.6 - 2021-08-19
+
+#### 🐞 Fixes
+
+- Dont dynamic import marked. ([84c4e5c](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/84c4e5c))
+- Use smart markdown lists. ([44eb720](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/44eb720))
+
+#### 📦 Dependencies
+
+- Update to latest. ([33681ac](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/33681ac))
+
+#### 📘 Docs
+
+- Add note about broken links. ([9f53216](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/9f53216))
+- Update readmes. ([272ae50](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/272ae50))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 1.0.0-alpha.5 - 2021-08-18
 
 #### 🐞 Fixes
