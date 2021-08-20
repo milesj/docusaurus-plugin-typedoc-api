@@ -7,7 +7,6 @@ import { JSONOutput } from 'typedoc';
 import DocPage, { Props as DocPageProps } from '@theme/DocPage';
 import { ApiOptions, DeclarationReflectionMap, PackageReflectionGroup } from '../types';
 import { ApiDataContext } from './ApiDataContext';
-import ApiIndex from './ApiIndex';
 
 function isObject(value: unknown): value is JSONOutput.Reflection {
 	return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -66,15 +65,6 @@ function ApiPage({ options, packages, ...props }: ApiPageProps) {
 		() => ({ options, reflections: mapPackagesToReflection(packages) }),
 		[options, packages],
 	);
-
-	// Define an index here instead of the plugin
-	props.route.routes.push({
-		// eslint-disable-next-line react/no-unstable-nested-components
-		component: () => <ApiIndex packages={packages} />,
-		exact: true,
-		path: '/api',
-		sidebar: 'api',
-	});
 
 	return (
 		<ApiDataContext.Provider value={value}>

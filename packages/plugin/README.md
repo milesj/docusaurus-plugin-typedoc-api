@@ -51,16 +51,6 @@ module.exports = {
 };
 ```
 
-- Update `onBrokenLinks` to _not_ error or throw. There's an issue with
-  [custom routes not working properly with broken link detection](https://github.com/facebook/docusaurus/issues/5374).
-
-```js
-module.exports = {
-	// ...
-	onBrokenLinks: 'warn',
-};
-```
-
 - Configure the plugin in your `plugins` list. The `projectRoot` and `packages` options are
   required.
 

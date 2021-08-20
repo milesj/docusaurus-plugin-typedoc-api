@@ -8,8 +8,8 @@ module.exports = {
 	tagline: 'Dinosaurs are cool',
 	url: 'https://your-docusaurus-test-site.com',
 	baseUrl: '/',
-	onBrokenLinks: 'warn',
-	onBrokenMarkdownLinks: 'warn',
+	onBrokenLinks: 'throw',
+	onBrokenMarkdownLinks: 'throw',
 	favicon: 'img/favicon.ico',
 	organizationName: 'facebook', // Usually your GitHub org/user name.
 	projectName: 'docusaurus', // Usually your repo name.
@@ -71,10 +71,6 @@ module.exports = {
 				{
 					title: 'More',
 					items: [
-						{
-							label: 'Blog',
-							to: '/blog',
-						},
 						{
 							label: 'GitHub',
 							href: 'https://github.com/facebook/docusaurus',

@@ -144,10 +144,18 @@ export default function typedocApiPlugin(
 				isLast: true,
 				docsSidebars: { api: await extractSidebar(apiPackages) },
 			};
+
 			const versionMetadataData = await createData(
 				`version-${versionMetadata.version}-metadata.json`,
 				JSON.stringify(versionMetadata),
 			);
+
+			const packagesData = await createData(
+				'packages.json',
+				JSON.stringify(formatPackagesWithoutHostInfo(apiPackages)),
+			);
+
+			const optionsData = await createData('options.json', JSON.stringify({ minimal, pluginId }));
 
 			async function createRoute(
 				info: JSONOutput.Reflection,
@@ -203,7 +211,15 @@ export default function typedocApiPlugin(
 				}),
 			);
 
-			const optionsData = await createData('options.json', JSON.stringify({ minimal, pluginId }));
+			routes.push({
+				path: '/api',
+				exact: true,
+				component: path.join(__dirname, './components/ApiIndex.js'),
+				modules: {
+					packages: packagesData,
+				},
+				sidebar: 'api',
+			});
 
 			addRoute({
 				path: '/api',
@@ -212,10 +228,7 @@ export default function typedocApiPlugin(
 				routes,
 				modules: {
 					options: optionsData,
-					packages: await createData(
-						'packages.json',
-						JSON.stringify(formatPackagesWithoutHostInfo(apiPackages)),
-					),
+					packages: packagesData,
 					versionMetadata: versionMetadataData,
 				},
 			});
