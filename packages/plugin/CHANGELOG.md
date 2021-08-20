@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.0 - 2021-08-20
+
+#### 🚀 Updates
+
+- Add footer to all routes. ([c2c875c](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/c2c875c))
+
+#### 🐞 Fixes
+
+- Fix API index route handling. ([4517ce8](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/4517ce8))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 1.0.0-alpha.6 - 2021-08-19
 
 #### 🐞 Fixes
