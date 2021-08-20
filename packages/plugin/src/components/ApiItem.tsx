@@ -17,6 +17,7 @@ import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { ApiMetadata, DeclarationReflectionMap } from '../types';
 import { getKindIconHtml } from '../utils/icons';
+import { Footer } from './Footer';
 import { Reflection } from './Reflection';
 import { TypeParametersGeneric } from './TypeParametersGeneric';
 
@@ -120,6 +121,8 @@ export default function ApiItem({ content, readme: Readme, versionMetadata }: Ap
 
 								<Reflection reflection={item} />
 							</div>
+
+							<Footer />
 						</article>
 
 						<DocPaginator metadata={pagingMetadata} />

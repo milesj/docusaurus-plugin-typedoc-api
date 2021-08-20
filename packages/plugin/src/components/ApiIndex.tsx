@@ -2,6 +2,7 @@ import React from 'react';
 import Link from '@docusaurus/Link';
 import { MainHeading } from '@theme/Heading';
 import { PackageReflectionGroup } from '../types';
+import { Footer } from './Footer';
 
 export interface ApiIndexProps {
 	packages: PackageReflectionGroup[];
@@ -35,6 +36,8 @@ export default function ApiIndex({ packages }: ApiIndexProps) {
 								</div>
 							</section>
 						</div>
+
+						<Footer />
 					</article>
 				</div>
 			</div>
