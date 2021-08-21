@@ -36,7 +36,9 @@ export function Comment({ comment, root }: CommentProps) {
 				<dl className="tsd-comment-tags">
 					{comment.tags.map((tag) => (
 						<React.Fragment key={tag.tag}>
-							<dt>{tag.tag}</dt>
+							<dt>
+								<strong>@{tag.tag}:</strong>
+							</dt>
 							<dd>
 								<Markdown content={tag.text} />
 							</dd>
