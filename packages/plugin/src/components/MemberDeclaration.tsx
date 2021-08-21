@@ -3,7 +3,7 @@
 import React from 'react';
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { useReflection } from '../hooks/useReflection';
-import { Comment } from './Comment';
+import { Comment, hasComment } from './Comment';
 import { DefaultValue } from './DefaultValue';
 import { Icon } from './Icon';
 import { MemberSources } from './MemberSources';
@@ -19,6 +19,8 @@ export interface MemberDeclarationProps {
 export function MemberDeclaration({ id }: MemberDeclarationProps) {
 	const reflection = useReflection(id)!;
 	const minimal = useMinimalLayout();
+	const showTypes = reflection.typeParameter && reflection.typeParameter.length > 0;
+	const showDeclaration = !minimal && reflection.type?.declaration;
 
 	return (
 		<>
@@ -38,17 +40,21 @@ export function MemberDeclaration({ id }: MemberDeclarationProps) {
 
 				<Comment comment={reflection.comment} />
 
-				{reflection.typeParameter && (
+				{hasComment(reflection.comment) && (showTypes || showDeclaration) && (
+					<hr className="tsd-divider" />
+				)}
+
+				{showTypes && (
 					<div className="tds-type-parameters">
 						<h4 className="tsd-type-parameters-title">Type parameters</h4>
-						<TypeParameters params={reflection.typeParameter} />
+						<TypeParameters params={reflection.typeParameter!} />
 					</div>
 				)}
 
-				{!minimal && reflection.type?.declaration && (
+				{showDeclaration && (
 					<div className="tsd-type-declaration">
 						<h4>Type declaration</h4>
-						<Parameter param={reflection.type.declaration} />
+						<Parameter param={reflection.type?.declaration} />
 					</div>
 				)}
 			</div>
