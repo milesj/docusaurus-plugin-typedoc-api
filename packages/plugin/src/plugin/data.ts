@@ -107,7 +107,7 @@ export function flattenAndGroupPackages(
 				const reflection = addMetadataToReflections(mod, urlSlug);
 
 				packages[cfg.packagePath].entryPoints.push({
-					index: entry.path.includes('index.ts'),
+					index: importPath === 'index',
 					label: entry.label,
 					reflection,
 					urlSlug,
