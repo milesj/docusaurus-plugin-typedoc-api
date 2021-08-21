@@ -50,7 +50,9 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 				break;
 
 			case 'codespan':
-				elements.push(<MDX.code key={counter}>{token.text}</MDX.code>);
+				// Non-raw is escaped and doesn't work with JSX, so use the raw value
+				// but remove the wrapping backticks!
+				elements.push(<MDX.code key={counter}>{token.raw.slice(1, -1)}</MDX.code>);
 				break;
 
 			case 'heading': {
@@ -113,7 +115,13 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 				break;
 
 			case 'text':
-				elements.push(token.text);
+				elements.push(
+					children.length === 0 ? (
+						token.text
+					) : (
+						<React.Fragment key={counter}>{convertAstToElements(children)}</React.Fragment>
+					),
+				);
 				break;
 
 			default: {
