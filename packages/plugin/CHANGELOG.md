@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 1.0.1 - 2021-08-22
+
+#### 🐞 Fixes
+
+- Add missing divider. ([c75e255](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/c75e255))
+- Cleanup docblock tags. ([214ad2b](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/214ad2b))
+- Fix markdown lists not rendering correctly. ([7befcbd](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/7befcbd))
+- Fix mislabeled index entry point. ([3c60f17](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/3c60f17))
+
+#### 📘 Docs
+
+- Update changelog. ([1e0fdcc](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1e0fdcc))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 # 1.0.0 - 2021-08-20
 
 #### 🎉 Release

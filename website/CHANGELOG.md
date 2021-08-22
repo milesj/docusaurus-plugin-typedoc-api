@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 0.0.7 - 2021-08-22
+
+#### 🐞 Fixes
+
+- Cleanup docblock tags. ([214ad2b](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/214ad2b))
+
+**Note:** Version bump only for package website
+
+
+
+
+
 ### 0.0.6 - 2021-08-20
 
 #### 🐞 Fixes
