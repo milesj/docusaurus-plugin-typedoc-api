@@ -7,6 +7,7 @@ import MDX from '@theme/MDXComponents';
 marked.setOptions({
 	gfm: true,
 	headerIds: false,
+	mangle: false,
 	smartLists: true,
 	smartypants: true,
 });

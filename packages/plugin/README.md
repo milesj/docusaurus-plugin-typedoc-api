@@ -83,6 +83,8 @@ The following options are available to the plugin:
   Defaults to `false`.
 - `readmes` (`boolean`) - Include and render the `README.md` file from every package. Defaults to
   `false`.
+- `tsconfigName` (`string`) - Name of the TypeScript config file in the project root. Defaults to
+  `tsconfig.json`.
 
 ### Packages
 

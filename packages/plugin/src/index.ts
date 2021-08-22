@@ -20,22 +20,26 @@ import {
 } from './types';
 
 export interface DocusaurusPluginTypedocApiOptions {
+	debug?: boolean;
 	exclude?: string[];
 	id?: string;
 	minimal?: boolean;
 	packages: (PackageConfig | string)[];
 	projectRoot: string;
 	readmes?: boolean;
+	tsconfigName?: string;
 }
 
 export default function typedocApiPlugin(
 	context: LoadContext,
 	{
+		debug = false,
 		exclude = [],
 		minimal,
 		packages,
 		projectRoot,
 		readmes,
+		tsconfigName = 'tsconfig.json',
 		...options
 	}: DocusaurusPluginTypedocApiOptions,
 ): Plugin<JSONOutput.ProjectReflection> {
@@ -101,7 +105,7 @@ export default function typedocApiPlugin(
 			app.options.addReader(new TypeDoc.TypeDocReader());
 
 			app.bootstrap({
-				tsconfig: path.join(projectRoot, 'tsconfig.json'),
+				tsconfig: path.join(projectRoot, tsconfigName),
 				emit: true,
 				entryPoints,
 				exclude,
@@ -109,6 +113,7 @@ export default function typedocApiPlugin(
 				excludeInternal: true,
 				excludePrivate: true,
 				excludeProtected: true,
+				logLevel: debug ? 'Verbose' : 'Info',
 				// We use a fake category title so that we can fallback to the parent group
 				defaultCategory: 'CATEGORY',
 			});
