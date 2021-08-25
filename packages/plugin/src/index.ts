@@ -30,6 +30,10 @@ export interface DocusaurusPluginTypedocApiOptions {
 	tsconfigName?: string;
 }
 
+function shouldEmit(tsconfigPath: string): boolean {
+	return Array.isArray(require(tsconfigPath).references);
+}
+
 export default function typedocApiPlugin(
 	context: LoadContext,
 	{
@@ -100,20 +104,22 @@ export default function typedocApiPlugin(
 			}
 
 			const app = new TypeDoc.Application();
+			const tsconfig = path.join(projectRoot, tsconfigName);
 
 			app.options.addReader(new TypeDoc.TSConfigReader());
 			app.options.addReader(new TypeDoc.TypeDocReader());
 
 			app.bootstrap({
-				tsconfig: path.join(projectRoot, tsconfigName),
-				emit: true,
+				tsconfig,
+				// Only emit when using project references
+				emit: shouldEmit(tsconfig),
 				entryPoints,
 				exclude,
 				excludeExternals: true,
 				excludeInternal: true,
 				excludePrivate: true,
 				excludeProtected: true,
-				logLevel: debug ? 'Verbose' : 'Info',
+				logLevel: debug ? 'Verbose' : undefined,
 				// We use a fake category title so that we can fallback to the parent group
 				defaultCategory: 'CATEGORY',
 			});
