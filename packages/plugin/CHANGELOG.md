@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.2.0 - 2021-08-25
+
+#### 🚀 Updates
+
+- Allow some TypeDoc options to be defined. ([389be6f](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/389be6f))
+- Improve local cache strategy. ([6eeba5c](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/6eeba5c))
+- Support packages that utilize deep imports. (#3) ([76b4fa4](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/76b4fa4)), closes [#3](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/3)
+
+#### 🐞 Fixes
+
+- Only enable emit when using project references. ([323be13](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/323be13))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 1.1.0 - 2021-08-22
 
 #### 🚀 Updates
