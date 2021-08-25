@@ -37,7 +37,7 @@ export function Comment({ comment, root }: CommentProps) {
 					{comment.tags.map((tag) => (
 						<React.Fragment key={tag.tag}>
 							<dt>
-								<strong>@{tag.tag}:</strong>
+								<strong>@{tag.tag}</strong>
 							</dt>
 							<dd>
 								<Markdown content={tag.text} />

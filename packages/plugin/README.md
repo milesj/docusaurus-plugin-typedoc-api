@@ -99,7 +99,13 @@ module.exports = {
 ```
 
 However, an object can be provided to customize the entry point. All entry point file paths are
-relative to the package folder.
+relative to the package folder, and support 2 formats:
+
+- **Index imports** - Consumers can only import from the package index. This is typically an entry
+  point like `src/index.ts`.
+- **Deep imports** - Consumers can import anything from the package using its file path. Glob the
+  entire package by only passing the folder name like `src/`. _(This is useful for component
+  libraries)_
 
 ```js
 module.exports = {
@@ -107,15 +113,20 @@ module.exports = {
 		'packages/core',
 		{
 			path: 'packages/react',
+			// Index only imports allowed
+			// import {} from 'package'
 			entry: 'src/index.tsx',
+			// Deep imports allowed
+			// import {} from 'package/some/nested/file'
+			entry: 'src/',
 		},
 	],
 };
 ```
 
-We can also support multiple entry points by passing a map of objects to `entry`, where each key is
-a sub-path that can be imported from the package (excluding the `index`). Each entry object requires
-a `path` and a `label`, which is used for categorizing and sidebars.
+When _not_ using deep imports, multiple entry points can be defined by passing a map of objects to
+`entry`, where each key is a sub-path that can be imported from the package (excluding the `index`).
+Each entry object requires a `path` and a `label`, which is used for categorizing and sidebars.
 
 ```js
 module.exports = {
@@ -124,9 +135,13 @@ module.exports = {
 		{
 			path: 'packages/react',
 			entry: {
+				// import {} from 'package'
 				index: 'src/index.tsx',
+				// import {} from 'package/client'
 				client: { file: 'src/client.tsx', label: 'Client' },
+				// import {} from 'package/server'
 				server: { file: 'src/server.tsx', label: 'Server' },
+				// import {} from 'package/server/test'
 				'server/test': { file: 'src/server/test-utils.tsx', label: 'Server test utils' },
 			},
 		},
