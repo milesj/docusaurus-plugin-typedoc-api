@@ -7,12 +7,12 @@
 A Docusaurus plugin for generating source code `/api/*` routes, powered by
 [TypeDoc](https://typedoc.org/).
 
-The plugin has been designed to _only_ document your public API (anything exported from a package's
-entry point), so any private, protected, or internal code will not be generated.
+The plugin has been designed to document your public API by default (anything exported from a
+package's entry point), so any private, protected, or internal code will not be generated.
 
 ## Requirements
 
-- TypeScript >= v4
+- `typescript` >= v4
 - `@docusaurus/core` >= v2.0.0-beta.4
 - `@docusaurus/preset-classic` >= v2.0.0-beta.4
 
@@ -29,7 +29,7 @@ yarn add --dev docusaurus-plugin-typedoc-api
 Open your `docusaurus.config.js` and make the following changes:
 
 - Add a link to the API route under `themeConfig.navbar.items` and `themeConfig.footer.links` (if
-  you wish).
+  desired).
 
 ```js
 module.exports = {
@@ -62,7 +62,10 @@ module.exports = {
 			'docusaurus-plugin-typedoc-api',
 			{
 				projectRoot: path.join(__dirname, '..'),
+				// Monorepo
 				packages: ['packages/example', 'packages/other'],
+				// Polyrepo
+				packages: ['.'],
 			},
 		],
 	],
@@ -85,6 +88,9 @@ The following options are available to the plugin:
   `false`.
 - `tsconfigName` (`string`) - Name of the TypeScript config file in the project root. Defaults to
   `tsconfig.json`.
+- `typedocOptions` (`object`) - [TypeDoc options](https://typedoc.org/guides/options/#input-options)
+  to pass to the compiler. Only supports a small subset of options, primarily around visibility
+  exclusion.
 
 ### Packages
 

@@ -19,7 +19,7 @@ import {
 	ResolvedPackageConfig,
 } from './types';
 
-export interface DocusaurusPluginTypedocApiOptions {
+export interface DocusaurusPluginTypeDocApiOptions {
 	debug?: boolean;
 	exclude?: string[];
 	id?: string;
@@ -28,6 +28,25 @@ export interface DocusaurusPluginTypedocApiOptions {
 	projectRoot: string;
 	readmes?: boolean;
 	tsconfigName?: string;
+	typedocOptions?: Partial<
+		Pick<
+			TypeDoc.TypeDocOptions,
+			| 'disableSources'
+			| 'emit'
+			| 'excludeExternals'
+			| 'excludeInternal'
+			| 'excludeNotDocumented'
+			| 'excludePrivate'
+			| 'excludeProtected'
+			| 'excludeTags'
+			| 'externalPattern'
+			| 'listInvalidSymbolLinks'
+			| 'logger'
+			| 'logLevel'
+			| 'sort'
+			| 'treatWarningsAsErrors'
+		>
+	>;
 }
 
 function shouldEmit(tsconfigPath: string): boolean {
@@ -44,8 +63,9 @@ export default function typedocApiPlugin(
 		projectRoot,
 		readmes,
 		tsconfigName = 'tsconfig.json',
+		typedocOptions = {},
 		...options
-	}: DocusaurusPluginTypedocApiOptions,
+	}: DocusaurusPluginTypeDocApiOptions,
 ): Plugin<JSONOutput.ProjectReflection> {
 	const pluginId = options.id ?? 'default';
 
@@ -110,16 +130,20 @@ export default function typedocApiPlugin(
 			app.options.addReader(new TypeDoc.TypeDocReader());
 
 			app.bootstrap({
-				tsconfig,
 				// Only emit when using project references
 				emit: shouldEmit(tsconfig),
-				entryPoints,
-				exclude,
+				// Only document the public API by default
 				excludeExternals: true,
 				excludeInternal: true,
 				excludePrivate: true,
 				excludeProtected: true,
+				// Enable verbose logging when debugging
 				logLevel: debug ? 'Verbose' : undefined,
+				...typedocOptions,
+				// Control how config and packages are detected
+				tsconfig,
+				entryPoints,
+				exclude,
 				// We use a fake category title so that we can fallback to the parent group
 				defaultCategory: 'CATEGORY',
 			});
