@@ -35,4 +35,5 @@ yarn run pack
 
 After both projects are setup, you can make modifications to this project and then verify the
 changes by starting the Docusaurus server with `yarn run docs`. _However_, hot reloading does not
-work, so you'll unfortunately need to run this command over and over again...
+work, so you'll unfortunately need to run this command over and over again... haven't spent the time
+improving this yet.
