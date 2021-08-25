@@ -66,6 +66,47 @@ export function addMetadataToReflections(
 	};
 }
 
+function mergeReflections(base: JSONOutput.ProjectReflection, next: JSONOutput.ProjectReflection) {
+	if (Array.isArray(base.children) && Array.isArray(next.children)) {
+		base.children.push(...next.children);
+	}
+
+	if (Array.isArray(base.groups) && Array.isArray(next.groups)) {
+		next.groups.forEach((group) => {
+			const baseGroup = base.groups?.find((g) => g.title === group.title);
+
+			if (baseGroup) {
+				baseGroup.children?.push(...(group.children ?? []));
+			} else {
+				base.groups?.push(group);
+			}
+		});
+
+		// We can remove refs since were merging all reflections into one
+		// eslint-disable-next-line no-param-reassign
+		base.groups = base.groups.filter((group) => group.title !== 'References');
+	}
+}
+
+function sortReflectionGroups(reflections: JSONOutput.ProjectReflection[]) {
+	reflections.forEach((reflection) => {
+		const map = createReflectionMap(reflection.children);
+		const sort = (a: number, b: number) => (map[a].name < map[b].name ? -1 : 1);
+
+		reflection.categories?.forEach((category) => {
+			category.children?.sort(sort);
+		});
+
+		reflection.groups?.forEach((group) => {
+			group.children?.sort(sort);
+
+			group.categories?.forEach((category) => {
+				category.children?.sort(sort);
+			});
+		});
+	});
+}
+
 export function flattenAndGroupPackages(
 	packageConfigs: ResolvedPackageConfig[],
 	project: JSONOutput.ProjectReflection,
@@ -78,6 +119,7 @@ export function flattenAndGroupPackages(
 
 	// Loop through every TypeDoc module and group based on package and entry point
 	const packages: Record<string, PackageReflectionGroup> = {};
+	const packagesWithDeepImports: JSONOutput.ProjectReflection[] = [];
 
 	modules.forEach((mod) => {
 		const relEntrySourceFile = mod.sources?.[0]?.fileName;
@@ -85,8 +127,12 @@ export function flattenAndGroupPackages(
 		packageConfigs.some((cfg) =>
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
 				const relEntryPoint = path.join(cfg.packagePath, entry.path);
+				const isUsingDeepImports = !entry.path.match(/\.tsx?$/);
 
-				if (relEntrySourceFile !== relEntryPoint) {
+				if (
+					(!isUsingDeepImports && relEntrySourceFile !== relEntryPoint) ||
+					(isUsingDeepImports && !relEntrySourceFile?.startsWith(relEntryPoint))
+				) {
 					return false;
 				}
 
@@ -105,13 +151,28 @@ export function flattenAndGroupPackages(
 				// Add metadata to package and children reflections
 				const urlSlug = getPackageSlug(cfg.packagePath, importPath);
 				const reflection = addMetadataToReflections(mod, urlSlug);
+				const existingEntry = packages[cfg.packagePath].entryPoints.find(
+					(ep) => ep.urlSlug === urlSlug,
+				);
 
-				packages[cfg.packagePath].entryPoints.push({
-					index: importPath === 'index',
-					label: entry.label,
-					reflection,
-					urlSlug,
-				});
+				if (existingEntry) {
+					if (isUsingDeepImports) {
+						mergeReflections(existingEntry.reflection, reflection);
+					} else {
+						console.error(`Entry point ${urlSlug} already defined. How did you get here?`);
+					}
+				} else {
+					packages[cfg.packagePath].entryPoints.push({
+						index: importPath === 'index',
+						label: entry.label,
+						reflection,
+						urlSlug,
+					});
+
+					if (isUsingDeepImports) {
+						packagesWithDeepImports.push(reflection);
+					}
+				}
 
 				// Update the reflection name since its useless
 				reflection.name =
@@ -123,6 +184,9 @@ export function flattenAndGroupPackages(
 			}),
 		);
 	});
+
+	// Since we merged multiple reflections together, we'll need to sort groups manually
+	sortReflectionGroups(packagesWithDeepImports);
 
 	// Sort packages by name
 	return Object.values(packages).sort((a, b) => a.packageName.localeCompare(b.packageName));
