@@ -67,3 +67,8 @@ declare module 'typedoc/dist/lib/serialization/schema' {
 		declaration?: DeclarationReflection;
 	}
 }
+
+declare global {
+	// eslint-disable-next-line no-var, vars-on-top
+	var typedocBuild: { count: number };
+}

@@ -159,6 +159,7 @@ export function flattenAndGroupPackages(
 					if (isUsingDeepImports) {
 						mergeReflections(existingEntry.reflection, reflection);
 					} else {
+						// eslint-disable-next-line no-console
 						console.error(`Entry point ${urlSlug} already defined. How did you get here?`);
 					}
 				} else {

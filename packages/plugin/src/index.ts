@@ -19,6 +19,12 @@ import {
 	ResolvedPackageConfig,
 } from './types';
 
+// Persist build state as a global, since the plugin is re-evaluated every hot reload.
+// Because of this, we can't use state in the plugin or module scope.
+if (!global.typedocBuild) {
+	global.typedocBuild = { count: 0 };
+}
+
 export interface DocusaurusPluginTypeDocApiOptions {
 	debug?: boolean;
 	exclude?: string[];
@@ -110,16 +116,11 @@ export default function typedocApiPlugin(
 		name: 'docusaurus-plugin-typedoc-api',
 
 		async loadContent() {
-			const date = new Date();
-			const filePath = path.join(
-				context.generatedFilesDir,
-				`typedoc-${date.getFullYear()}${date.getMonth()}${date.getDay()}.json`,
-			);
+			const filePath = path.join(context.generatedFilesDir, 'typedoc.json');
 
-			// Running the TypeDoc compiler is pretty slow, so we cache and reuse the file.
-			// However, I'm not sure how to invalidate this cache as Docusaurus does not
-			// provide any contextual information to do so. So for now, I'm caching by date...
-			if (fs.existsSync(filePath)) {
+			// Running the TypeDoc compiler is pretty slow...
+			// We should only load on the 1st build, and use cache for subsequent reloads.
+			if (global.typedocBuild.count > 0 && fs.existsSync(filePath)) {
 				return import(filePath);
 			}
 
@@ -138,7 +139,7 @@ export default function typedocApiPlugin(
 				excludePrivate: true,
 				excludeProtected: true,
 				// Enable verbose logging when debugging
-				logLevel: debug ? 'Verbose' : undefined,
+				logLevel: debug ? 'Verbose' : 'Info',
 				...typedocOptions,
 				// Control how config and packages are detected
 				tsconfig,
@@ -152,6 +153,8 @@ export default function typedocApiPlugin(
 
 			if (project) {
 				await app.generateJson(project, filePath);
+
+				global.typedocBuild.count += 1;
 
 				return import(filePath);
 			}
