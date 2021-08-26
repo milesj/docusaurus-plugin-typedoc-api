@@ -107,22 +107,49 @@ function sortReflectionGroups(reflections: JSONOutput.ProjectReflection[]) {
 	});
 }
 
+function matchesEntryPoint(
+	sourceFile: string,
+	entryPoint: string,
+	{ deep, poly }: { deep: boolean; poly: boolean },
+): boolean {
+	// Polyrepo
+	if (poly) {
+		return (
+			// index.ts === src/index.ts
+			(!deep && sourceFile === path.basename(entryPoint)) ||
+			// some/deep/file.ts === ...
+			deep
+		);
+	}
+
+	// Monorepo
+	return (
+		// packages/foo/src/index.ts === packages/foo/src/index.ts
+		(!deep && sourceFile === entryPoint) ||
+		// packages/foo/src/some/deep/file.ts === packages/foo/src/
+		(deep && sourceFile.startsWith(entryPoint))
+	);
+}
+
 export function flattenAndGroupPackages(
 	packageConfigs: ResolvedPackageConfig[],
 	project: JSONOutput.ProjectReflection,
 ): PackageReflectionGroup[] {
+	const isSinglePackage = packageConfigs.length === 1;
 	const modules = (
-		(project.kind === ReflectionKind.Project
-			? project.children ?? []
-			: [project]) as JSONOutput.ProjectReflection[]
-	).filter((pkg) => pkg.kind === ReflectionKind.Module);
+		isSinglePackage
+			? // Polyrepo
+			  [project]
+			: // Monorepo
+			  project.children ?? []
+	).filter((pkg) => pkg.kind === ReflectionKind.Project || pkg.kind === ReflectionKind.Module);
 
 	// Loop through every TypeDoc module and group based on package and entry point
 	const packages: Record<string, PackageReflectionGroup> = {};
 	const packagesWithDeepImports: JSONOutput.ProjectReflection[] = [];
 
 	modules.forEach((mod) => {
-		const relEntrySourceFile = mod.sources?.[0]?.fileName;
+		const relSourceFile = mod.sources?.[0]?.fileName ?? '';
 
 		packageConfigs.some((cfg) =>
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
@@ -130,8 +157,10 @@ export function flattenAndGroupPackages(
 				const isUsingDeepImports = !entry.path.match(/\.tsx?$/);
 
 				if (
-					(!isUsingDeepImports && relEntrySourceFile !== relEntryPoint) ||
-					(isUsingDeepImports && !relEntrySourceFile?.startsWith(relEntryPoint))
+					!matchesEntryPoint(relSourceFile, relEntryPoint, {
+						deep: isUsingDeepImports,
+						poly: isSinglePackage,
+					})
 				) {
 					return false;
 				}

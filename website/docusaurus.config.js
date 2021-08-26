@@ -109,49 +109,51 @@ module.exports = {
 		[
 			'docusaurus-plugin-typedoc-api',
 			{
-				projectRoot: path.join(__dirname, '../../boost'),
-				packages: [
-					...[
-						'args',
-						'common',
-						'config',
-						'decorators',
-						'event',
-						'pipeline',
-						'plugin',
-						'terminal',
-						'translate',
-					].map((pkg) => `packages/${pkg}`),
-					{
-						path: 'packages/cli',
-						entry: {
-							index: 'src/index.ts',
-							react: { path: 'src/react.ts', label: 'Components & hooks' },
-							test: { path: 'src/test.ts', label: 'Test utilities' },
-						},
-					},
-					{
-						path: 'packages/debug',
-						entry: {
-							index: { path: 'src/index.ts', label: 'Index' },
-							test: { path: 'src/test.ts', label: 'Test utilities' },
-						},
-					},
-					{
-						path: 'packages/log',
-						entry: {
-							index: { path: 'src/index.ts', label: 'Index' },
-							test: { path: 'src/test.ts', label: 'Test utilities' },
-						},
-					},
-					{
-						path: 'packages/module',
-						entry: {
-							index: 'src/index.ts',
-							loader: { path: 'src/loaders/index.ts', label: 'ESM Loaders' },
-						},
-					},
-				],
+				projectRoot: path.join(__dirname, '..'),
+				packages: [{ path: 'packages/plugin', entry: 'src/' }],
+				// 		projectRoot: path.join(__dirname, '../../boost'),
+				// 		packages: [
+				// 			...[
+				// 				'args',
+				// 				'common',
+				// 				'config',
+				// 				'decorators',
+				// 				'event',
+				// 				'pipeline',
+				// 				'plugin',
+				// 				'terminal',
+				// 				'translate',
+				// 			].map((pkg) => `packages/${pkg}`),
+				// 			{
+				// 				path: 'packages/cli',
+				// 				entry: {
+				// 					index: 'src/index.ts',
+				// 					react: { path: 'src/react.ts', label: 'Components & hooks' },
+				// 					test: { path: 'src/test.ts', label: 'Test utilities' },
+				// 				},
+				// 			},
+				// 			{
+				// 				path: 'packages/debug',
+				// 				entry: {
+				// 					index: { path: 'src/index.ts', label: 'Index' },
+				// 					test: { path: 'src/test.ts', label: 'Test utilities' },
+				// 				},
+				// 			},
+				// 			{
+				// 				path: 'packages/log',
+				// 				entry: {
+				// 					index: { path: 'src/index.ts', label: 'Index' },
+				// 					test: { path: 'src/test.ts', label: 'Test utilities' },
+				// 				},
+				// 			},
+				// 			{
+				// 				path: 'packages/module',
+				// 				entry: {
+				// 					index: 'src/index.ts',
+				// 					loader: { path: 'src/loaders/index.ts', label: 'ESM Loaders' },
+				// 				},
+				// 			},
+				// 		],
 				exclude: ['**/themes/*', '**/website/*'],
 				minimal: false,
 				readmes: false,
