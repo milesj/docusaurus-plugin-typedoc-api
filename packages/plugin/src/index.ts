@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import type { JSONOutput } from 'typedoc';
 import * as TypeDoc from 'typedoc';
+import ts from 'typescript';
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs-types';
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
 import {
@@ -55,8 +56,22 @@ export interface DocusaurusPluginTypeDocApiOptions {
 	>;
 }
 
-function shouldEmit(tsconfigPath: string): boolean {
-	return Array.isArray(require(tsconfigPath).references);
+function shouldEmit(projectRoot: string, tsconfigPath: string): boolean {
+	const { config, error } = ts.readConfigFile(tsconfigPath, (name) =>
+		fs.readFileSync(name, 'utf8'),
+	);
+
+	if (error) {
+		throw new Error(`Failed to load ${tsconfigPath}`);
+	}
+
+	const result = ts.parseJsonConfigFileContent(config, ts.sys, projectRoot, {}, tsconfigPath);
+
+	if (result.errors.length > 0) {
+		throw new Error(`Failed to parse ${tsconfigPath}`);
+	}
+
+	return Boolean(result.projectReferences && result.projectReferences.length > 0);
 }
 
 export default function typedocApiPlugin(
@@ -132,7 +147,7 @@ export default function typedocApiPlugin(
 
 			app.bootstrap({
 				// Only emit when using project references
-				emit: shouldEmit(tsconfig),
+				emit: shouldEmit(projectRoot, tsconfig),
 				// Only document the public API by default
 				excludeExternals: true,
 				excludeInternal: true,
