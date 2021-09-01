@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 1.2.1 - 2021-09-01
+
+#### 🐞 Fixes
+
+- Use typescript to parse config files. ([825376f](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/825376f))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 1.2.0 - 2021-08-25
 
 #### 🚀 Updates
