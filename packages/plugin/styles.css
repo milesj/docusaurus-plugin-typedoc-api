@@ -216,8 +216,9 @@ html[data-theme='light'] .tsd-panel-content {
 	margin-right: 0.5rem;
 }
 
-.codicon {
+.codicon[class*='codicon-'] {
 	vertical-align: middle;
+	display: inline-block;
 }
 
 /*
