@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.3.0 - 2021-09-08
+
+#### 🚀 Updates
+
+- Add support for polyrepos. (#5) ([e335e31](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/e335e31)), closes [#5](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/5)
+
+#### 🐞 Fixes
+
+- Update icons to be inline block. ([116cf41](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/116cf41))
+
+#### 📦 Dependencies
+
+- Update requirement to beta.6. ([490a4db](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/490a4db))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 1.2.1 - 2021-09-01
 
 #### 🐞 Fixes
