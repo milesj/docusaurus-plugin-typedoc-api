@@ -176,8 +176,29 @@ module.exports = {
 				// ],
 
 				// POLYREPO STANDARD
-				projectRoot: path.join(__dirname, '../fixtures/polyrepo-standard'),
-				packages: ['.'],
+				// projectRoot: path.join(__dirname, '../fixtures/polyrepo-standard'),
+				// packages: ['.'],
+
+				// POLYREPO DEEP IMPORTS
+				projectRoot: path.join(__dirname, '../fixtures/polyrepo-deep-imports'),
+				packages: [
+					{
+						path: '.',
+						entry: 'src/',
+					},
+				],
+
+				// POLYREPO MULTIPLE IMPORTS
+				// projectRoot: path.join(__dirname, '../fixtures/polyrepo-multi-imports'),
+				// packages: [
+				// 	{
+				// 		path: '.',
+				// 		entry: {
+				// 			index: 'src/index.ts',
+				// 			test: { path: 'src/test.ts', label: 'Test utilities' },
+				// 		},
+				// 	},
+				// ],
 			},
 		],
 	],
