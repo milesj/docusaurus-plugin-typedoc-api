@@ -5,7 +5,8 @@ import { ApiDataContext } from '../components/ApiDataContext';
 export function useReflection<T = JSONOutput.DeclarationReflection>(id?: number): T | null {
 	const { reflections } = useContext(ApiDataContext);
 
-	if (!id) {
+	// 0 is a valid ID
+	if (id === undefined) {
 		return null;
 	}
 

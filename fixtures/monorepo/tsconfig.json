@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Beemo",
+  "extends": "../../tsconfig.options.json",
+  "files": [],
+  "references": [
+    {
+      "path": "deep-imports"
+    },
+    {
+      "path": "multi-imports"
+    },
+    {
+      "path": "standard"
+    }
+  ]
+}

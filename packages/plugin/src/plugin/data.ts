@@ -107,22 +107,80 @@ function sortReflectionGroups(reflections: JSONOutput.ProjectReflection[]) {
 	});
 }
 
+function matchesEntryPoint(
+	sourceFile: string,
+	entryPoint: string,
+	{ deep, poly }: { deep: boolean; poly: boolean },
+): boolean {
+	// Polyrepo
+	if (poly) {
+		return (
+			// index.ts === src/index.ts
+			(!deep && sourceFile === path.basename(entryPoint)) ||
+			// some/deep/file.ts === ...
+			deep
+		);
+	}
+
+	// Monorepo
+	return (
+		// packages/foo/src/index.ts === packages/foo/src/index.ts
+		(!deep && sourceFile === entryPoint) ||
+		// packages/foo/src/some/deep/file.ts === packages/foo/src/
+		(deep && sourceFile.startsWith(entryPoint))
+	);
+}
+
+function extractReflectionModules(
+	project: JSONOutput.ProjectReflection,
+	isPolyrepo: boolean,
+): JSONOutput.ProjectReflection[] {
+	const modules: JSONOutput.ProjectReflection[] = [];
+
+	const inheritChildren = () => {
+		project.children?.forEach((child) => {
+			if (child.kind === ReflectionKind.Module) {
+				modules.push(child);
+			}
+		});
+	};
+
+	// Polyrepos are extremely difficult, as the TypeDoc structure is
+	// different for every kind of package entry point pattern
+	if (isPolyrepo) {
+		const hasNoModules = project.children?.every((child) => child.kind !== ReflectionKind.Module);
+
+		// Standard entry point through index.ts only
+		// No "module" children, but has groups/sources/etc on the "project"
+		if (hasNoModules) {
+			modules.push(project);
+			// Multi/deep imports have "module" children
+		} else {
+			inheritChildren();
+		}
+
+		// Monorepo is extremely simple, as every package is a module reflection
+		// as a child on the top-level project reflection
+	} else {
+		inheritChildren();
+	}
+
+	return modules;
+}
+
 export function flattenAndGroupPackages(
 	packageConfigs: ResolvedPackageConfig[],
 	project: JSONOutput.ProjectReflection,
 ): PackageReflectionGroup[] {
-	const modules = (
-		(project.kind === ReflectionKind.Project
-			? project.children ?? []
-			: [project]) as JSONOutput.ProjectReflection[]
-	).filter((pkg) => pkg.kind === ReflectionKind.Module);
+	const isSinglePackage = packageConfigs.length === 1;
+	const modules = extractReflectionModules(project, isSinglePackage);
 
 	// Loop through every TypeDoc module and group based on package and entry point
 	const packages: Record<string, PackageReflectionGroup> = {};
 	const packagesWithDeepImports: JSONOutput.ProjectReflection[] = [];
 
 	modules.forEach((mod) => {
-		const relEntrySourceFile = mod.sources?.[0]?.fileName;
+		const relSourceFile = mod.sources?.[0]?.fileName ?? '';
 
 		packageConfigs.some((cfg) =>
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
@@ -130,8 +188,10 @@ export function flattenAndGroupPackages(
 				const isUsingDeepImports = !entry.path.match(/\.tsx?$/);
 
 				if (
-					(!isUsingDeepImports && relEntrySourceFile !== relEntryPoint) ||
-					(isUsingDeepImports && !relEntrySourceFile?.startsWith(relEntryPoint))
+					!matchesEntryPoint(relSourceFile, relEntryPoint, {
+						deep: isUsingDeepImports,
+						poly: isSinglePackage,
+					})
 				) {
 					return false;
 				}

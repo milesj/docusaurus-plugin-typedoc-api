@@ -117,10 +117,15 @@ export default function typedocApiPlugin(
 			entryPoints.push(path.join(projectRoot, pkgConfig.path, entryConfig.path));
 		});
 
+		const absolutePath = path.join(projectRoot, pkgConfig.path);
+
 		return {
-			absolutePath: path.join(projectRoot, pkgConfig.path),
+			absolutePath,
 			entryPoints: entries,
-			packagePath: pkgConfig.path,
+			packagePath:
+				pkgConfig.slug ?? (pkgConfig.path === '.' || pkgConfig.path === '')
+					? path.basename(absolutePath)
+					: pkgConfig.path,
 		};
 	});
 
