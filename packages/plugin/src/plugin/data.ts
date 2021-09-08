@@ -131,18 +131,44 @@ function matchesEntryPoint(
 	);
 }
 
+function extractReflectionModules(
+	project: JSONOutput.ProjectReflection,
+	isPolyrepo: boolean,
+): JSONOutput.ProjectReflection[] {
+	const modules: JSONOutput.ProjectReflection[] = [];
+
+	// Polyrepos are extremely difficult, as the TypeDoc structure is
+	// different for every kind of package entry point pattern
+	if (isPolyrepo) {
+		const hasNoModules = project.children?.every((child) => child.kind !== ReflectionKind.Module);
+
+		// Standard entry point through index.ts only?
+		// No "module" children, but has groups/sources/etc on the "project"
+		if (hasNoModules) {
+			modules.push(project);
+		}
+
+		// Monorepo is extremely simple, as every package is a module reflection
+		// as a child on the top-level project reflection
+	} else {
+		project.children?.forEach((child) => {
+			if (child.kind === ReflectionKind.Module) {
+				modules.push(child);
+			}
+		});
+	}
+
+	return modules;
+}
+
 export function flattenAndGroupPackages(
 	packageConfigs: ResolvedPackageConfig[],
 	project: JSONOutput.ProjectReflection,
 ): PackageReflectionGroup[] {
+	console.log(packageConfigs);
+
 	const isSinglePackage = packageConfigs.length === 1;
-	const modules = (
-		isSinglePackage
-			? // Polyrepo
-			  [project]
-			: // Monorepo
-			  project.children ?? []
-	).filter((pkg) => pkg.kind === ReflectionKind.Project || pkg.kind === ReflectionKind.Module);
+	const modules = extractReflectionModules(project, isSinglePackage);
 
 	// Loop through every TypeDoc module and group based on package and entry point
 	const packages: Record<string, PackageReflectionGroup> = {};
@@ -153,6 +179,7 @@ export function flattenAndGroupPackages(
 
 		packageConfigs.some((cfg) =>
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
+				console.log(importPath, entry);
 				const relEntryPoint = path.join(cfg.packagePath, entry.path);
 				const isUsingDeepImports = !entry.path.match(/\.tsx?$/);
 
@@ -217,6 +244,8 @@ export function flattenAndGroupPackages(
 
 	// Since we merged multiple reflections together, we'll need to sort groups manually
 	sortReflectionGroups(packagesWithDeepImports);
+
+	console.log(packages);
 
 	// Sort packages by name
 	return Object.values(packages).sort((a, b) => a.packageName.localeCompare(b.packageName));

@@ -11,6 +11,7 @@ export interface PackageEntryConfig {
 export interface PackageConfig {
 	path: string; // Folder relative to project root
 	entry?: Record<string, PackageEntryConfig | string> | string;
+	slug?: string;
 }
 
 export interface ResolvedPackageConfig {

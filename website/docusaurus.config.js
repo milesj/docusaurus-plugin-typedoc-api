@@ -109,6 +109,11 @@ module.exports = {
 		[
 			'docusaurus-plugin-typedoc-api',
 			{
+				exclude: ['**/themes/*', '**/website/*'],
+				minimal: false,
+				readmes: false,
+
+				// BOOST
 				// projectRoot: path.join(__dirname, '../../boost'),
 				// packages: [
 				// 	...[
@@ -152,25 +157,27 @@ module.exports = {
 				// 		},
 				// 	},
 				// ],
+
 				// MONOREPO
-				projectRoot: path.join(__dirname, '../fixtures/monorepo'),
-				packages: [
-					{
-						path: 'deep-imports',
-						entry: 'src/',
-					},
-					{
-						path: 'multi-imports',
-						entry: {
-							index: 'src/index.ts',
-							test: { path: 'src/test.ts', label: 'Test utilities' },
-						},
-					},
-					'standard',
-				],
-				exclude: ['**/themes/*', '**/website/*'],
-				minimal: false,
-				readmes: false,
+				// projectRoot: path.join(__dirname, '../fixtures/monorepo'),
+				// packages: [
+				// 	{
+				// 		path: 'deep-imports',
+				// 		entry: 'src/',
+				// 	},
+				// 	{
+				// 		path: 'multi-imports',
+				// 		entry: {
+				// 			index: 'src/index.ts',
+				// 			test: { path: 'src/test.ts', label: 'Test utilities' },
+				// 		},
+				// 	},
+				// 	'standard',
+				// ],
+
+				// POLYREPO STANDARD
+				projectRoot: path.join(__dirname, '../fixtures/polyrepo-standard'),
+				packages: ['.'],
 			},
 		],
 	],
