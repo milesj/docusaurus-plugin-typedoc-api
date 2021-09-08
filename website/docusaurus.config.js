@@ -114,49 +114,49 @@ module.exports = {
 				readmes: false,
 
 				// BOOST
-				// projectRoot: path.join(__dirname, '../../boost'),
-				// packages: [
-				// 	...[
-				// 		'args',
-				// 		'common',
-				// 		'config',
-				// 		'decorators',
-				// 		'event',
-				// 		'pipeline',
-				// 		'plugin',
-				// 		'terminal',
-				// 		'translate',
-				// 	].map((pkg) => `packages/${pkg}`),
-				// 	{
-				// 		path: 'packages/cli',
-				// 		entry: {
-				// 			index: 'src/index.ts',
-				// 			react: { path: 'src/react.ts', label: 'Components & hooks' },
-				// 			test: { path: 'src/test.ts', label: 'Test utilities' },
-				// 		},
-				// 	},
-				// 	{
-				// 		path: 'packages/debug',
-				// 		entry: {
-				// 			index: { path: 'src/index.ts', label: 'Index' },
-				// 			test: { path: 'src/test.ts', label: 'Test utilities' },
-				// 		},
-				// 	},
-				// 	{
-				// 		path: 'packages/log',
-				// 		entry: {
-				// 			index: { path: 'src/index.ts', label: 'Index' },
-				// 			test: { path: 'src/test.ts', label: 'Test utilities' },
-				// 		},
-				// 	},
-				// 	{
-				// 		path: 'packages/module',
-				// 		entry: {
-				// 			index: 'src/index.ts',
-				// 			loader: { path: 'src/loaders/index.ts', label: 'ESM Loaders' },
-				// 		},
-				// 	},
-				// ],
+				projectRoot: path.join(__dirname, '../../boost'),
+				packages: [
+					...[
+						'args',
+						'common',
+						'config',
+						'decorators',
+						'event',
+						'pipeline',
+						'plugin',
+						'terminal',
+						'translate',
+					].map((pkg) => `packages/${pkg}`),
+					{
+						path: 'packages/cli',
+						entry: {
+							index: 'src/index.ts',
+							react: { path: 'src/react.ts', label: 'Components & hooks' },
+							test: { path: 'src/test.ts', label: 'Test utilities' },
+						},
+					},
+					{
+						path: 'packages/debug',
+						entry: {
+							index: { path: 'src/index.ts', label: 'Index' },
+							test: { path: 'src/test.ts', label: 'Test utilities' },
+						},
+					},
+					{
+						path: 'packages/log',
+						entry: {
+							index: { path: 'src/index.ts', label: 'Index' },
+							test: { path: 'src/test.ts', label: 'Test utilities' },
+						},
+					},
+					{
+						path: 'packages/module',
+						entry: {
+							index: 'src/index.ts',
+							loader: { path: 'src/loaders/index.ts', label: 'ESM Loaders' },
+						},
+					},
+				],
 
 				// MONOREPO
 				// projectRoot: path.join(__dirname, '../fixtures/monorepo'),
@@ -180,13 +180,13 @@ module.exports = {
 				// packages: ['.'],
 
 				// POLYREPO DEEP IMPORTS
-				projectRoot: path.join(__dirname, '../fixtures/polyrepo-deep-imports'),
-				packages: [
-					{
-						path: '.',
-						entry: 'src/',
-					},
-				],
+				// projectRoot: path.join(__dirname, '../fixtures/polyrepo-deep-imports'),
+				// packages: [
+				// 	{
+				// 		path: '.',
+				// 		entry: 'src/',
+				// 	},
+				// ],
 
 				// POLYREPO MULTIPLE IMPORTS
 				// projectRoot: path.join(__dirname, '../fixtures/polyrepo-multi-imports'),
