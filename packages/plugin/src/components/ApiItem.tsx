@@ -4,6 +4,7 @@
 
 import React, { useMemo } from 'react';
 import type { JSONOutput } from 'typedoc';
+import { ThemeClassNames } from '@docusaurus/theme-common';
 import { TOCItem } from '@docusaurus/types';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import DocPaginator from '@theme/DocPaginator';
@@ -58,6 +59,7 @@ export interface ApiItemProps extends Omit<DocItemProps, 'content'> {
 	readme?: React.ComponentType;
 }
 
+// eslint-disable-next-line complexity
 export default function ApiItem({ content, readme: Readme, versionMetadata }: ApiItemProps) {
 	const item = useReflection(content.id)!;
 	const prevItem = useReflection(content.previousId);
@@ -69,7 +71,6 @@ export default function ApiItem({ content, readme: Readme, versionMetadata }: Ap
 	// Table of contents
 	const toc = useMemo(() => extractTOC(item, reflections), [item, reflections]);
 	const canRenderTOC = toc.length > 0;
-	const renderTocMobile = canRenderTOC && (windowSize === 'mobile' || windowSize === 'ssr');
 	const renderTocDesktop = canRenderTOC && (windowSize === 'desktop' || windowSize === 'ssr');
 
 	// Enable once we support versioning
@@ -103,12 +104,21 @@ export default function ApiItem({ content, readme: Readme, versionMetadata }: Ap
 					<div className="apiItemContainer">
 						<article>
 							{showVersionBadge && (
-								<span className="badge badge--secondary">Version: {versionMetadata.label}</span>
+								<span
+									className={`${ThemeClassNames.docs.docVersionBadge ?? ''} badge badge--secondary`}
+								>
+									Version: {versionMetadata.label}
+								</span>
 							)}
 
-							{renderTocMobile && <TOCCollapsible className="apiTocMobile" toc={toc} />}
+							{canRenderTOC && (
+								<TOCCollapsible
+									className={`${ThemeClassNames.docs.docTocMobile ?? ''} apiTocMobile`}
+									toc={toc}
+								/>
+							)}
 
-							<div className="markdown">
+							<div className={`${ThemeClassNames.docs.docMarkdown ?? ''} markdown`}>
 								<MainHeading>
 									{title} <TypeParametersGeneric params={item.typeParameter} />
 								</MainHeading>
@@ -131,7 +141,7 @@ export default function ApiItem({ content, readme: Readme, versionMetadata }: Ap
 
 				{renderTocDesktop && (
 					<div className="col col--3">
-						<TOC toc={toc} />
+						<TOC className={ThemeClassNames.docs.docTocDesktop} toc={toc} />
 					</div>
 				)}
 			</div>

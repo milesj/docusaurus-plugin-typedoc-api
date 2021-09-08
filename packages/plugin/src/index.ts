@@ -193,8 +193,10 @@ export default function typedocApiPlugin(
 				pluginId,
 				version: 'current',
 				label: 'Current',
-				banner: 'none',
 				isLast: true,
+				banner: null,
+				className: '',
+				badge: false,
 				docsSidebars: { api: await extractSidebar(apiPackages) },
 			};
 
