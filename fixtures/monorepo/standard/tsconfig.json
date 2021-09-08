@@ -9,7 +9,7 @@
     "dts",
     "tests"
   ],
-  "extends": "../../tsconfig.options.json",
+  "extends": "../../../tsconfig.options.json",
   "include": [
     "src/**/*"
   ],

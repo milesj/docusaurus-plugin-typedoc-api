@@ -153,7 +153,7 @@ module.exports = {
 				// 	},
 				// ],
 				// MONOREPO
-				projectRoot: path.join(__dirname, '../fixtures'),
+				projectRoot: path.join(__dirname, '../fixtures/monorepo'),
 				packages: [
 					{
 						path: 'deep-imports',
