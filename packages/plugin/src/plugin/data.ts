@@ -209,7 +209,7 @@ export function flattenAndGroupPackages(
 				}
 
 				// Add metadata to package and children reflections
-				const urlSlug = getPackageSlug(cfg.packagePath, importPath);
+				const urlSlug = getPackageSlug(cfg, importPath);
 				const reflection = addMetadataToReflections(mod, urlSlug);
 				const existingEntry = packages[cfg.packagePath].entryPoints.find(
 					(ep) => ep.urlSlug === urlSlug,

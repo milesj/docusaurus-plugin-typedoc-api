@@ -1,5 +1,6 @@
 import path from 'path';
 import { JSONOutput, ReflectionKind } from 'typedoc';
+import { ResolvedPackageConfig } from '../types';
 
 export function getKindSlug(decl: JSONOutput.DeclarationReflection): string {
 	switch (decl.kind) {
@@ -20,9 +21,9 @@ export function getKindSlug(decl: JSONOutput.DeclarationReflection): string {
 	}
 }
 
-export function getPackageSlug(packagePath: string, importPath: string): string {
+export function getPackageSlug(pkgConfig: ResolvedPackageConfig, importPath: string): string {
 	// packages/foo -> foo
-	const packageFolder = path.basename(packagePath);
+	const packageFolder = pkgConfig.packageSlug ?? path.basename(pkgConfig.packagePath);
 
 	// bar/baz -> bar-baz
 	const importName = importPath.replace(/\\/g, '-');

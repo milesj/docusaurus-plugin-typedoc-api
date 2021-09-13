@@ -18,6 +18,7 @@ export interface ResolvedPackageConfig {
 	absolutePath: string;
 	entryPoints: Record<string, PackageEntryConfig>;
 	packagePath: string;
+	packageSlug?: string;
 }
 
 // SIDEBAR / UI

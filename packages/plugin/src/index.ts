@@ -123,9 +123,10 @@ export default function typedocApiPlugin(
 			absolutePath,
 			entryPoints: entries,
 			packagePath:
-				pkgConfig.slug ?? (pkgConfig.path === '.' || pkgConfig.path === '')
+				pkgConfig.path === '.' || pkgConfig.path === ''
 					? path.basename(absolutePath)
 					: pkgConfig.path,
+			packageSlug: pkgConfig.slug,
 		};
 	});
 
