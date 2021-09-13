@@ -35,7 +35,9 @@ export function Type({ needsParens = false, type: base }: TypeProps) {
 		return null;
 	}
 
-	switch (base.type) {
+	// Cast to string since `type` doesnt include all string values in the union.
+	// https://github.com/TypeStrong/typedoc/blob/master/src/lib/output/themes/default/partials/type.tsx
+	switch (String(base.type)) {
 		case 'array': {
 			const type = base as JSONOutput.ArrayType;
 
@@ -139,9 +141,9 @@ export function Type({ needsParens = false, type: base }: TypeProps) {
 					)}
 					<span className="tsd-signature-symbol"> ]</span>
 
-					{type.readonlyModifier === '+' && <span className="tsd-signature-symbol">?: </span>}
-					{type.readonlyModifier === '-' && <span className="tsd-signature-symbol">-?: </span>}
-					{!type.readonlyModifier && <span className="tsd-signature-symbol">: </span>}
+					{type.optionalModifier === '+' && <span className="tsd-signature-symbol">?: </span>}
+					{type.optionalModifier === '-' && <span className="tsd-signature-symbol">-?: </span>}
+					{!type.optionalModifier && <span className="tsd-signature-symbol">: </span>}
 
 					<Type type={type.templateType} />
 
@@ -304,11 +306,11 @@ export function Type({ needsParens = false, type: base }: TypeProps) {
 			);
 		}
 
-		case 'typeParameter': {
-			const type = base as JSONOutput.TypeParameterType;
+		// case 'typeParameter': {
+		// 	const type = base as JSONOutput.TypeParameterType;
 
-			return <span className="tsd-signature-type">{type.name}</span>;
-		}
+		// 	return <span className="tsd-signature-type">{type.name}</span>;
+		// }
 
 		case 'union': {
 			const type = base as JSONOutput.UnionType;
@@ -333,7 +335,7 @@ export function Type({ needsParens = false, type: base }: TypeProps) {
 		}
 
 		case 'named-tuple-member': {
-			const type = base as JSONOutput.NamedTupleMemberType;
+			const type = base as unknown as JSONOutput.NamedTupleMemberType;
 
 			return (
 				<>
@@ -354,7 +356,7 @@ export function Type({ needsParens = false, type: base }: TypeProps) {
 					{type.tail.map((t, i) => (
 						<React.Fragment key={i}>
 							<span className="tsd-signature-symbol">{'${'}</span>
-							{typeof t[0] !== 'string' && <Type type={t[0] as JSONOutput.SomeType} />}
+							{typeof t[0] !== 'string' && <Type type={t[0]!} />}
 							<span className="tsd-signature-symbol">{'}'}</span>
 							{typeof t[1] === 'string' && <span className="tsd-signature-type">{t[1]}</span>}
 						</React.Fragment>

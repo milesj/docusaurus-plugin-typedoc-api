@@ -15,11 +15,11 @@
   "devDependencies": {
     "@beemo/cli": "^2.0.1",
     "@beemo/core": "^2.0.2",
-    "@beemo/dev": "^1.6.0",
+    "@beemo/dev": "^1.6.1",
     "@types/marked": "^2.0.5",
     "@types/react": "^17.0.20",
     "lerna": "^4.0.0",
-    "packemon": "^1.4.2",
+    "packemon": "^1.5.0",
     "react": "^17.0.2"
   },
   "workspaces": [

@@ -164,6 +164,7 @@ export default function typedocApiPlugin(
 				// Control how config and packages are detected
 				tsconfig,
 				entryPoints,
+				entryPointStrategy: 'expand',
 				exclude,
 				// We use a fake category title so that we can fallback to the parent group
 				defaultCategory: 'CATEGORY',

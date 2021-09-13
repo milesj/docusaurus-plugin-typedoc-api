@@ -5,10 +5,10 @@ import type { ReflectionKind } from 'typedoc';
 // We have to map these manually instead of using the `ReflectionKind` enum,
 // otherwise the `typedoc` package ends up in the bundle and crashes.
 const KIND_ICONS: Record<ReflectionKind, string> = {
-	0: 'project', // Project
-	1: 'package', // Module
-	2: 'symbol-namespace', // Namespace
-	4: 'symbol-enum', // Enum
+	1: 'project', // Project
+	2: 'package', // Module
+	4: 'symbol-namespace', // Namespace
+	8: 'symbol-enum', // Enum
 	16: 'symbol-enum-member', // EnumMember
 	32: 'symbol-variable', // Variable
 	64: 'symbol-function', // Function
@@ -73,13 +73,13 @@ export function getKindIconColor(kind: ReflectionKind): string {
 			return 'var(--ifm-color-success)';
 
 		// Namespace
-		case 2:
+		case 4:
 		// Class
 		case 128:
 			return 'var(--ifm-color-warning)';
 
 		// Enum
-		case 4:
+		case 8:
 		// Interface
 		case 256:
 		// TypeAlias
