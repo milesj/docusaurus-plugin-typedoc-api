@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 1.3.1 - 2021-09-13
+
+#### 🐞 Fixes
+
+- Fix custom url slug not passing through. ([71611bf](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/71611bf))
+
+#### 📦 Dependencies
+
+- **[typedoc]** Update to v0.22. ([65e1afe](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/65e1afe))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 1.3.0 - 2021-09-08
 
 #### 🚀 Updates
