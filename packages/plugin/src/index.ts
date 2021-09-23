@@ -191,7 +191,13 @@ export default function typedocApiPlugin(
 
 			const { createData, addRoute } = actions;
 
-			apiPackages.push(...flattenAndGroupPackages(packageConfigs, content));
+			apiPackages.push(
+				...flattenAndGroupPackages(
+					packageConfigs,
+					// @ts-expect-error CJS/ESM interop sometimes returns under a default property
+					content.default ?? content,
+				),
+			);
 
 			// Define version metadata for all pages. We need to use the same structure as
 			// "docs" so that we can utilize the same React components.
