@@ -13,8 +13,8 @@
     "release": "yarn run pack && yarn run check && yarn beemo run-script lerna-release"
   },
   "devDependencies": {
-    "@beemo/cli": "^2.0.1",
-    "@beemo/core": "^2.0.2",
+    "@beemo/cli": "^2.0.2",
+    "@beemo/core": "^2.1.0",
     "@beemo/dev": "^1.6.1",
     "@types/marked": "^2.0.5",
     "@types/react": "^17.0.20",
