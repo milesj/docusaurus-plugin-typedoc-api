@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 1.3.2 - 2021-09-23
+
+#### 🐞 Fixes
+
+- Fix CJS/ESM import interop issues. ([332eb53](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/332eb53))
+
+#### 📦 Dependencies
+
+- Update to latest. ([914003d](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/914003d))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 1.3.1 - 2021-09-13
 
 #### 🐞 Fixes
