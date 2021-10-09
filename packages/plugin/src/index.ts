@@ -56,7 +56,7 @@ export interface DocusaurusPluginTypeDocApiOptions {
 	>;
 }
 
-function shouldEmit(projectRoot: string, tsconfigPath: string): boolean {
+function shouldEmit(projectRoot: string, tsconfigPath: string) {
 	const { config, error } = ts.readConfigFile(tsconfigPath, (name) =>
 		fs.readFileSync(name, 'utf8'),
 	);
@@ -71,7 +71,7 @@ function shouldEmit(projectRoot: string, tsconfigPath: string): boolean {
 		throw new Error(`Failed to parse ${tsconfigPath}`);
 	}
 
-	return Boolean(result.projectReferences && result.projectReferences.length > 0);
+	return result.projectReferences && result.projectReferences.length > 0 ? 'docs' : 'none';
 }
 
 export default function typedocApiPlugin(
