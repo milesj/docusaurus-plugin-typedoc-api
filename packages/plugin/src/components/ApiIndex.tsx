@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from '@docusaurus/Link';
 import { MainHeading } from '@theme/Heading';
 import { PackageReflectionGroup } from '../types';
 import { Footer } from './Footer';
 
 export interface ApiIndexProps {
+	history: {
+		replace: (path: string) => void;
+	};
 	packages: PackageReflectionGroup[];
 }
 
-export default function ApiIndex({ packages }: ApiIndexProps) {
+export default function ApiIndex({ packages, history }: ApiIndexProps) {
+	useEffect(() => {
+		// Redirect to package when only 1
+		if (packages.length === 1) {
+			history.replace(packages[0].entryPoints[0].reflection.permalink);
+		}
+	}, [packages, history]);
+
 	return (
 		<div className="row">
 			<div className="col apiItemCol">
