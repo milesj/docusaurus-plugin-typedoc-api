@@ -102,5 +102,12 @@ export function extractSidebar(packages: PackageReflectionGroup[]): SidebarItem[
 		} as const;
 	});
 
-	return items.filter((item) => 'items' in item && items.length > 0);
+	const sidebar = items.filter((item) => 'items' in item && items.length > 0);
+
+	// Collapse sidebar when only 1 package
+	if (packages.length === 1 && sidebar.length === 1 && sidebar[0].type === 'category') {
+		return sidebar[0].items;
+	}
+
+	return sidebar;
 }
