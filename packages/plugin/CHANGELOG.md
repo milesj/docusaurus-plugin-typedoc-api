@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.4.0 - 2021-10-11
+
+#### 🚀 Updates
+
+- Flatten sidebar when only 1 package. ([a9c16d0](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/a9c16d0))
+- Redirect to package from index when only 1. ([639c23b](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/639c23b))
+- Support baseUrl for all routes. ([c0e341b](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/c0e341b))
+
+#### 📦 Dependencies
+
+- **[typedoc]** Update to v0.22.5. ([b1fc654](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/b1fc654))
+- Update codicons. ([2be3498](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/2be3498))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 1.3.2 - 2021-09-23
 
 #### 🐞 Fixes
