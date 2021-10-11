@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { JSONOutput, ReflectionKind } from 'typedoc';
+import { normalizeUrl } from '@docusaurus/utils';
 import {
 	ApiMetadata,
 	DeclarationReflectionMap,
@@ -42,6 +43,7 @@ function loadPackageJsonAndReadme(initialDir: string) {
 export function addMetadataToReflections(
 	project: JSONOutput.ProjectReflection,
 	packageSlug: string,
+	baseUrl: string,
 ): JSONOutput.ProjectReflection {
 	const permalink = `/api/${packageSlug}`;
 	const children: JSONOutput.DeclarationReflection[] = [];
@@ -54,7 +56,7 @@ export function addMetadataToReflections(
 
 			children.push({
 				...child,
-				permalink: childPermalink,
+				permalink: normalizeUrl([baseUrl, childPermalink]),
 			});
 		});
 	}
@@ -62,7 +64,7 @@ export function addMetadataToReflections(
 	return {
 		...project,
 		children,
-		permalink,
+		permalink: normalizeUrl([baseUrl, permalink]),
 	};
 }
 
@@ -171,6 +173,7 @@ function extractReflectionModules(
 export function flattenAndGroupPackages(
 	packageConfigs: ResolvedPackageConfig[],
 	project: JSONOutput.ProjectReflection,
+	baseUrl: string,
 ): PackageReflectionGroup[] {
 	const isSinglePackage = packageConfigs.length === 1;
 	const modules = extractReflectionModules(project, isSinglePackage);
@@ -210,7 +213,7 @@ export function flattenAndGroupPackages(
 
 				// Add metadata to package and children reflections
 				const urlSlug = getPackageSlug(cfg, importPath);
-				const reflection = addMetadataToReflections(mod, urlSlug);
+				const reflection = addMetadataToReflections(mod, urlSlug, baseUrl);
 				const existingEntry = packages[cfg.packagePath].entryPoints.find(
 					(ep) => ep.urlSlug === urlSlug,
 				);

@@ -8050,6 +8050,7 @@ __metadata:
   dependencies:
     "@docusaurus/module-type-aliases": 2.0.0-beta.6
     "@docusaurus/types": 2.0.0-beta.6
+    "@docusaurus/utils": 2.0.0-beta.6
     "@vscode/codicons": ^0.0.25
     marked: ^2.1.3
     react: ^17.0.2

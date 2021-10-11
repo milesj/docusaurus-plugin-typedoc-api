@@ -7,6 +7,7 @@ import * as TypeDoc from 'typedoc';
 import ts from 'typescript';
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs-types';
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
+import { normalizeUrl } from '@docusaurus/utils';
 import {
 	extractMetadata,
 	flattenAndGroupPackages,
@@ -196,6 +197,7 @@ export default function typedocApiPlugin(
 					packageConfigs,
 					// @ts-expect-error CJS/ESM interop sometimes returns under a default property
 					content.default ?? content,
+					context.siteConfig.baseUrl,
 				),
 			);
 
@@ -279,8 +281,10 @@ export default function typedocApiPlugin(
 				}),
 			);
 
+			const apiIndexPermalink = normalizeUrl([context.siteConfig.baseUrl, '/api']);
+
 			routes.push({
-				path: '/api',
+				path: apiIndexPermalink,
 				exact: true,
 				component: path.join(__dirname, './components/ApiIndex.js'),
 				modules: {
@@ -290,7 +294,7 @@ export default function typedocApiPlugin(
 			});
 
 			addRoute({
-				path: '/api',
+				path: apiIndexPermalink,
 				exact: false,
 				component: path.join(__dirname, './components/ApiPage.js'),
 				routes,
