@@ -44,6 +44,7 @@ function extractTOC(
 					children: [],
 					id: child.name,
 					value: iconHtml ? `${iconHtml} ${child.name}` : child.name,
+					level: 1,
 				});
 
 				mapped.add(child.name);
@@ -114,6 +115,8 @@ export default function ApiItem({ content, readme: Readme, versionMetadata }: Ap
 							{canRenderTOC && (
 								<TOCCollapsible
 									className={`${ThemeClassNames.docs.docTocMobile ?? ''} apiTocMobile`}
+									maxHeadingLevel={6}
+									minHeadingLevel={1}
 									toc={toc}
 								/>
 							)}
@@ -141,7 +144,12 @@ export default function ApiItem({ content, readme: Readme, versionMetadata }: Ap
 
 				{renderTocDesktop && (
 					<div className="col col--3">
-						<TOC className={ThemeClassNames.docs.docTocDesktop} toc={toc} />
+						<TOC
+							className={ThemeClassNames.docs.docTocDesktop}
+							maxHeadingLevel={6}
+							minHeadingLevel={1}
+							toc={toc}
+						/>
 					</div>
 				)}
 			</div>
