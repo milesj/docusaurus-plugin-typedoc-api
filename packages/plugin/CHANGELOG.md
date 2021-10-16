@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.5.0 - 2021-10-16
+
+#### 🚀 Updates
+
+- Add options to customize package.json and readme file names. ([1c2fd4b](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1c2fd4b))
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update requirement to beta.7. ([6e7cf9d](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/6e7cf9d))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 1.4.0 - 2021-10-11
 
 #### 🚀 Updates
