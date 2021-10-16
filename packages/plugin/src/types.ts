@@ -1,5 +1,37 @@
-import type { JSONOutput } from 'typedoc';
+import type { JSONOutput, TypeDocOptions } from 'typedoc';
 import type { PropSidebarItem } from '@docusaurus/plugin-content-docs-types';
+
+export interface DocusaurusPluginTypeDocApiOptions {
+	debug?: boolean;
+	exclude?: string[];
+	id?: string;
+	minimal?: boolean;
+	packageJsonName?: string;
+	packages: (PackageConfig | string)[];
+	projectRoot: string;
+	readmeName?: string;
+	readmes?: boolean;
+	tsconfigName?: string;
+	typedocOptions?: Partial<
+		Pick<
+			TypeDocOptions,
+			| 'disableSources'
+			| 'emit'
+			| 'excludeExternals'
+			| 'excludeInternal'
+			| 'excludeNotDocumented'
+			| 'excludePrivate'
+			| 'excludeProtected'
+			| 'excludeTags'
+			| 'externalPattern'
+			| 'listInvalidSymbolLinks'
+			| 'logger'
+			| 'logLevel'
+			| 'sort'
+			| 'treatWarningsAsErrors'
+		>
+	>;
+}
 
 // CONFIG
 

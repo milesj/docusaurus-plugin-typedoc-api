@@ -15,7 +15,7 @@ import {
 } from './plugin/data';
 import { extractSidebar } from './plugin/sidebar';
 import {
-	PackageConfig,
+	DocusaurusPluginTypeDocApiOptions,
 	PackageEntryConfig,
 	PackageReflectionGroup,
 	ResolvedPackageConfig,
@@ -25,36 +25,6 @@ import {
 // Because of this, we can't use state in the plugin or module scope.
 if (!global.typedocBuild) {
 	global.typedocBuild = { count: 0 };
-}
-
-export interface DocusaurusPluginTypeDocApiOptions {
-	debug?: boolean;
-	exclude?: string[];
-	id?: string;
-	minimal?: boolean;
-	packages: (PackageConfig | string)[];
-	projectRoot: string;
-	readmes?: boolean;
-	tsconfigName?: string;
-	typedocOptions?: Partial<
-		Pick<
-			TypeDoc.TypeDocOptions,
-			| 'disableSources'
-			| 'emit'
-			| 'excludeExternals'
-			| 'excludeInternal'
-			| 'excludeNotDocumented'
-			| 'excludePrivate'
-			| 'excludeProtected'
-			| 'excludeTags'
-			| 'externalPattern'
-			| 'listInvalidSymbolLinks'
-			| 'logger'
-			| 'logLevel'
-			| 'sort'
-			| 'treatWarningsAsErrors'
-		>
-	>;
 }
 
 function shouldEmit(projectRoot: string, tsconfigPath: string) {
@@ -77,7 +47,9 @@ function shouldEmit(projectRoot: string, tsconfigPath: string) {
 
 export default function typedocApiPlugin(
 	context: LoadContext,
-	{
+	pluginOptions: DocusaurusPluginTypeDocApiOptions,
+): Plugin<JSONOutput.ProjectReflection> {
+	const {
 		debug = false,
 		exclude = [],
 		minimal,
@@ -87,8 +59,7 @@ export default function typedocApiPlugin(
 		tsconfigName = 'tsconfig.json',
 		typedocOptions = {},
 		...options
-	}: DocusaurusPluginTypeDocApiOptions,
-): Plugin<JSONOutput.ProjectReflection> {
+	} = pluginOptions;
 	const pluginId = options.id ?? 'default';
 
 	// Determine entry points from configs
@@ -198,6 +169,7 @@ export default function typedocApiPlugin(
 					// @ts-expect-error CJS/ESM interop sometimes returns under a default property
 					content.default ?? content,
 					context.siteConfig.baseUrl,
+					pluginOptions,
 				),
 			);
 

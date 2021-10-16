@@ -5,6 +5,7 @@ import { normalizeUrl } from '@docusaurus/utils';
 import {
 	ApiMetadata,
 	DeclarationReflectionMap,
+	DocusaurusPluginTypeDocApiOptions,
 	PackageReflectionGroup,
 	ResolvedPackageConfig,
 } from '../types';
@@ -22,17 +23,21 @@ export function createReflectionMap(
 	return map;
 }
 
-function loadPackageJsonAndReadme(initialDir: string) {
+function loadPackageJsonAndReadme(
+	initialDir: string,
+	pkgFileName: string = 'package.json',
+	readmeFileName: string = 'README.md',
+) {
 	let currentDir = initialDir;
 
-	while (!fs.existsSync(path.join(currentDir, 'package.json'))) {
+	while (!fs.existsSync(path.join(currentDir, pkgFileName))) {
 		currentDir = path.dirname(currentDir);
 	}
 
-	const readmePath = path.join(currentDir, 'README.md');
+	const readmePath = path.join(currentDir, readmeFileName);
 
 	return {
-		packageJson: JSON.parse(fs.readFileSync(path.join(currentDir, 'package.json'), 'utf8')) as {
+		packageJson: JSON.parse(fs.readFileSync(path.join(currentDir, pkgFileName), 'utf8')) as {
 			name: string;
 			version: string;
 		},
@@ -174,6 +179,7 @@ export function flattenAndGroupPackages(
 	packageConfigs: ResolvedPackageConfig[],
 	project: JSONOutput.ProjectReflection,
 	baseUrl: string,
+	options: DocusaurusPluginTypeDocApiOptions,
 ): PackageReflectionGroup[] {
 	const isSinglePackage = packageConfigs.length === 1;
 	const modules = extractReflectionModules(project, isSinglePackage);
@@ -201,7 +207,11 @@ export function flattenAndGroupPackages(
 
 				// We have a matching entry point, so store the record
 				if (!packages[cfg.packagePath]) {
-					const { packageJson, readmePath } = loadPackageJsonAndReadme(cfg.absolutePath);
+					const { packageJson, readmePath } = loadPackageJsonAndReadme(
+						cfg.absolutePath,
+						options.packageJsonName,
+						options.readmeName,
+					);
 
 					packages[cfg.packagePath] = {
 						entryPoints: [],

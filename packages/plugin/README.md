@@ -84,7 +84,9 @@ The following options are available to the plugin:
   when using TypeScript project references.
 - `minimal` (`boolean`) - Render a minimal layout and reduce the amount of information displayed.
   Defaults to `false`.
-- `readmes` (`boolean`) - Include and render the `README.md` file from every package. Defaults to
+- `packageJsonName` (`string`) - Name of the `package.json file`. Defaults to `package.json`.
+- `readmeName` (`string`) - Name of the readme file within a package. Defaults to `README.md`.
+- `readmes` (`boolean`) - Include and render the readme file from every package. Defaults to
   `false`.
 - `tsconfigName` (`string`) - Name of the TypeScript config file in the project root. Defaults to
   `tsconfig.json`.
