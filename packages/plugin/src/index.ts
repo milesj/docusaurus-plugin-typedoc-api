@@ -94,7 +94,7 @@ export default function typedocApiPlugin(
 		return {
 			absolutePath,
 			entryPoints: entries,
-			packagePath: pkgConfig.path ?? '.',
+			packagePath: pkgConfig.path || '.',
 			packageSlug: pkgConfig.slug ?? path.basename(absolutePath),
 		};
 	});
