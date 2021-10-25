@@ -12,7 +12,7 @@ export function groupSidebarItems(
 	function getLastItemInGroup(index: number) {
 		const length = sortedGroups[index]?.children?.length;
 
-		return length ? length - 1 : undefined;
+		return length ? sortedGroups[index]?.children?.[length - 1] : undefined;
 	}
 
 	sortedGroups.forEach((group, groupIndex) => {
