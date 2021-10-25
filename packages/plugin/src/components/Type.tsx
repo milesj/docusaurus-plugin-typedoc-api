@@ -24,7 +24,7 @@ function parens(element: JSX.Element, needsParens: boolean): JSX.Element {
 
 export interface TypeProps {
 	needsParens?: boolean;
-	type?: JSONOutput.SomeType;
+	type?: { type: string };
 }
 
 // eslint-disable-next-line complexity
