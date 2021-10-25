@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 1.5.1 - 2021-10-25
+
+#### 🐞 Fixes
+
+- Fix package path/slug detection. ([6f9468c](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/6f9468c))
+- Fix previous link resolving to an invalid ID. ([20da81e](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/20da81e))
+- Fix some markdown rendering issues. ([41046c4](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/41046c4))
+
+#### ⚙️ Types
+
+- Fix docusaurus types. ([403b091](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/403b091))
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to beta.8. ([7f9d1b7](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/7f9d1b7))
+- **[marked]** Update to v3. ([2a86bbf](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/2a86bbf))
+- **[typedoc]** Update to v0.22.7. ([d0b7a56](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/d0b7a56))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 1.5.0 - 2021-10-16
 
 #### 🚀 Updates
