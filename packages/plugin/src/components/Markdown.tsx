@@ -23,8 +23,6 @@ const TOKEN_TO_TAG: Record<string, keyof JSX.IntrinsicElements> = {
 	escape: 'span', // ???
 	hr: 'hr',
 	html: 'div',
-	listitem: 'li',
-	list_item: 'li',
 	paragraph: 'p',
 	strong: 'strong',
 	table: 'table',
@@ -84,6 +82,19 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 				break;
 			}
 
+			case 'list_item':
+				elements.push(
+					<li key={counter}>
+						{token.task && (
+							<>
+								<input checked={token.checked} type="checkbox" />{' '}
+							</>
+						)}
+						{convertAstToElements(children) ?? token.text}
+					</li>,
+				);
+				break;
+
 			case 'space':
 				elements.push(token.raw ?? ' ');
 				break;
@@ -95,7 +106,7 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 							<tr>
 								{token.header.map((h, i) => (
 									<th key={i} align={token.align[i]!}>
-										{h}
+										{convertAstToElements(h.tokens as TokensList)}
 									</th>
 								))}
 							</tr>
@@ -105,7 +116,7 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 								<tr key={i}>
 									{cells.map((c, i2) => (
 										<td key={i2} align={token.align[i]!}>
-											{c}
+											{convertAstToElements(c.tokens as TokensList)}
 										</td>
 									))}
 								</tr>
@@ -127,7 +138,9 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 
 			default: {
 				const Comp = TOKEN_TO_TAG[token.type] || token.type;
-				elements.push(<Comp key={counter}>{convertAstToElements(children)}</Comp>);
+				const innerText = 'text' in token ? token.text : '';
+
+				elements.push(<Comp key={counter}>{convertAstToElements(children) ?? innerText}</Comp>);
 				break;
 			}
 		}
