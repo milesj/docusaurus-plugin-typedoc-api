@@ -101,7 +101,7 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 							</tr>
 						</thead>
 						<tbody>
-							{token.cells.map((cells, i) => (
+							{token.rows.map((cells, i) => (
 								<tr key={i}>
 									{cells.map((c, i2) => (
 										<td key={i2} align={token.align[i]!}>
