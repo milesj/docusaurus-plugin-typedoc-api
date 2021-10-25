@@ -94,11 +94,8 @@ export default function typedocApiPlugin(
 		return {
 			absolutePath,
 			entryPoints: entries,
-			packagePath:
-				pkgConfig.path === '.' || pkgConfig.path === ''
-					? path.basename(absolutePath)
-					: pkgConfig.path,
-			packageSlug: pkgConfig.slug,
+			packagePath: pkgConfig.path ?? '.',
+			packageSlug: pkgConfig.slug ?? path.basename(absolutePath),
 		};
 	});
 

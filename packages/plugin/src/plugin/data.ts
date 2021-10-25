@@ -122,6 +122,8 @@ function matchesEntryPoint(
 	// Polyrepo
 	if (poly) {
 		return (
+			// src/index.ts === src/index.ts
+			(!deep && sourceFile === entryPoint) ||
 			// index.ts === src/index.ts
 			(!deep && sourceFile === path.basename(entryPoint)) ||
 			// some/deep/file.ts === ...
