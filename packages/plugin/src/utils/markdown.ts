@@ -27,14 +27,14 @@ function splitLinkText(text: string): { caption: string; target: string } {
 function findReflectionWithMatchingTarget(
 	reflectionList: JSONOutput.DeclarationReflection[],
 	symbol: string,
-	member: string,
+	member?: string,
 ) {
 	return reflectionList.find((ref) => {
 		if (ref.name !== symbol) {
 			return false;
 		}
 
-		return member === '' ? true : ref.children?.some((child) => child.name === member);
+		return !member ? true : ref.children?.some((child) => child.name === member);
 	});
 }
 
@@ -47,7 +47,7 @@ export function replaceLinkTokens(markdown: string, reflections: DeclarationRefl
 		/{@(link|linkcode|linkplain)\s+([^}]+?)}/gi,
 		(match: string, tagName: string, content: string): string => {
 			const { caption, target } = splitLinkText(content);
-			const [symbol, member = ''] = target.split('.');
+			const [symbol, member] = target.split('.');
 			const reflection = findReflectionWithMatchingTarget(reflectionList, symbol, member);
 			const label = tagName === 'linkcode' ? `\`${caption}\`` : caption;
 
