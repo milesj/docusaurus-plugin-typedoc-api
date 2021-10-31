@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import marked, { TokensList } from 'marked';
 import MDX from '@theme/MDXComponents';
+import { useReflectionMap } from '../hooks/useReflectionMap';
+import { replaceLinkTokens } from '../utils/markdown';
 
 marked.setOptions({
 	gfm: true,
@@ -161,7 +163,8 @@ export interface MarkdownProps {
 
 // Too bad we cant use `@mdx-js` here...
 export function Markdown({ content }: MarkdownProps) {
-	const [ast] = useState<TokensList>(() => marked.lexer(content));
+	const reflections = useReflectionMap();
+	const [ast] = useState<TokensList>(() => marked.lexer(replaceLinkTokens(content, reflections)));
 
 	if (!content) {
 		return null;
