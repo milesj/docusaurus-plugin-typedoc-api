@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.6.0 - 2021-10-31
+
+#### 🚀 Updates
+
+- Support `@link` tokens in markdown. (#12) ([54b05b8](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/54b05b8)), closes [#12](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/12)
+
+#### 🐞 Fixes
+
+- Fallback path if empty. ([48e56ae](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/48e56ae))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 1.5.1 - 2021-10-25
 
 #### 🐞 Fixes
