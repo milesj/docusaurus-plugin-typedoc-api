@@ -134,7 +134,8 @@ function matchesEntryPoint(
 	// Monorepo
 	return (
 		// packages/foo/src/index.ts === packages/foo/src/index.ts
-		(!deep && sourceFile === entryPoint) ||
+		// foo/src/index.ts ~ packages/foo/src/index.ts
+		(!deep && (sourceFile === entryPoint || entryPoint.endsWith(sourceFile))) ||
 		// packages/foo/src/some/deep/file.ts === packages/foo/src/
 		(deep && sourceFile.startsWith(entryPoint))
 	);
