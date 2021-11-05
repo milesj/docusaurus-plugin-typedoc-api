@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 1.6.1 - 2021-11-05
+
+#### 🐞 Fixes
+
+- Support source file paths that are missing the monorepo package folder. ([88b29b5](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/88b29b5))
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to beta.9. ([547ad6e](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/547ad6e))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 1.6.0 - 2021-10-31
 
 #### 🚀 Updates
