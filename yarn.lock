@@ -4942,10 +4942,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vscode/codicons@npm:^0.0.26":
-  version: 0.0.26
-  resolution: "@vscode/codicons@npm:0.0.26"
-  checksum: 1e975938f62541e31fdc8c0670e738c27332793fa869af4aa7b2a7d055c06e08448a25be99687df459b2f44b142f78fee5c22be1c110a5c4462146efa4b88eaf
+"@vscode/codicons@npm:^0.0.27":
+  version: 0.0.27
+  resolution: "@vscode/codicons@npm:0.0.27"
+  checksum: 6f79067e200d10a4bf312a5f0f03f51546160eeae13bd17aa6fa7c24739df069b0c1ae3885743da79d2ce3e1e5528fb5ec6d947bd12f7a25c46042b0f029b509
   languageName: node
   linkType: hard
 
@@ -7872,11 +7872,11 @@ __metadata:
     "@docusaurus/module-type-aliases": 2.0.0-beta.9
     "@docusaurus/types": 2.0.0-beta.9
     "@docusaurus/utils": 2.0.0-beta.9
-    "@vscode/codicons": ^0.0.26
+    "@vscode/codicons": ^0.0.27
     marked: ^3.0.8
     react: ^17.0.2
     react-dom: ^17.0.2
-    typedoc: ^0.22.7
+    typedoc: ^0.22.10
     typescript: ^4.5.4
   peerDependencies:
     react: ">=16.0.0"
@@ -17874,9 +17874,9 @@ resolve@~1.19.0:
   languageName: node
   linkType: hard
 
-"typedoc@npm:^0.22.7":
-  version: 0.22.7
-  resolution: "typedoc@npm:0.22.7"
+"typedoc@npm:^0.22.10":
+  version: 0.22.10
+  resolution: "typedoc@npm:0.22.10"
   dependencies:
     glob: ^7.2.0
     lunr: ^2.3.9
@@ -17884,10 +17884,10 @@ resolve@~1.19.0:
     minimatch: ^3.0.4
     shiki: ^0.9.12
   peerDependencies:
-    typescript: 4.0.x || 4.1.x || 4.2.x || 4.3.x || 4.4.x
+    typescript: 4.0.x || 4.1.x || 4.2.x || 4.3.x || 4.4.x || 4.5.x
   bin:
     typedoc: bin/typedoc
-  checksum: cff0fc67dd069eabbd161644172e7da66cd4ad772f98c511d5d87d2bcd35851a7f8c232a9a70fdfa55c3d3f5fbcff8a44f263f2bbedeedb4202b9f8cb057d3fa
+  checksum: 404932ae8e62d1507209d50b635d9d5cefead344e7e84e2d21fc84741fb739e011dcffcf335d6d4e2a31fe45910757b27f11678f6ae5b89514d2f291fe41884e
   languageName: node
   linkType: hard
 

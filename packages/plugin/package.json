@@ -47,9 +47,9 @@
   "dependencies": {
     "@docusaurus/types": "2.0.0-beta.9",
     "@docusaurus/utils": "2.0.0-beta.9",
-    "@vscode/codicons": "^0.0.26",
+    "@vscode/codicons": "^0.0.27",
     "marked": "^3.0.8",
-    "typedoc": "^0.22.7"
+    "typedoc": "^0.22.10"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "2.0.0-beta.9",
