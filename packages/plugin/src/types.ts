@@ -1,5 +1,5 @@
 import type { JSONOutput, TypeDocOptions } from 'typedoc';
-import type { PropSidebarItem } from '@docusaurus/plugin-content-docs-types';
+import type { PropSidebarItem } from '@docusaurus/plugin-content-docs';
 
 export interface DocusaurusPluginTypeDocApiOptions {
 	debug?: boolean;

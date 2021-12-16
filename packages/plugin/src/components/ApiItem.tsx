@@ -1,6 +1,6 @@
 // This file is based on `DocItem` upstream, but since we aren't using markdown,
 // we had to duplicate it. Keep this file in sync as much as possible!
-// https://github.com/facebook/docusaurus/blob/master/packages/docusaurus-theme-classic/src/theme/DocItem/index.tsx
+// https://github.com/facebook/docusaurus/blob/main/packages/docusaurus-theme-classic/src/theme/DocItem/index.tsx
 
 import React, { useMemo } from 'react';
 import type { JSONOutput } from 'typedoc';
@@ -8,7 +8,6 @@ import { ThemeClassNames } from '@docusaurus/theme-common';
 import { TOCItem } from '@docusaurus/types';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import DocPaginator from '@theme/DocPaginator';
-import DocVersionBanner from '@theme/DocVersionBanner';
 import { MainHeading } from '@theme/Heading';
 import useWindowSize from '@theme/hooks/useWindowSize';
 import Seo from '@theme/Seo';
@@ -100,8 +99,6 @@ export default function ApiItem({ content, readme: Readme, versionMetadata }: Ap
 
 			<div className="row">
 				<div className="col apiItemCol">
-					<DocVersionBanner versionMetadata={versionMetadata} />
-
 					<div className="apiItemContainer">
 						<article>
 							{showVersionBadge && (

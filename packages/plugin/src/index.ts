@@ -5,7 +5,7 @@ import path from 'path';
 import type { JSONOutput } from 'typedoc';
 import * as TypeDoc from 'typedoc';
 import ts from 'typescript';
-import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs-types';
+import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
 import { normalizeUrl } from '@docusaurus/utils';
 import {
@@ -182,6 +182,7 @@ export default function typedocApiPlugin(
 				className: '',
 				badge: false,
 				docsSidebars: { api: await extractSidebar(apiPackages) },
+				docs: {},
 			};
 
 			const versionMetadataData = await createData(
