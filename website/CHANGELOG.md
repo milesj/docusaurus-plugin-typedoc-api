@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 0.1.4 - 2021-12-18
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to beta.13. ([33bfd37](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/33bfd37))
+
+**Note:** Version bump only for package website
+
+
+
+
+
 ### 0.1.3 - 2021-11-05
 
 #### 📦 Dependencies
