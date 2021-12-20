@@ -15,7 +15,12 @@ import {
 	generateJson,
 } from './plugin/data';
 import { extractSidebar } from './plugin/sidebar';
-import { readVersionsMetadata, VersionMetadata } from './plugin/version';
+import {
+	LoadedContent,
+	LoadedVersion,
+	readVersionsMetadata,
+	VersionMetadata,
+} from './plugin/version';
 import {
 	DocusaurusPluginTypeDocApiOptions,
 	PackageEntryConfig,
@@ -43,21 +48,16 @@ const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
 	versions: {},
 };
 
-// Persist build state as a global, since the plugin is re-evaluated every hot reload.
-// Because of this, we can't use state in the plugin or module scope.
-if (!global.typedocBuild) {
-	global.typedocBuild = { count: 0 };
-}
-
 export default function typedocApiPlugin(
 	context: LoadContext,
 	pluginOptions: DocusaurusPluginTypeDocApiOptions,
-): Plugin<JSONOutput.ProjectReflection> {
+): Plugin<LoadedContent> {
 	const options: Required<DocusaurusPluginTypeDocApiOptions> = {
 		...DEFAULT_OPTIONS,
 		...pluginOptions,
 	};
 	const { id: pluginId, minimal, packages, projectRoot, readmes } = options;
+	const isDefaultPluginId = pluginId === DEFAULT_PLUGIN_ID;
 	const versionsMetadata = readVersionsMetadata(context, options);
 
 	console.log({ versionsMetadata });
@@ -106,7 +106,6 @@ export default function typedocApiPlugin(
 		name: 'docusaurus-plugin-typedoc-api',
 
 		extendCli(cli) {
-			const isDefaultPluginId = pluginId === DEFAULT_PLUGIN_ID;
 			const command = isDefaultPluginId ? 'api:version' : `api:version:${pluginId}`;
 			const commandDescription = isDefaultPluginId
 				? 'Tag a new API version'
@@ -130,23 +129,38 @@ export default function typedocApiPlugin(
 		},
 
 		async loadContent() {
-			// async function loadVersion(metadata: VersionMetadata) {}
-			// const filePath = path.join(context.generatedFilesDir, 'typedoc.json');
-			// // Running the TypeDoc compiler is pretty slow...
-			// // We should only load on the 1st build, and use cache for subsequent reloads.
-			// if (global.typedocBuild.count > 0 && fs.existsSync(filePath)) {
-			// 	return import(filePath);
-			// }
-			// if (project) {
-			// 	global.typedocBuild.count += 1;
-			// 	return import(filePath);
-			// }
-			// return {
-			// 	loadedVersions: await Promise.all(versionsMetadata.map(async (version) => {})),
-			// };
+			async function loadVersion(metadata: VersionMetadata): Promise<LoadedVersion> {
+				const { versionName } = metadata;
+
+				const filePath =
+					versionName === CURRENT_VERSION_NAME
+						? path.join(context.generatedFilesDir, `typedoc-${pluginId}.json`)
+						: path.join(
+								getVersionedDocsDirPath(context.siteDir, pluginId),
+								`version-${versionName}/typedoc.json`,
+						  );
+
+				// Versions are stored on the file system, while the current
+				// version needs to be regeneratd every time
+				if (versionName === CURRENT_VERSION_NAME) {
+					await generateJson(projectRoot, entryPoints, filePath, options);
+				}
+
+				return {
+					...metadata,
+					api: await import(filePath),
+					sidebars: [],
+				};
+			}
+
+			return {
+				loadedVersions: await Promise.all(versionsMetadata.map(loadVersion)),
+			};
 		},
 
 		async contentLoaded({ content, actions }) {
+			console.log(content);
+
 			if (!content) {
 				return;
 			}

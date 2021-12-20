@@ -31,6 +31,12 @@ function shouldEmit(projectRoot: string, tsconfigPath: string) {
 	return result.projectReferences && result.projectReferences.length > 0 ? 'docs' : 'none';
 }
 
+// Persist build state as a global, since the plugin is re-evaluated every hot reload.
+// Because of this, we can't use state in the plugin or module scope.
+if (!global.typedocBuild) {
+	global.typedocBuild = { count: 0 };
+}
+
 export async function generateJson(
 	projectRoot: string,
 	entryPoints: string[],
@@ -38,6 +44,12 @@ export async function generateJson(
 	options: DocusaurusPluginTypeDocApiOptions,
 ): Promise<boolean> {
 	/* eslint-disable sort-keys */
+
+	// Running the TypeDoc compiler is pretty slow...
+	// We should only load on the 1st build, and use cache for subsequent reloads.
+	if (global.typedocBuild.count > 0 && fs.existsSync(outFile)) {
+		return true;
+	}
 
 	const app = new TypeDoc.Application();
 	const tsconfig = path.join(projectRoot, options.tsconfigName!);
@@ -69,6 +81,8 @@ export async function generateJson(
 
 	if (project) {
 		await app.generateJson(project, outFile);
+
+		global.typedocBuild.count += 1;
 
 		return true;
 	}

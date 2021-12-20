@@ -1,22 +1,32 @@
 // BASED ON: https://github.com/facebook/docusaurus/blob/main/packages/docusaurus-plugin-content-docs/src/versions.ts
 
 import fs from 'fs';
+import type { JSONOutput } from 'typedoc';
 import { CURRENT_VERSION_NAME } from '@docusaurus/plugin-content-docs/lib/constants';
 import { getVersionsFilePath } from '@docusaurus/plugin-content-docs/lib/versions';
 import type { LoadContext } from '@docusaurus/types';
 import { normalizeUrl } from '@docusaurus/utils';
-import type { DocusaurusPluginTypeDocApiOptions } from '../types';
+import type { DocusaurusPluginTypeDocApiOptions, SidebarItem } from '../types';
 
 type PluginOptions = DocusaurusPluginTypeDocApiOptions;
 
 export interface VersionMetadata {
 	versionName: string; // 1.0.0
 	versionLabel: string; // Version 1.0.0
-	versionPath: string; // /baseUrl/docs/1.0.0
+	versionPath: string; // /baseUrl/api/1.0.0
 	versionBadge: boolean;
 	versionClassName: string;
 	isLast: boolean;
-	routePriority: number | undefined; // -1 for the latest docs
+	routePriority: number | undefined; // -1 for the latest
+}
+
+export interface LoadedVersion extends VersionMetadata {
+	api: JSONOutput.ProjectReflection;
+	sidebars: SidebarItem;
+}
+
+export interface LoadedContent {
+	loadedVersions: LoadedVersion[];
 }
 
 function readVersionsFile(siteDir: string, pluginId: string): string[] | null {
@@ -60,9 +70,10 @@ function filterVersions(
 	versionNamesUnfiltered: string[],
 	options: Pick<PluginOptions, 'onlyIncludeVersions'>,
 ) {
-	if (options.onlyIncludeVersions) {
+	if (options.onlyIncludeVersions && options.onlyIncludeVersions.length > 0) {
 		return versionNamesUnfiltered.filter((name) => options.onlyIncludeVersions?.includes(name));
 	}
+
 	return versionNamesUnfiltered;
 }
 
@@ -116,7 +127,11 @@ export function readVersionsMetadata(
 ): VersionMetadata[] {
 	const versionNamesUnfiltered = readVersionNames(context.siteDir, options);
 	const versionNames = filterVersions(versionNamesUnfiltered, options);
-	const lastVersionName = options.lastVersion ?? getDefaultLastVersionName(versionNames);
+	const lastVersionName = options.lastVersion
+		? options.lastVersion
+		: getDefaultLastVersionName(versionNames);
+
+	console.log({ versionNamesUnfiltered, versionNames, lastVersionName });
 
 	return versionNames.map((versionName) =>
 		createVersionMetadata({
