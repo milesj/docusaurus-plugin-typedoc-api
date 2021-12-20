@@ -1,7 +1,8 @@
 import type { JSONOutput, TypeDocOptions } from 'typedoc';
 import type { PropSidebarItem } from '@docusaurus/plugin-content-docs';
+import type { VersionsOptions } from '@docusaurus/plugin-content-docs/lib/types';
 
-export interface DocusaurusPluginTypeDocApiOptions {
+export interface DocusaurusPluginTypeDocApiOptions extends VersionsOptions {
 	debug?: boolean;
 	exclude?: string[];
 	id?: string;
@@ -31,6 +32,11 @@ export interface DocusaurusPluginTypeDocApiOptions {
 			| 'treatWarningsAsErrors'
 		>
 	>;
+
+	// Versioning, based on Docusaurus
+	disableVersioning?: boolean;
+	includeCurrentVersion?: boolean;
+	routeBasePath?: string;
 }
 
 // CONFIG

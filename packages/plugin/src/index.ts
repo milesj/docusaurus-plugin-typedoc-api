@@ -7,13 +7,14 @@ import * as TypeDoc from 'typedoc';
 import ts from 'typescript';
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
-import { normalizeUrl } from '@docusaurus/utils';
+import { DEFAULT_PLUGIN_ID, normalizeUrl } from '@docusaurus/utils';
 import {
 	extractMetadata,
 	flattenAndGroupPackages,
 	formatPackagesWithoutHostInfo,
 } from './plugin/data';
 import { extractSidebar } from './plugin/sidebar';
+import { readVersionsMetadata } from './plugin/version';
 import {
 	DocusaurusPluginTypeDocApiOptions,
 	PackageEntryConfig,
@@ -60,7 +61,10 @@ export default function typedocApiPlugin(
 		typedocOptions = {},
 		...options
 	} = pluginOptions;
-	const pluginId = options.id ?? 'default';
+	const pluginId = options.id ?? DEFAULT_PLUGIN_ID;
+	const versionsMetadata = readVersionsMetadata(context, pluginOptions);
+
+	console.log({ versionsMetadata });
 
 	// Determine entry points from configs
 	const entryPoints: string[] = [];
@@ -104,6 +108,25 @@ export default function typedocApiPlugin(
 
 	return {
 		name: 'docusaurus-plugin-typedoc-api',
+
+		extendCli(cli) {
+			const isDefaultPluginId = pluginId === DEFAULT_PLUGIN_ID;
+
+			// Need to create one distinct command per plugin instance
+			// otherwise 2 instances would try to execute the command!
+			const command = isDefaultPluginId ? 'api:version' : `api:version:${pluginId}`;
+			const commandDescription = isDefaultPluginId
+				? 'Tag a new API version'
+				: `Tag a new API version (${pluginId})`;
+
+			cli
+				.command(command)
+				.arguments('<version>')
+				.description(commandDescription)
+				.action((version) => {
+					// TODO
+				});
+		},
 
 		async loadContent() {
 			const filePath = path.join(context.generatedFilesDir, 'typedoc.json');
