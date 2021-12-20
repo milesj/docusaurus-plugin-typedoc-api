@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { JSONOutput, ReflectionKind } from 'typedoc';
+import * as TypeDoc from 'typedoc';
+import ts from 'typescript';
 import { normalizeUrl } from '@docusaurus/utils';
 import {
 	ApiMetadata,
@@ -10,6 +12,69 @@ import {
 	ResolvedPackageConfig,
 } from '../types';
 import { getKindSlug, getPackageSlug } from './url';
+
+function shouldEmit(projectRoot: string, tsconfigPath: string) {
+	const { config, error } = ts.readConfigFile(tsconfigPath, (name) =>
+		fs.readFileSync(name, 'utf8'),
+	);
+
+	if (error) {
+		throw new Error(`Failed to load ${tsconfigPath}`);
+	}
+
+	const result = ts.parseJsonConfigFileContent(config, ts.sys, projectRoot, {}, tsconfigPath);
+
+	if (result.errors.length > 0) {
+		throw new Error(`Failed to parse ${tsconfigPath}`);
+	}
+
+	return result.projectReferences && result.projectReferences.length > 0 ? 'docs' : 'none';
+}
+
+export async function generateJson(
+	projectRoot: string,
+	entryPoints: string[],
+	outFile: string,
+	options: DocusaurusPluginTypeDocApiOptions,
+): Promise<boolean> {
+	/* eslint-disable sort-keys */
+
+	const app = new TypeDoc.Application();
+	const tsconfig = path.join(projectRoot, options.tsconfigName!);
+
+	app.options.addReader(new TypeDoc.TSConfigReader());
+	app.options.addReader(new TypeDoc.TypeDocReader());
+
+	app.bootstrap({
+		// Only emit when using project references
+		emit: shouldEmit(projectRoot, tsconfig),
+		// Only document the public API by default
+		excludeExternals: true,
+		excludeInternal: true,
+		excludePrivate: true,
+		excludeProtected: true,
+		// Enable verbose logging when debugging
+		logLevel: options.debug ? 'Verbose' : 'Info',
+		...options.typedocOptions,
+		// Control how config and packages are detected
+		tsconfig,
+		entryPoints,
+		entryPointStrategy: 'expand',
+		exclude: options.exclude,
+		// We use a fake category title so that we can fallback to the parent group
+		defaultCategory: 'CATEGORY',
+	});
+
+	const project = app.convert();
+
+	if (project) {
+		await app.generateJson(project, outFile);
+
+		return true;
+	}
+
+	return false;
+}
 
 export function createReflectionMap(
 	items: JSONOutput.DeclarationReflection[] = [],

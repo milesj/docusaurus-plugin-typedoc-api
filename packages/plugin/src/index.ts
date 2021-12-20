@@ -3,18 +3,19 @@
 import fs from 'fs';
 import path from 'path';
 import type { JSONOutput } from 'typedoc';
-import * as TypeDoc from 'typedoc';
-import ts from 'typescript';
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
+import { CURRENT_VERSION_NAME } from '@docusaurus/plugin-content-docs/lib/constants';
+import { getVersionedDocsDirPath } from '@docusaurus/plugin-content-docs/lib/versions';
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
 import { DEFAULT_PLUGIN_ID, normalizeUrl } from '@docusaurus/utils';
 import {
 	extractMetadata,
 	flattenAndGroupPackages,
 	formatPackagesWithoutHostInfo,
+	generateJson,
 } from './plugin/data';
 import { extractSidebar } from './plugin/sidebar';
-import { readVersionsMetadata } from './plugin/version';
+import { readVersionsMetadata, VersionMetadata } from './plugin/version';
 import {
 	DocusaurusPluginTypeDocApiOptions,
 	PackageEntryConfig,
@@ -48,24 +49,6 @@ if (!global.typedocBuild) {
 	global.typedocBuild = { count: 0 };
 }
 
-function shouldEmit(projectRoot: string, tsconfigPath: string) {
-	const { config, error } = ts.readConfigFile(tsconfigPath, (name) =>
-		fs.readFileSync(name, 'utf8'),
-	);
-
-	if (error) {
-		throw new Error(`Failed to load ${tsconfigPath}`);
-	}
-
-	const result = ts.parseJsonConfigFileContent(config, ts.sys, projectRoot, {}, tsconfigPath);
-
-	if (result.errors.length > 0) {
-		throw new Error(`Failed to parse ${tsconfigPath}`);
-	}
-
-	return result.projectReferences && result.projectReferences.length > 0 ? 'docs' : 'none';
-}
-
 export default function typedocApiPlugin(
 	context: LoadContext,
 	pluginOptions: DocusaurusPluginTypeDocApiOptions,
@@ -74,17 +57,7 @@ export default function typedocApiPlugin(
 		...DEFAULT_OPTIONS,
 		...pluginOptions,
 	};
-	const {
-		debug,
-		exclude,
-		id: pluginId,
-		minimal,
-		packages,
-		projectRoot,
-		readmes,
-		tsconfigName,
-		typedocOptions,
-	} = options;
+	const { id: pluginId, minimal, packages, projectRoot, readmes } = options;
 	const versionsMetadata = readVersionsMetadata(context, options);
 
 	console.log({ versionsMetadata });
@@ -134,77 +107,43 @@ export default function typedocApiPlugin(
 
 		extendCli(cli) {
 			const isDefaultPluginId = pluginId === DEFAULT_PLUGIN_ID;
-
-			// Need to create one distinct command per plugin instance
-			// otherwise 2 instances would try to execute the command!
 			const command = isDefaultPluginId ? 'api:version' : `api:version:${pluginId}`;
 			const commandDescription = isDefaultPluginId
 				? 'Tag a new API version'
 				: `Tag a new API version (${pluginId})`;
 
-			// cli
-			// 	.command(command)
-			// 	.arguments('<version>')
-			// 	.description(commandDescription)
-			// 	.action((version) => {
-			// 		// TODO
-			// 	});
+			cli
+				.command(command)
+				.arguments('<version>')
+				.description(commandDescription)
+				.action(async (version) => {
+					const outFile = path.join(
+						getVersionedDocsDirPath(context.siteDir, pluginId),
+						`version-${version}/typedoc.json`,
+					);
 
-			cli.on('command:docs:version', (a, b, c) => {
-				console.log({ a, b, c });
-			});
+					await generateJson(projectRoot, entryPoints, outFile, options);
 
-			cli.on(`command:docs:version:${pluginId}`, (a, b, c) => {
-				console.log({ a, b, c });
-			});
+					// eslint-disable-next-line no-console
+					console.log(`[${isDefaultPluginId ? 'api' : pluginId}]: version ${version} created!`);
+				});
 		},
 
 		async loadContent() {
-			const filePath = path.join(context.generatedFilesDir, 'typedoc.json');
-
-			// Running the TypeDoc compiler is pretty slow...
-			// We should only load on the 1st build, and use cache for subsequent reloads.
-			if (global.typedocBuild.count > 0 && fs.existsSync(filePath)) {
-				return import(filePath);
-			}
-
-			const app = new TypeDoc.Application();
-			const tsconfig = path.join(projectRoot, tsconfigName);
-
-			app.options.addReader(new TypeDoc.TSConfigReader());
-			app.options.addReader(new TypeDoc.TypeDocReader());
-
-			app.bootstrap({
-				// Only emit when using project references
-				emit: shouldEmit(projectRoot, tsconfig),
-				// Only document the public API by default
-				excludeExternals: true,
-				excludeInternal: true,
-				excludePrivate: true,
-				excludeProtected: true,
-				// Enable verbose logging when debugging
-				logLevel: debug ? 'Verbose' : 'Info',
-				...typedocOptions,
-				// Control how config and packages are detected
-				tsconfig,
-				entryPoints,
-				entryPointStrategy: 'expand',
-				exclude,
-				// We use a fake category title so that we can fallback to the parent group
-				defaultCategory: 'CATEGORY',
-			});
-
-			const project = app.convert();
-
-			if (project) {
-				await app.generateJson(project, filePath);
-
-				global.typedocBuild.count += 1;
-
-				return import(filePath);
-			}
-
-			return undefined;
+			// async function loadVersion(metadata: VersionMetadata) {}
+			// const filePath = path.join(context.generatedFilesDir, 'typedoc.json');
+			// // Running the TypeDoc compiler is pretty slow...
+			// // We should only load on the 1st build, and use cache for subsequent reloads.
+			// if (global.typedocBuild.count > 0 && fs.existsSync(filePath)) {
+			// 	return import(filePath);
+			// }
+			// if (project) {
+			// 	global.typedocBuild.count += 1;
+			// 	return import(filePath);
+			// }
+			// return {
+			// 	loadedVersions: await Promise.all(versionsMetadata.map(async (version) => {})),
+			// };
 		},
 
 		async contentLoaded({ content, actions }) {
