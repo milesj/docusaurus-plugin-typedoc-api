@@ -49,8 +49,9 @@ export function addMetadataToReflections(
 	project: JSONOutput.ProjectReflection,
 	packageSlug: string,
 	baseUrl: string,
+	basePath: string = 'api',
 ): JSONOutput.ProjectReflection {
-	const permalink = `/api/${packageSlug}`;
+	const permalink = `/${basePath}/${packageSlug}`;
 	const children: JSONOutput.DeclarationReflection[] = [];
 
 	if (project.children) {
@@ -226,7 +227,7 @@ export function flattenAndGroupPackages(
 
 				// Add metadata to package and children reflections
 				const urlSlug = getPackageSlug(cfg, importPath);
-				const reflection = addMetadataToReflections(mod, urlSlug, baseUrl);
+				const reflection = addMetadataToReflections(mod, urlSlug, baseUrl, options.routeBasePath);
 				const existingEntry = packages[cfg.packagePath].entryPoints.find(
 					(ep) => ep.urlSlug === urlSlug,
 				);

@@ -22,6 +22,26 @@ import {
 	ResolvedPackageConfig,
 } from './types';
 
+const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
+	debug: false,
+	disableVersioning: false,
+	exclude: [],
+	id: DEFAULT_PLUGIN_ID,
+	includeCurrentVersion: true,
+	lastVersion: '',
+	minimal: false,
+	onlyIncludeVersions: [],
+	packageJsonName: 'package.json',
+	packages: [],
+	projectRoot: '.',
+	readmeName: 'README.md',
+	readmes: false,
+	routeBasePath: 'api',
+	tsconfigName: 'tsconfig.json',
+	typedocOptions: {},
+	versions: {},
+};
+
 // Persist build state as a global, since the plugin is re-evaluated every hot reload.
 // Because of this, we can't use state in the plugin or module scope.
 if (!global.typedocBuild) {
@@ -50,19 +70,22 @@ export default function typedocApiPlugin(
 	context: LoadContext,
 	pluginOptions: DocusaurusPluginTypeDocApiOptions,
 ): Plugin<JSONOutput.ProjectReflection> {
+	const options: Required<DocusaurusPluginTypeDocApiOptions> = {
+		...DEFAULT_OPTIONS,
+		...pluginOptions,
+	};
 	const {
-		debug = false,
-		exclude = [],
+		debug,
+		exclude,
+		id: pluginId,
 		minimal,
 		packages,
 		projectRoot,
 		readmes,
-		tsconfigName = 'tsconfig.json',
-		typedocOptions = {},
-		...options
-	} = pluginOptions;
-	const pluginId = options.id ?? DEFAULT_PLUGIN_ID;
-	const versionsMetadata = readVersionsMetadata(context, pluginOptions);
+		tsconfigName,
+		typedocOptions,
+	} = options;
+	const versionsMetadata = readVersionsMetadata(context, options);
 
 	console.log({ versionsMetadata });
 
@@ -119,13 +142,21 @@ export default function typedocApiPlugin(
 				? 'Tag a new API version'
 				: `Tag a new API version (${pluginId})`;
 
-			cli
-				.command(command)
-				.arguments('<version>')
-				.description(commandDescription)
-				.action((version) => {
-					// TODO
-				});
+			// cli
+			// 	.command(command)
+			// 	.arguments('<version>')
+			// 	.description(commandDescription)
+			// 	.action((version) => {
+			// 		// TODO
+			// 	});
+
+			cli.on('command:docs:version', (a, b, c) => {
+				console.log({ a, b, c });
+			});
+
+			cli.on(`command:docs:version:${pluginId}`, (a, b, c) => {
+				console.log({ a, b, c });
+			});
 		},
 
 		async loadContent() {
@@ -189,7 +220,7 @@ export default function typedocApiPlugin(
 					// @ts-expect-error CJS/ESM interop sometimes returns under a default property
 					content.default ?? content,
 					context.siteConfig.baseUrl,
-					pluginOptions,
+					options,
 				),
 			);
 
