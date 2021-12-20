@@ -5,7 +5,6 @@ import * as TypeDoc from 'typedoc';
 import ts from 'typescript';
 import { normalizeUrl } from '@docusaurus/utils';
 import {
-	ApiMetadata,
 	DeclarationReflectionMap,
 	DocusaurusPluginTypeDocApiOptions,
 	PackageReflectionGroup,
@@ -127,10 +126,9 @@ function loadPackageJsonAndReadme(
 export function addMetadataToReflections(
 	project: JSONOutput.ProjectReflection,
 	packageSlug: string,
-	baseUrl: string,
-	basePath: string = 'api',
+	urlPrefix: string,
 ): JSONOutput.ProjectReflection {
-	const permalink = `/${basePath}/${packageSlug}`;
+	const permalink = `/${path.join(urlPrefix, packageSlug)}`;
 	const children: JSONOutput.DeclarationReflection[] = [];
 
 	if (project.children) {
@@ -141,7 +139,7 @@ export function addMetadataToReflections(
 
 			children.push({
 				...child,
-				permalink: normalizeUrl([baseUrl, childPermalink]),
+				permalink: normalizeUrl([childPermalink]),
 			});
 		});
 	}
@@ -149,7 +147,7 @@ export function addMetadataToReflections(
 	return {
 		...project,
 		children,
-		permalink: normalizeUrl([baseUrl, permalink]),
+		permalink: normalizeUrl([permalink]),
 	};
 }
 
@@ -261,7 +259,7 @@ function extractReflectionModules(
 export function flattenAndGroupPackages(
 	packageConfigs: ResolvedPackageConfig[],
 	project: JSONOutput.ProjectReflection,
-	baseUrl: string,
+	urlPrefix: string,
 	options: DocusaurusPluginTypeDocApiOptions,
 ): PackageReflectionGroup[] {
 	const isSinglePackage = packageConfigs.length === 1;
@@ -306,7 +304,7 @@ export function flattenAndGroupPackages(
 
 				// Add metadata to package and children reflections
 				const urlSlug = getPackageSlug(cfg, importPath);
-				const reflection = addMetadataToReflections(mod, urlSlug, baseUrl, options.routeBasePath);
+				const reflection = addMetadataToReflections(mod, urlSlug, urlPrefix);
 				const existingEntry = packages[cfg.packagePath].entryPoints.find(
 					(ep) => ep.urlSlug === urlSlug,
 				);
@@ -347,12 +345,6 @@ export function flattenAndGroupPackages(
 
 	// Sort packages by name
 	return Object.values(packages).sort((a, b) => a.packageName.localeCompare(b.packageName));
-}
-
-export function extractMetadata(data: JSONOutput.Reflection): ApiMetadata {
-	const { id, name, nextId, permalink, previousId } = data;
-
-	return { id, name, nextId, permalink, previousId };
 }
 
 export function formatPackagesWithoutHostInfo(packages: PackageReflectionGroup[]) {

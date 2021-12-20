@@ -84,6 +84,7 @@ function getDefaultLastVersionName(versionNames: string[]) {
 	if (versionNames.length === 1) {
 		return versionNames[0];
 	}
+
 	return versionNames.find((versionName) => versionName !== CURRENT_VERSION_NAME);
 }
 
@@ -97,7 +98,7 @@ function createVersionMetadata({
 	versionName: string;
 	versionNames: string[];
 	lastVersionName: string | undefined;
-	context: Pick<LoadContext, 'baseUrl' | 'i18n' | 'siteDir'>;
+	context: LoadContext;
 	options: PluginOptions;
 }): VersionMetadata {
 	const isLast = versionName === lastVersionName;
@@ -111,13 +112,17 @@ function createVersionMetadata({
 		versionPathPart = '';
 	}
 
-	const versionPath = normalizeUrl([context.baseUrl, options.routeBasePath ?? '', versionPathPart]);
+	const versionPath = normalizeUrl([
+		context.siteConfig.baseUrl,
+		options.routeBasePath ?? 'api',
+		versionPathPart,
+	]);
 
 	return {
 		isLast: versionName === lastVersionName,
 		routePriority: versionPathPart === '' ? -1 : undefined,
-		versionBadge: options.versions[versionName]?.badge ?? versionNames.length !== 1,
-		versionClassName: options.versions[versionName]?.className ?? `api-version-${versionName}`,
+		versionBadge: versionOptions?.badge ?? versionNames.length !== 1,
+		versionClassName: versionOptions?.className ?? `api-version-${versionName}`,
 		versionLabel,
 		versionName,
 		versionPath,
@@ -133,8 +138,6 @@ export function readVersionsMetadata(
 	const lastVersionName = options.lastVersion
 		? options.lastVersion
 		: getDefaultLastVersionName(versionNames);
-
-	console.log({ versionNamesUnfiltered, versionNames, lastVersionName });
 
 	return versionNames.map((versionName) =>
 		createVersionMetadata({

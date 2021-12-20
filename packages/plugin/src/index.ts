@@ -9,18 +9,12 @@ import { getVersionedDocsDirPath } from '@docusaurus/plugin-content-docs/lib/ver
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
 import { DEFAULT_PLUGIN_ID, normalizeUrl } from '@docusaurus/utils';
 import {
-	extractMetadata,
 	flattenAndGroupPackages,
 	formatPackagesWithoutHostInfo,
 	generateJson,
 } from './plugin/data';
 import { extractSidebar } from './plugin/sidebar';
-import {
-	LoadedContent,
-	LoadedVersion,
-	readVersionsMetadata,
-	VersionMetadata,
-} from './plugin/version';
+import { LoadedContent, readVersionsMetadata, VersionMetadata } from './plugin/version';
 import {
 	DocusaurusPluginTypeDocApiOptions,
 	PackageEntryConfig,
@@ -65,8 +59,6 @@ export default function typedocApiPlugin(
 	const isDefaultPluginId = pluginId === DEFAULT_PLUGIN_ID;
 	const versionsMetadata = readVersionsMetadata(context, options);
 	const versionsDocsDir = getVersionedDocsDirPath(context.siteDir, pluginId);
-
-	console.log({ versionsMetadata });
 
 	// Determine entry points from configs
 	const entryPoints: string[] = [];
@@ -137,161 +129,153 @@ export default function typedocApiPlugin(
 		},
 
 		async loadContent() {
-			async function loadVersion(metadata: VersionMetadata): Promise<LoadedVersion> {
-				const { versionName } = metadata;
-				let packages: PackageReflectionGroup[] = [];
-
-				// Current data needs to be generated on demand
-				if (versionName === CURRENT_VERSION_NAME) {
-					const outFile = path.join(context.generatedFilesDir, `api-typedoc-${pluginId}.json`);
-
-					await generateJson(projectRoot, entryPoints, outFile, options);
-
-					packages = flattenAndGroupPackages(
-						packageConfigs,
-						await importFile(outFile),
-						context.siteConfig.baseUrl,
-						options,
-					);
-
-					// Versioned data is stored in the file system
-				} else {
-					const outDir = path.join(versionsDocsDir, `version-${versionName}`);
-
-					packages = flattenAndGroupPackages(
-						await importFile(path.join(outDir, 'api-packages.json')),
-						await importFile(path.join(outDir, 'api-typedoc.json')),
-						context.siteConfig.baseUrl,
-						options,
-					);
-				}
-
-				return {
-					...metadata,
-					packages,
-					sidebars: await extractSidebar(packages),
-				};
-			}
-
 			return {
-				loadedVersions: await Promise.all(versionsMetadata.map(loadVersion)),
+				loadedVersions: await Promise.all(
+					versionsMetadata.map(async (metadata: VersionMetadata) => {
+						let packages: PackageReflectionGroup[] = [];
+
+						// Current data needs to be generated on demand
+						if (metadata.versionName === CURRENT_VERSION_NAME) {
+							const outFile = path.join(context.generatedFilesDir, `api-typedoc-${pluginId}.json`);
+
+							await generateJson(projectRoot, entryPoints, outFile, options);
+
+							packages = flattenAndGroupPackages(
+								packageConfigs,
+								await importFile(outFile),
+								metadata.versionPath,
+								options,
+							);
+
+							// Versioned data is stored in the file system
+						} else {
+							const outDir = path.join(versionsDocsDir, `version-${metadata.versionName}`);
+
+							packages = flattenAndGroupPackages(
+								await importFile(path.join(outDir, 'api-packages.json')),
+								await importFile(path.join(outDir, 'api-typedoc.json')),
+								metadata.versionPath,
+								options,
+							);
+						}
+
+						return {
+							...metadata,
+							packages,
+							sidebars: await extractSidebar(packages),
+						};
+					}),
+				),
 			};
 		},
 
 		async contentLoaded({ content, actions }) {
-			console.log(content);
-
 			if (!content) {
 				return;
 			}
 
 			const { createData, addRoute } = actions;
-			const apiPackages: any[] = [];
-
-			// Define version metadata for all pages. We need to use the same structure as
-			// "docs" so that we can utilize the same React components.
-			// https://github.com/facebook/docusaurus/blob/master/packages/docusaurus-plugin-content-docs/src/index.ts#L337
-			const versionMetadata: PropVersionMetadata = {
-				pluginId,
-				version: 'current',
-				label: 'Current',
-				isLast: true,
-				banner: null,
-				className: '',
-				badge: false,
-				docsSidebars: { api: await extractSidebar(apiPackages) },
-				docs: {},
-			};
-
-			const versionMetadataData = await createData(
-				`version-${versionMetadata.version}-metadata.json`,
-				JSON.stringify(versionMetadata),
-			);
-
-			const packagesData = await createData(
-				'packages.json',
-				JSON.stringify(formatPackagesWithoutHostInfo(apiPackages)),
-			);
-
-			const optionsData = await createData('options.json', JSON.stringify({ minimal, pluginId }));
-
-			async function createRoute(
-				info: JSONOutput.Reflection,
-				readmePath?: string,
-			): Promise<RouteConfig> {
-				const reflection = extractMetadata(info);
-				const reflectionData = await createData(
-					`reflection-${reflection.id}.json`,
-					JSON.stringify(reflection),
-				);
-				const modules = {
-					content: reflectionData,
-				};
-
-				// Rely on mdx to convert the file path to a component
-				if (readmes && readmePath) {
-					Object.assign(modules, {
-						readme: readmePath,
-					});
-				}
-
-				return {
-					path: reflection.permalink,
-					exact: true,
-					component: path.join(__dirname, './components/ApiItem.js'),
-					modules,
-					sidebar: 'api',
-				};
-			}
-
-			const routes: RouteConfig[] = [];
 
 			await Promise.all(
-				apiPackages.map(async (pkg) => {
-					await Promise.all(
-						pkg.entryPoints.map(async (entry) => {
+				content.loadedVersions.map(async (loadedVersion) => {
+					// Define version metadata for all pages. We need to use the same structure as
+					// "docs" so that we can utilize the same React components.
+					// https://github.com/facebook/docusaurus/blob/master/packages/docusaurus-plugin-content-docs/src/index.ts#L337
+					const versionMetadata: PropVersionMetadata = {
+						pluginId,
+						version: loadedVersion.versionName,
+						label: loadedVersion.versionLabel,
+						isLast: loadedVersion.isLast,
+						banner: null,
+						className: loadedVersion.versionClassName,
+						badge: loadedVersion.versionBadge,
+						docsSidebars: { api: loadedVersion.sidebars },
+						docs: {},
+					};
+
+					const packagesData = await createData(
+						`packages-${versionMetadata.version}.json`,
+						JSON.stringify(formatPackagesWithoutHostInfo(loadedVersion.packages)),
+					);
+
+					const optionsData = await createData(
+						'options.json',
+						JSON.stringify({ minimal, pluginId }),
+					);
+
+					function createRoute(info: JSONOutput.Reflection, readmePath?: string): RouteConfig {
+						const modules = {};
+
+						// Rely on mdx to convert the file path to a component
+						if (readmes && readmePath) {
+							Object.assign(modules, {
+								readme: readmePath,
+							});
+						}
+
+						return {
+							path: info.permalink,
+							exact: true,
+							component: path.join(__dirname, './components/ApiItem.js'),
+							modules,
+							sidebar: 'api',
+							// Map the ID here instead of creating a JSON data file,
+							// otherwise this will create thousands of files!
+							id: info.id,
+						};
+					}
+
+					const routes: RouteConfig[] = [];
+
+					loadedVersion.packages.forEach((pkg) => {
+						pkg.entryPoints.forEach((entry) => {
 							const children =
 								entry.reflection.children?.filter((child) => !child.permalink?.includes('#')) ?? [];
 
 							// Map a route for every declaration in the package (the exported APIs)
-							const subRoutes = await Promise.all(
-								children.map(async (child) => createRoute(child)),
-							);
+							const subRoutes = children.map((child) => createRoute(child));
 
 							// Map a top-level package route, otherwise `DocPage` shows a page not found
 							subRoutes.push(
-								await createRoute(entry.reflection, entry.index ? pkg.readmePath : undefined),
+								createRoute(entry.reflection, entry.index ? pkg.readmePath : undefined),
 							);
 
 							routes.push(...subRoutes);
-						}),
-					);
+						});
+					});
+
+					const indexPermalink = normalizeUrl([
+						context.siteConfig.baseUrl,
+						loadedVersion.versionPath,
+					]);
+
+					routes.push({
+						path: indexPermalink,
+						exact: true,
+						component: path.join(__dirname, './components/ApiIndex.js'),
+						modules: {
+							packages: packagesData,
+						},
+						sidebar: 'api',
+					});
+
+					addRoute({
+						path: indexPermalink,
+						exact: false,
+						component: path.join(__dirname, './components/ApiPage.js'),
+						routes,
+						modules: {
+							options: optionsData,
+							packages: packagesData,
+							versionMetadata: await createData(
+								`version-${versionMetadata.version}.json`,
+								JSON.stringify(versionMetadata),
+							),
+						},
+						priority: loadedVersion.routePriority,
+					});
 				}),
 			);
-
-			const apiIndexPermalink = normalizeUrl([context.siteConfig.baseUrl, '/api']);
-
-			routes.push({
-				path: apiIndexPermalink,
-				exact: true,
-				component: path.join(__dirname, './components/ApiIndex.js'),
-				modules: {
-					packages: packagesData,
-				},
-				sidebar: 'api',
-			});
-
-			addRoute({
-				path: apiIndexPermalink,
-				exact: false,
-				component: path.join(__dirname, './components/ApiPage.js'),
-				routes,
-				modules: {
-					options: optionsData,
-					packages: packagesData,
-					versionMetadata: versionMetadataData,
-				},
-			});
 		},
 
 		configureWebpack(config, isServer, utils) {
