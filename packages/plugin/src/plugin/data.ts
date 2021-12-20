@@ -70,7 +70,7 @@ export async function generateJson(
 		...options.typedocOptions,
 		// Control how config and packages are detected
 		tsconfig,
-		entryPoints,
+		entryPoints: entryPoints.map((ep) => path.join(projectRoot, ep)),
 		entryPointStrategy: 'expand',
 		exclude: options.exclude,
 		// We use a fake category title so that we can fallback to the parent group
@@ -291,7 +291,7 @@ export function flattenAndGroupPackages(
 				// We have a matching entry point, so store the record
 				if (!packages[cfg.packagePath]) {
 					const { packageJson, readmePath } = loadPackageJsonAndReadme(
-						cfg.absolutePath,
+						path.join(options.projectRoot, cfg.packagePath),
 						options.packageJsonName,
 						options.readmeName,
 					);

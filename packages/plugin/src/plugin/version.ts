@@ -1,12 +1,15 @@
 // BASED ON: https://github.com/facebook/docusaurus/blob/main/packages/docusaurus-plugin-content-docs/src/versions.ts
 
 import fs from 'fs';
-import type { JSONOutput } from 'typedoc';
 import { CURRENT_VERSION_NAME } from '@docusaurus/plugin-content-docs/lib/constants';
 import { getVersionsFilePath } from '@docusaurus/plugin-content-docs/lib/versions';
 import type { LoadContext } from '@docusaurus/types';
 import { normalizeUrl } from '@docusaurus/utils';
-import type { DocusaurusPluginTypeDocApiOptions, SidebarItem } from '../types';
+import type {
+	DocusaurusPluginTypeDocApiOptions,
+	PackageReflectionGroup,
+	SidebarItem,
+} from '../types';
 
 type PluginOptions = DocusaurusPluginTypeDocApiOptions;
 
@@ -21,8 +24,8 @@ export interface VersionMetadata {
 }
 
 export interface LoadedVersion extends VersionMetadata {
-	api: JSONOutput.ProjectReflection;
-	sidebars: SidebarItem;
+	packages: PackageReflectionGroup[];
+	sidebars: SidebarItem[];
 }
 
 export interface LoadedContent {

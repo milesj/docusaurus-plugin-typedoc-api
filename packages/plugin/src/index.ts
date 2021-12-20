@@ -48,6 +48,11 @@ const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
 	versions: {},
 };
 
+async function importFile<T>(file: string): Promise<T> {
+	// eslint-disable-next-line promise/prefer-await-to-then
+	return import(file).then((res) => res.default as T);
+}
+
 export default function typedocApiPlugin(
 	context: LoadContext,
 	pluginOptions: DocusaurusPluginTypeDocApiOptions,
@@ -56,15 +61,16 @@ export default function typedocApiPlugin(
 		...DEFAULT_OPTIONS,
 		...pluginOptions,
 	};
-	const { id: pluginId, minimal, packages, projectRoot, readmes } = options;
+	const { id: pluginId, minimal, projectRoot, readmes } = options;
 	const isDefaultPluginId = pluginId === DEFAULT_PLUGIN_ID;
 	const versionsMetadata = readVersionsMetadata(context, options);
+	const versionsDocsDir = getVersionedDocsDirPath(context.siteDir, pluginId);
 
 	console.log({ versionsMetadata });
 
 	// Determine entry points from configs
 	const entryPoints: string[] = [];
-	const packageConfigs: ResolvedPackageConfig[] = packages.map((pkgItem) => {
+	const packageConfigs: ResolvedPackageConfig[] = options.packages.map((pkgItem) => {
 		const pkgConfig = typeof pkgItem === 'string' ? { path: pkgItem } : pkgItem;
 		const entries: Record<string, PackageEntryConfig> = {};
 
@@ -86,21 +92,15 @@ export default function typedocApiPlugin(
 		}
 
 		Object.values(entries).forEach((entryConfig) => {
-			entryPoints.push(path.join(projectRoot, pkgConfig.path, entryConfig.path));
+			entryPoints.push(path.join(pkgConfig.path, entryConfig.path));
 		});
 
-		const absolutePath = path.join(projectRoot, pkgConfig.path);
-
 		return {
-			absolutePath,
 			entryPoints: entries,
 			packagePath: pkgConfig.path || '.',
-			packageSlug: pkgConfig.slug ?? path.basename(absolutePath),
+			packageSlug: pkgConfig.slug ?? path.basename(pkgConfig.path),
 		};
 	});
-
-	// Store API data for easy access
-	const apiPackages: PackageReflectionGroup[] = [];
 
 	return {
 		name: 'docusaurus-plugin-typedoc-api',
@@ -116,12 +116,20 @@ export default function typedocApiPlugin(
 				.arguments('<version>')
 				.description(commandDescription)
 				.action(async (version) => {
-					const outFile = path.join(
-						getVersionedDocsDirPath(context.siteDir, pluginId),
-						`version-${version}/typedoc.json`,
+					const outDir = path.join(versionsDocsDir, `version-${version}`);
+
+					await generateJson(
+						projectRoot,
+						entryPoints,
+						path.join(outDir, 'api-typedoc.json'),
+						options,
 					);
 
-					await generateJson(projectRoot, entryPoints, outFile, options);
+					await fs.promises.writeFile(
+						path.join(outDir, 'api-packages.json'),
+						JSON.stringify(packageConfigs),
+						'utf8',
+					);
 
 					// eslint-disable-next-line no-console
 					console.log(`[${isDefaultPluginId ? 'api' : pluginId}]: version ${version} created!`);
@@ -131,25 +139,37 @@ export default function typedocApiPlugin(
 		async loadContent() {
 			async function loadVersion(metadata: VersionMetadata): Promise<LoadedVersion> {
 				const { versionName } = metadata;
+				let packages: PackageReflectionGroup[] = [];
 
-				const filePath =
-					versionName === CURRENT_VERSION_NAME
-						? path.join(context.generatedFilesDir, `typedoc-${pluginId}.json`)
-						: path.join(
-								getVersionedDocsDirPath(context.siteDir, pluginId),
-								`version-${versionName}/typedoc.json`,
-						  );
-
-				// Versions are stored on the file system, while the current
-				// version needs to be regeneratd every time
+				// Current data needs to be generated on demand
 				if (versionName === CURRENT_VERSION_NAME) {
-					await generateJson(projectRoot, entryPoints, filePath, options);
+					const outFile = path.join(context.generatedFilesDir, `api-typedoc-${pluginId}.json`);
+
+					await generateJson(projectRoot, entryPoints, outFile, options);
+
+					packages = flattenAndGroupPackages(
+						packageConfigs,
+						await importFile(outFile),
+						context.siteConfig.baseUrl,
+						options,
+					);
+
+					// Versioned data is stored in the file system
+				} else {
+					const outDir = path.join(versionsDocsDir, `version-${versionName}`);
+
+					packages = flattenAndGroupPackages(
+						await importFile(path.join(outDir, 'api-packages.json')),
+						await importFile(path.join(outDir, 'api-typedoc.json')),
+						context.siteConfig.baseUrl,
+						options,
+					);
 				}
 
 				return {
 					...metadata,
-					api: await import(filePath),
-					sidebars: [],
+					packages,
+					sidebars: await extractSidebar(packages),
 				};
 			}
 
@@ -166,16 +186,7 @@ export default function typedocApiPlugin(
 			}
 
 			const { createData, addRoute } = actions;
-
-			apiPackages.push(
-				...flattenAndGroupPackages(
-					packageConfigs,
-					// @ts-expect-error CJS/ESM interop sometimes returns under a default property
-					content.default ?? content,
-					context.siteConfig.baseUrl,
-					options,
-				),
-			);
+			const apiPackages: any[] = [];
 
 			// Define version metadata for all pages. We need to use the same structure as
 			// "docs" so that we can utilize the same React components.
@@ -290,7 +301,7 @@ export default function typedocApiPlugin(
 
 			// Whitelist the folders that this webpack rule applies to,
 			// otherwise we collide with the native docs/blog plugins.
-			const include = packageConfigs.map((cfg) => cfg.absolutePath);
+			const include = packageConfigs.map((cfg) => path.join(options.projectRoot, cfg.packagePath));
 
 			return {
 				module: {
