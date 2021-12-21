@@ -13,8 +13,8 @@ package's entry point), so any private, protected, or internal code will not be 
 ## Requirements
 
 - `typescript` >= v4
-- `@docusaurus/core` >= v2.0.0-beta.13
-- `@docusaurus/preset-classic` >= v2.0.0-beta.13
+- `@docusaurus/core` >= v2.0.0-beta.14
+- `@docusaurus/preset-classic` >= v2.0.0-beta.14
 
 ## Examples
 
