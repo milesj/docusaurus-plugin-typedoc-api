@@ -36,13 +36,13 @@ export default function ApiIndex({ packages, history, versionMetadata }: ApiInde
 								<div className="tsd-panel-content">
 									<ul className="tsd-index-list">
 										{packages.map((pkg) => (
-											<li key={pkg.packageName}>
+											<li key={pkg.packageName} className="tsd-truncate">
 												<Link
 													className="tsd-kind-icon"
 													to={pkg.entryPoints[0].reflection.permalink}
 												>
-													{pkg.packageName}{' '}
-													<span className="tsd-signature-symbol">v{pkg.packageVersion}</span>
+													<span className="tsd-signature-symbol">v{pkg.packageVersion}</span>{' '}
+													<span>{pkg.packageName}</span>
 												</Link>
 											</li>
 										))}

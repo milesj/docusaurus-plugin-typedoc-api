@@ -7,38 +7,15 @@ interface VersionBannerProps {
 	versionMetadata: PropVersionMetadata;
 }
 
-function BannerLabel({ versionMetadata }: VersionBannerProps) {
+export function VersionBanner({ versionMetadata }: VersionBannerProps): JSX.Element | null {
 	const { banner, version } = versionMetadata;
 
-	switch (banner) {
-		case 'unreleased':
-			return <>This is an unreleased API for the next version.</>;
-		case 'unmaintained':
-			return (
-				<>
-					This is an API for version <b>{version}</b>, which is no longer actively maintained.
-				</>
-			);
-		default:
-			return null;
+	if (!banner) {
+		return null;
 	}
-}
 
-function LatestVersionSuggestionLabel({ versionLabel, to }: { to: string; versionLabel: string }) {
-	return (
-		<>
-			For an up-to-date API, see the{' '}
-			<b>
-				<Link to={to}>latest version</Link>
-			</b>{' '}
-			({versionLabel}).
-		</>
-	);
-}
-
-function VersionBannerEnabled({ versionMetadata }: VersionBannerProps) {
-	const version = Object.keys(versionMetadata.docs).sort().pop()!;
-	const versionInfo = versionMetadata.docs[version];
+	const latestVersion = Object.keys(versionMetadata.docs).sort().pop()!;
+	const latestVersionInfo = versionMetadata.docs[latestVersion];
 
 	return (
 		<div
@@ -46,19 +23,18 @@ function VersionBannerEnabled({ versionMetadata }: VersionBannerProps) {
 			role="alert"
 		>
 			<div>
-				<BannerLabel versionMetadata={versionMetadata} />
-			</div>
-			<div className="margin-top--md">
-				<LatestVersionSuggestionLabel to={versionInfo.id} versionLabel={versionInfo.title} />
+				{banner === 'unreleased' && <>This is documentation for an unreleased version.</>}
+				{banner === 'unmaintained' && (
+					<>
+						This is documentation for version <b>{version}</b>.
+					</>
+				)}{' '}
+				For the latest API, see version{' '}
+				<b>
+					<Link to={latestVersionInfo.id}>{latestVersionInfo.title}</Link>
+				</b>
+				.
 			</div>
 		</div>
 	);
-}
-
-export function VersionBanner({ versionMetadata }: VersionBannerProps): JSX.Element | null {
-	if (versionMetadata.banner) {
-		return <VersionBannerEnabled versionMetadata={versionMetadata} />;
-	}
-
-	return null;
 }
