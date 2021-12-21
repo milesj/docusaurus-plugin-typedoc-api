@@ -1,15 +1,93 @@
 import fs from 'fs';
 import path from 'path';
 import { JSONOutput, ReflectionKind } from 'typedoc';
+import * as TypeDoc from 'typedoc';
+import ts from 'typescript';
 import { normalizeUrl } from '@docusaurus/utils';
 import {
-	ApiMetadata,
 	DeclarationReflectionMap,
 	DocusaurusPluginTypeDocApiOptions,
 	PackageReflectionGroup,
 	ResolvedPackageConfig,
 } from '../types';
 import { getKindSlug, getPackageSlug } from './url';
+
+function shouldEmit(projectRoot: string, tsconfigPath: string) {
+	const { config, error } = ts.readConfigFile(tsconfigPath, (name) =>
+		fs.readFileSync(name, 'utf8'),
+	);
+
+	if (error) {
+		throw new Error(`Failed to load ${tsconfigPath}`);
+	}
+
+	const result = ts.parseJsonConfigFileContent(config, ts.sys, projectRoot, {}, tsconfigPath);
+
+	if (result.errors.length > 0) {
+		throw new Error(`Failed to parse ${tsconfigPath}`);
+	}
+
+	return result.projectReferences && result.projectReferences.length > 0 ? 'docs' : 'none';
+}
+
+// Persist build state as a global, since the plugin is re-evaluated every hot reload.
+// Because of this, we can't use state in the plugin or module scope.
+if (!global.typedocBuild) {
+	global.typedocBuild = { count: 0 };
+}
+
+export async function generateJson(
+	projectRoot: string,
+	entryPoints: string[],
+	outFile: string,
+	options: DocusaurusPluginTypeDocApiOptions,
+): Promise<boolean> {
+	/* eslint-disable sort-keys */
+
+	// Running the TypeDoc compiler is pretty slow...
+	// We should only load on the 1st build, and use cache for subsequent reloads.
+	if (global.typedocBuild.count > 0 && fs.existsSync(outFile)) {
+		return true;
+	}
+
+	const app = new TypeDoc.Application();
+	const tsconfig = path.join(projectRoot, options.tsconfigName!);
+
+	app.options.addReader(new TypeDoc.TSConfigReader());
+	app.options.addReader(new TypeDoc.TypeDocReader());
+
+	app.bootstrap({
+		// Only emit when using project references
+		emit: shouldEmit(projectRoot, tsconfig),
+		// Only document the public API by default
+		excludeExternals: true,
+		excludeInternal: true,
+		excludePrivate: true,
+		excludeProtected: true,
+		// Enable verbose logging when debugging
+		logLevel: options.debug ? 'Verbose' : 'Info',
+		...options.typedocOptions,
+		// Control how config and packages are detected
+		tsconfig,
+		entryPoints: entryPoints.map((ep) => path.join(projectRoot, ep)),
+		entryPointStrategy: 'expand',
+		exclude: options.exclude,
+		// We use a fake category title so that we can fallback to the parent group
+		defaultCategory: 'CATEGORY',
+	});
+
+	const project = app.convert();
+
+	if (project) {
+		await app.generateJson(project, outFile);
+
+		global.typedocBuild.count += 1;
+
+		return true;
+	}
+
+	return false;
+}
 
 export function createReflectionMap(
 	items: JSONOutput.DeclarationReflection[] = [],
@@ -48,9 +126,9 @@ function loadPackageJsonAndReadme(
 export function addMetadataToReflections(
 	project: JSONOutput.ProjectReflection,
 	packageSlug: string,
-	baseUrl: string,
+	urlPrefix: string,
 ): JSONOutput.ProjectReflection {
-	const permalink = `/api/${packageSlug}`;
+	const permalink = `/${path.join(urlPrefix, packageSlug)}`;
 	const children: JSONOutput.DeclarationReflection[] = [];
 
 	if (project.children) {
@@ -61,7 +139,7 @@ export function addMetadataToReflections(
 
 			children.push({
 				...child,
-				permalink: normalizeUrl([baseUrl, childPermalink]),
+				permalink: normalizeUrl([childPermalink]),
 			});
 		});
 	}
@@ -69,7 +147,7 @@ export function addMetadataToReflections(
 	return {
 		...project,
 		children,
-		permalink: normalizeUrl([baseUrl, permalink]),
+		permalink: normalizeUrl([permalink]),
 	};
 }
 
@@ -181,7 +259,7 @@ function extractReflectionModules(
 export function flattenAndGroupPackages(
 	packageConfigs: ResolvedPackageConfig[],
 	project: JSONOutput.ProjectReflection,
-	baseUrl: string,
+	urlPrefix: string,
 	options: DocusaurusPluginTypeDocApiOptions,
 ): PackageReflectionGroup[] {
 	const isSinglePackage = packageConfigs.length === 1;
@@ -211,7 +289,7 @@ export function flattenAndGroupPackages(
 				// We have a matching entry point, so store the record
 				if (!packages[cfg.packagePath]) {
 					const { packageJson, readmePath } = loadPackageJsonAndReadme(
-						cfg.absolutePath,
+						path.join(options.projectRoot, cfg.packagePath),
 						options.packageJsonName,
 						options.readmeName,
 					);
@@ -226,7 +304,7 @@ export function flattenAndGroupPackages(
 
 				// Add metadata to package and children reflections
 				const urlSlug = getPackageSlug(cfg, importPath);
-				const reflection = addMetadataToReflections(mod, urlSlug, baseUrl);
+				const reflection = addMetadataToReflections(mod, urlSlug, urlPrefix);
 				const existingEntry = packages[cfg.packagePath].entryPoints.find(
 					(ep) => ep.urlSlug === urlSlug,
 				);
@@ -267,12 +345,6 @@ export function flattenAndGroupPackages(
 
 	// Sort packages by name
 	return Object.values(packages).sort((a, b) => a.packageName.localeCompare(b.packageName));
-}
-
-export function extractMetadata(data: JSONOutput.Reflection): ApiMetadata {
-	const { id, name, nextId, permalink, previousId } = data;
-
-	return { id, name, nextId, permalink, previousId };
 }
 
 export function formatPackagesWithoutHostInfo(packages: PackageReflectionGroup[]) {

@@ -1,17 +1,19 @@
 import React, { useEffect } from 'react';
 import Link from '@docusaurus/Link';
+import type { Props as DocItemProps } from '@theme/DocItem';
 import { MainHeading } from '@theme/Heading';
 import { PackageReflectionGroup } from '../types';
 import { Footer } from './Footer';
+import { VersionBanner } from './VersionBanner';
 
-export interface ApiIndexProps {
+export interface ApiIndexProps extends Pick<DocItemProps, 'route' | 'versionMetadata'> {
 	history: {
 		replace: (path: string) => void;
 	};
 	packages: PackageReflectionGroup[];
 }
 
-export default function ApiIndex({ packages, history }: ApiIndexProps) {
+export default function ApiIndex({ packages, history, versionMetadata }: ApiIndexProps) {
 	useEffect(() => {
 		// Redirect to package when only 1
 		if (packages.length === 1) {
@@ -22,6 +24,8 @@ export default function ApiIndex({ packages, history }: ApiIndexProps) {
 	return (
 		<div className="row">
 			<div className="col apiItemCol">
+				<VersionBanner versionMetadata={versionMetadata} />
+
 				<div className="apiItemContainer">
 					<article>
 						<div className="markdown">
@@ -32,13 +36,13 @@ export default function ApiIndex({ packages, history }: ApiIndexProps) {
 								<div className="tsd-panel-content">
 									<ul className="tsd-index-list">
 										{packages.map((pkg) => (
-											<li key={pkg.packageName}>
+											<li key={pkg.packageName} className="tsd-truncate">
 												<Link
 													className="tsd-kind-icon"
 													to={pkg.entryPoints[0].reflection.permalink}
 												>
-													{pkg.packageName}{' '}
-													<span className="tsd-signature-symbol">v{pkg.packageVersion}</span>
+													<span className="tsd-signature-symbol">v{pkg.packageVersion}</span>{' '}
+													<span>{pkg.packageName}</span>
 												</Link>
 											</li>
 										))}

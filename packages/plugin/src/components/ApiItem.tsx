@@ -8,6 +8,7 @@ import { ThemeClassNames } from '@docusaurus/theme-common';
 import { TOCItem } from '@docusaurus/types';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import DocPaginator from '@theme/DocPaginator';
+import DocVersionBadge from '@theme/DocVersionBadge';
 import { MainHeading } from '@theme/Heading';
 import useWindowSize from '@theme/hooks/useWindowSize';
 import Seo from '@theme/Seo';
@@ -15,11 +16,12 @@ import TOC from '@theme/TOC';
 import TOCCollapsible from '@theme/TOCCollapsible';
 import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
-import { ApiMetadata, DeclarationReflectionMap } from '../types';
+import { DeclarationReflectionMap } from '../types';
 import { getKindIconHtml } from '../utils/icons';
 import { Footer } from './Footer';
 import { Reflection } from './Reflection';
 import { TypeParametersGeneric } from './TypeParametersGeneric';
+import { VersionBanner } from './VersionBanner';
 
 function extractTOC(
 	item: JSONOutput.DeclarationReflection,
@@ -54,27 +56,23 @@ function extractTOC(
 	return toc;
 }
 
-export interface ApiItemProps extends Omit<DocItemProps, 'content'> {
-	content: ApiMetadata;
+export interface ApiItemProps extends Pick<DocItemProps, 'route' | 'versionMetadata'> {
 	readme?: React.ComponentType;
 }
 
-// eslint-disable-next-line complexity
-export default function ApiItem({ content, readme: Readme, versionMetadata }: ApiItemProps) {
-	const item = useReflection(content.id)!;
-	const prevItem = useReflection(content.previousId);
-	const nextItem = useReflection(content.nextId);
+export default function ApiItem({ readme: Readme, route, versionMetadata }: ApiItemProps) {
+	const item = useReflection((route as unknown as { id: number }).id)!;
+	const prevItem = useReflection(item.previousId);
+	const nextItem = useReflection(item.nextId);
 	const reflections = useReflectionMap();
 	const windowSize = useWindowSize();
-	const title = item.name ?? content.name;
 
 	// Table of contents
 	const toc = useMemo(() => extractTOC(item, reflections), [item, reflections]);
 	const canRenderTOC = toc.length > 0;
 	const renderTocDesktop = canRenderTOC && (windowSize === 'desktop' || windowSize === 'ssr');
 
-	// Enable once we support versioning
-	const showVersionBadge = false;
+	// Pagination
 	const pagingMetadata = useMemo(
 		() => ({
 			next: nextItem
@@ -95,19 +93,18 @@ export default function ApiItem({ content, readme: Readme, versionMetadata }: Ap
 
 	return (
 		<>
-			<Seo description={item.comment?.shortText ?? item.comment?.text} title={`${title} | API`} />
+			<Seo
+				description={item.comment?.shortText ?? item.comment?.text}
+				title={`${item.name} | API`}
+			/>
 
 			<div className="row">
 				<div className="col apiItemCol">
+					<VersionBanner versionMetadata={versionMetadata} />
+
 					<div className="apiItemContainer">
 						<article>
-							{showVersionBadge && (
-								<span
-									className={`${ThemeClassNames.docs.docVersionBadge ?? ''} badge badge--secondary`}
-								>
-									Version: {versionMetadata.label}
-								</span>
-							)}
+							<DocVersionBadge />
 
 							{canRenderTOC && (
 								<TOCCollapsible
@@ -120,7 +117,7 @@ export default function ApiItem({ content, readme: Readme, versionMetadata }: Ap
 
 							<div className={`${ThemeClassNames.docs.docMarkdown ?? ''} markdown`}>
 								<MainHeading>
-									{title} <TypeParametersGeneric params={item.typeParameter} />
+									{item.name} <TypeParametersGeneric params={item.typeParameter} />
 								</MainHeading>
 
 								{Readme && (
