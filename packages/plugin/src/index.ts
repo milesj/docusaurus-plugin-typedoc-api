@@ -3,7 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import type { JSONOutput } from 'typedoc';
-import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
+import type { PropVersionDocs, PropVersionMetadata } from '@docusaurus/plugin-content-docs';
 import { CURRENT_VERSION_NAME } from '@docusaurus/plugin-content-docs/lib/constants';
 import { getVersionedDocsDirPath } from '@docusaurus/plugin-content-docs/lib/versions';
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
@@ -14,12 +14,14 @@ import {
 	generateJson,
 } from './plugin/data';
 import { extractSidebar } from './plugin/sidebar';
-import { LoadedContent, readVersionsMetadata, VersionMetadata } from './plugin/version';
+import { readVersionsMetadata } from './plugin/version';
 import {
 	DocusaurusPluginTypeDocApiOptions,
+	LoadedContent,
 	PackageEntryConfig,
 	PackageReflectionGroup,
 	ResolvedPackageConfig,
+	VersionMetadata,
 } from './types';
 
 const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
@@ -175,26 +177,43 @@ export default function typedocApiPlugin(
 			}
 
 			const { createData, addRoute } = actions;
+			const docs: PropVersionDocs = {};
+
+			// Create an index of versions for quick lookups.
+			// This is hacky, but it works, so shrug.
+			content.loadedVersions.forEach((loadedVersion) => {
+				if (loadedVersion.versionName !== CURRENT_VERSION_NAME) {
+					docs[loadedVersion.versionName] = {
+						id: loadedVersion.versionPath,
+						title: loadedVersion.versionLabel,
+					};
+				}
+			});
 
 			await Promise.all(
 				content.loadedVersions.map(async (loadedVersion) => {
+					const version = loadedVersion.versionName;
+
 					// Define version metadata for all pages. We need to use the same structure as
 					// "docs" so that we can utilize the same React components.
 					// https://github.com/facebook/docusaurus/blob/master/packages/docusaurus-plugin-content-docs/src/index.ts#L337
-					const versionMetadata: PropVersionMetadata = {
-						pluginId,
-						version: loadedVersion.versionName,
-						label: loadedVersion.versionLabel,
-						isLast: loadedVersion.isLast,
-						banner: null,
-						className: loadedVersion.versionClassName,
-						badge: loadedVersion.versionBadge,
-						docsSidebars: { api: loadedVersion.sidebars },
-						docs: {},
-					};
+					const versionMetadata = await createData(
+						`version-${version}.json`,
+						JSON.stringify({
+							badge: loadedVersion.versionBadge,
+							banner: loadedVersion.versionBanner,
+							className: loadedVersion.versionClassName,
+							docs,
+							docsSidebars: { api: loadedVersion.sidebars },
+							isLast: loadedVersion.isLast,
+							label: loadedVersion.versionLabel,
+							pluginId,
+							version: loadedVersion.versionName,
+						} as PropVersionMetadata),
+					);
 
 					const packagesData = await createData(
-						`packages-${versionMetadata.version}.json`,
+						`packages-${version}.json`,
 						JSON.stringify(formatPackagesWithoutHostInfo(loadedVersion.packages)),
 					);
 
@@ -254,7 +273,9 @@ export default function typedocApiPlugin(
 						exact: true,
 						component: path.join(__dirname, './components/ApiIndex.js'),
 						modules: {
+							options: optionsData,
 							packages: packagesData,
+							versionMetadata,
 						},
 						sidebar: 'api',
 					});
@@ -267,10 +288,7 @@ export default function typedocApiPlugin(
 						modules: {
 							options: optionsData,
 							packages: packagesData,
-							versionMetadata: await createData(
-								`version-${versionMetadata.version}.json`,
-								JSON.stringify(versionMetadata),
-							),
+							versionMetadata,
 						},
 						priority: loadedVersion.routePriority,
 					});

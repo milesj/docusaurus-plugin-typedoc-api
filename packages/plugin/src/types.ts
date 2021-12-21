@@ -1,6 +1,8 @@
 import type { JSONOutput, TypeDocOptions } from 'typedoc';
 import type { PropSidebarItem } from '@docusaurus/plugin-content-docs';
-import type { VersionsOptions } from '@docusaurus/plugin-content-docs/lib/types';
+import type { VersionBanner, VersionsOptions } from '@docusaurus/plugin-content-docs/lib/types';
+
+export type { VersionBanner };
 
 export interface DocusaurusPluginTypeDocApiOptions extends VersionsOptions {
 	debug?: boolean;
@@ -56,6 +58,29 @@ export interface ResolvedPackageConfig {
 	entryPoints: Record<string, PackageEntryConfig>;
 	packagePath: string;
 	packageSlug: string;
+}
+
+// VERSIONING
+
+export interface VersionMetadata {
+	versionName: string; // 1.0.0
+	versionLabel: string; // Version 1.0.0
+	versionPath: string; // /baseUrl/api/1.0.0
+	versionBadge: boolean;
+	versionBanner: VersionBanner | null;
+	versionClassName: string;
+	isLast: boolean;
+	routePriority: number | undefined; // -1 for the latest
+}
+
+export interface LoadedVersion extends VersionMetadata {
+	// mainDocId: string;
+	packages: PackageReflectionGroup[];
+	sidebars: SidebarItem[];
+}
+
+export interface LoadedContent {
+	loadedVersions: LoadedVersion[];
 }
 
 // SIDEBAR / UI

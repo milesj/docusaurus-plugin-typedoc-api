@@ -9,7 +9,6 @@ import { TOCItem } from '@docusaurus/types';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import DocPaginator from '@theme/DocPaginator';
 import DocVersionBadge from '@theme/DocVersionBadge';
-import DocVersionBanner from '@theme/DocVersionBanner';
 import { MainHeading } from '@theme/Heading';
 import useWindowSize from '@theme/hooks/useWindowSize';
 import Seo from '@theme/Seo';
@@ -22,6 +21,7 @@ import { getKindIconHtml } from '../utils/icons';
 import { Footer } from './Footer';
 import { Reflection } from './Reflection';
 import { TypeParametersGeneric } from './TypeParametersGeneric';
+import { VersionBanner } from './VersionBanner';
 
 function extractTOC(
 	item: JSONOutput.DeclarationReflection,
@@ -56,7 +56,7 @@ function extractTOC(
 	return toc;
 }
 
-export interface ApiItemProps extends Omit<DocItemProps, 'content'> {
+export interface ApiItemProps extends Pick<DocItemProps, 'route' | 'versionMetadata'> {
 	readme?: React.ComponentType;
 }
 
@@ -100,7 +100,7 @@ export default function ApiItem({ readme: Readme, route, versionMetadata }: ApiI
 
 			<div className="row">
 				<div className="col apiItemCol">
-					<DocVersionBanner />
+					<VersionBanner versionMetadata={versionMetadata} />
 
 					<div className="apiItemContainer">
 						<article>

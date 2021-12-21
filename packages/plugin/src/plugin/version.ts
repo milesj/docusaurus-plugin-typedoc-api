@@ -5,32 +5,9 @@ import { CURRENT_VERSION_NAME } from '@docusaurus/plugin-content-docs/lib/consta
 import { getVersionsFilePath } from '@docusaurus/plugin-content-docs/lib/versions';
 import type { LoadContext } from '@docusaurus/types';
 import { normalizeUrl } from '@docusaurus/utils';
-import type {
-	DocusaurusPluginTypeDocApiOptions,
-	PackageReflectionGroup,
-	SidebarItem,
-} from '../types';
+import type { DocusaurusPluginTypeDocApiOptions, VersionBanner, VersionMetadata } from '../types';
 
 type PluginOptions = DocusaurusPluginTypeDocApiOptions;
-
-export interface VersionMetadata {
-	versionName: string; // 1.0.0
-	versionLabel: string; // Version 1.0.0
-	versionPath: string; // /baseUrl/api/1.0.0
-	versionBadge: boolean;
-	versionClassName: string;
-	isLast: boolean;
-	routePriority: number | undefined; // -1 for the latest
-}
-
-export interface LoadedVersion extends VersionMetadata {
-	packages: PackageReflectionGroup[];
-	sidebars: SidebarItem[];
-}
-
-export interface LoadedContent {
-	loadedVersions: LoadedVersion[];
-}
 
 function readVersionsFile(siteDir: string, pluginId: string): string[] | null {
 	const versionsFilePath = getVersionsFilePath(siteDir, pluginId);
@@ -42,10 +19,7 @@ function readVersionsFile(siteDir: string, pluginId: string): string[] | null {
 	return null;
 }
 
-function readVersionNames(
-	siteDir: string,
-	options: Pick<PluginOptions, 'disableVersioning' | 'id' | 'includeCurrentVersion'>,
-): string[] {
+function readVersionNames(siteDir: string, options: PluginOptions): string[] {
 	const versionFileContent = readVersionsFile(siteDir, options.id ?? 'default');
 
 	if (!versionFileContent && options.disableVersioning) {
@@ -69,15 +43,28 @@ function readVersionNames(
 	return versions;
 }
 
-function filterVersions(
-	versionNamesUnfiltered: string[],
-	options: Pick<PluginOptions, 'onlyIncludeVersions'>,
-) {
+function filterVersions(versionNamesUnfiltered: string[], options: PluginOptions) {
 	if (options.onlyIncludeVersions && options.onlyIncludeVersions.length > 0) {
 		return versionNamesUnfiltered.filter((name) => options.onlyIncludeVersions?.includes(name));
 	}
 
 	return versionNamesUnfiltered;
+}
+
+function getDefaultVersionBanner(
+	versionName: string,
+	versionNames: string[],
+	lastVersionName?: string,
+): VersionBanner | null {
+	if (!lastVersionName || versionName === lastVersionName) {
+		return null;
+	}
+
+	if (versionNames.indexOf(versionName) < versionNames.indexOf(lastVersionName)) {
+		return 'unreleased';
+	}
+
+	return 'unmaintained';
 }
 
 function getDefaultLastVersionName(versionNames: string[]) {
@@ -122,6 +109,7 @@ function createVersionMetadata({
 		isLast: versionName === lastVersionName,
 		routePriority: versionPathPart === '' ? -1 : undefined,
 		versionBadge: versionOptions?.badge ?? versionNames.length !== 1,
+		versionBanner: getDefaultVersionBanner(versionName, versionNames, lastVersionName),
 		versionClassName: versionOptions?.className ?? `api-version-${versionName}`,
 		versionLabel,
 		versionName,
