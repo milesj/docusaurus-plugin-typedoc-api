@@ -158,3 +158,37 @@ module.exports = {
 ```
 
 > Index entry points don't require a label, so a file path can be passed directly.
+
+## Versioning
+
+This plugin supports API versioning by piggy-backing off the built-in
+[docs versioning implementation](https://docusaurus.io/docs/versioning), which is a _requirement_
+for this to work correctly.
+
+To begin, version your docs with the built-in command:
+
+```shell
+yarn docusaurus docs:version 1.2.3
+```
+
+Once the markdown files are generated, run our versioning command _with the same version used
+previously_:
+
+```shell
+yarn docusaurus api:version 1.2.3
+```
+
+This will create multiple JSON files in the `versioned_docs/version-1.2.3` directory. Be sure to
+commit these files to your repo.
+
+> When versioning, the current state of your branch will be used as that version's API. To
+> update/regenerate old versions, you'll need to checkout an old commit, re-version, and copy the
+> generated files to the latest branch.
+
+### Caveats
+
+- Each version in `versioned_docs` (or `versions.json`) _must_ contain the generated API JSON files,
+  otherwise the build will fail.
+- The header/footer API links are _not_ version aware, as their values are static.
+- We suggest only versioning major versions, as the size of these JSON files and the webpack build
+  will get very large very fast.
