@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.2.0 - 2021-12-21
+
+#### 🚀 Updates
+
+- Add versioning support. (#16) ([82d9f67](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/82d9f67)), closes [#16](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/16)
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to beta.14. ([ab98092](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/ab98092))
+
+**Note:** Version bump only for package website
+
+
+
+
+
 ### 0.1.4 - 2021-12-18
 
 #### 📦 Dependencies
