@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 0.2.1 - 2022-01-12
+
+#### 🐞 Fixes
+
+- Fix baseUrl being doubled. ([9c9ffca](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/9c9ffca))
+- Redirect to preferred version from api index. [#18] ([43d6dd5](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/43d6dd5)), closes [#18](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/18)
+
+#### 📘 Docs
+
+- Add exampel for api version dropdown. ([a5289f1](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/a5289f1))
+
+**Note:** Version bump only for package website
+
+
+
+
+
 ## 0.2.0 - 2021-12-21
 
 #### 🚀 Updates
