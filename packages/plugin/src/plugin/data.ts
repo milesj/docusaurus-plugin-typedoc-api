@@ -128,7 +128,7 @@ export function addMetadataToReflections(
 	packageSlug: string,
 	urlPrefix: string,
 ): JSONOutput.ProjectReflection {
-	const permalink = `/${path.join(urlPrefix, packageSlug)}`;
+	const permalink = `/${path.join(urlPrefix, packageSlug).replace(/\\/g, '/')}`;
 	const children: JSONOutput.DeclarationReflection[] = [];
 
 	if (project.children) {
