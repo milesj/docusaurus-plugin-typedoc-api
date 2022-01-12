@@ -185,6 +185,44 @@ commit these files to your repo.
 > update/regenerate old versions, you'll need to checkout an old commit, re-version, and copy the
 > generated files to the latest branch.
 
+### Navigation
+
+Our API is unable to use the
+[`docsVersionDropdown`](https://docusaurus.io/docs/api/themes/configuration#navbar-docs-version-dropdown)
+navigation type, as it's hardcoded in Docusaurus core. However, you can create a custom version
+dropdown like so:
+
+```js
+const versions = require('./versions.json');
+
+module.exports = {
+	// ...
+	themeConfig: {
+		// ...
+		navbar: {
+			// ...
+			items: [
+				// ...
+				{
+					type: 'dropdown',
+					label: 'API',
+					position: 'left',
+					items: [
+						{ label: 'Next', to: 'api/next' },
+						...versions.map((version, i) => ({
+							label: version,
+							to: i === 0 ? 'api' : `api/${version}`,
+						})),
+					],
+				},
+			],
+		},
+	},
+};
+```
+
+> This workaround isn't perfect and may be buggy. Use at your own risk!
+
 ### Caveats
 
 - Each version in `versioned_docs` (or `versions.json`) _must_ contain the generated API JSON files,

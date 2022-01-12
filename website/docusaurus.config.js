@@ -1,6 +1,7 @@
 const path = require('path');
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const versions = require('./versions.json');
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
@@ -34,6 +35,18 @@ module.exports = {
 					to: 'api',
 					label: 'API',
 					position: 'left',
+				},
+				{
+					type: 'dropdown',
+					label: 'API',
+					position: 'left',
+					items: [
+						{ label: 'Next', to: 'api/next' },
+						...versions.map((version, i) => ({
+							label: version,
+							to: i === 0 ? 'api' : `api/${version}`,
+						})),
+					],
 				},
 				{
 					href: 'https://github.com/facebook/docusaurus',
