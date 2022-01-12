@@ -29,8 +29,8 @@ function addVersionToUrl(
 	) {
 		const version = preferredVersion.name === 'current' ? 'next' : preferredVersion.name;
 
-		if (url === '/api') {
-			return `/api/${version}`;
+		if (url.endsWith('/api')) {
+			return `${url}/${version}`;
 		}
 
 		return url.replace('/api/', `/api/${version}/`);

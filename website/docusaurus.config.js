@@ -38,6 +38,7 @@ module.exports = {
 				},
 				{
 					type: 'dropdown',
+					to: 'api',
 					label: 'API',
 					position: 'left',
 					items: [

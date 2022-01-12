@@ -263,10 +263,7 @@ export default function typedocApiPlugin(
 						});
 					});
 
-					const indexPermalink = normalizeUrl([
-						context.siteConfig.baseUrl,
-						loadedVersion.versionPath,
-					]);
+					const indexPermalink = normalizeUrl([loadedVersion.versionPath]);
 
 					routes.push({
 						path: indexPermalink,
