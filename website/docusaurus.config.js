@@ -28,6 +28,9 @@ module.exports = {
 					label: 'Tutorial',
 				},
 				{
+					type: 'docsVersionDropdown',
+				},
+				{
 					to: 'api',
 					label: 'API',
 					position: 'left',

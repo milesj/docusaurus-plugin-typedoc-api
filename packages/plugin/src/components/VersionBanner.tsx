@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Link from '@docusaurus/Link';
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
-import { ThemeClassNames } from '@docusaurus/theme-common';
+import { ThemeClassNames, useDocsPreferredVersion } from '@docusaurus/theme-common';
+import { useLatestVersion } from '@theme/hooks/useDocs';
 
 interface VersionBannerProps {
 	versionMetadata: PropVersionMetadata;
@@ -9,13 +10,18 @@ interface VersionBannerProps {
 
 export function VersionBanner({ versionMetadata }: VersionBannerProps): JSX.Element | null {
 	const { banner, version } = versionMetadata;
+	const latestVersion = useLatestVersion();
+	const { savePreferredVersionName } = useDocsPreferredVersion(versionMetadata.pluginId);
+
+	const handleClick = useCallback(() => {
+		savePreferredVersionName(latestVersion.name);
+	}, [latestVersion.name, savePreferredVersionName]);
 
 	if (!banner) {
 		return null;
 	}
 
-	const latestVersion = Object.keys(versionMetadata.docs).sort().pop()!;
-	const latestVersionInfo = versionMetadata.docs[latestVersion];
+	const latestVersionInfo = versionMetadata.docs[latestVersion.name];
 
 	return (
 		<div
@@ -31,7 +37,9 @@ export function VersionBanner({ versionMetadata }: VersionBannerProps): JSX.Elem
 				)}{' '}
 				For the latest API, see version{' '}
 				<b>
-					<Link to={latestVersionInfo.id}>{latestVersionInfo.title}</Link>
+					<Link to={latestVersionInfo.id} onClick={handleClick}>
+						{latestVersionInfo.title}
+					</Link>
 				</b>
 				.
 			</div>
