@@ -1,7 +1,12 @@
 const path = require('path');
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
-const versions = require('./versions.json');
+
+let versions = [];
+
+try {
+	versions = require('./versions.json');
+} catch {}
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
