@@ -1,21 +1,20 @@
+import { normalizeUrl } from '@docusaurus/utils';
 import fs from 'fs';
 import path from 'path';
-import { JSONOutput, ReflectionKind } from 'typedoc';
 import * as TypeDoc from 'typedoc';
+import { JSONOutput, ReflectionKind } from 'typedoc';
 import ts from 'typescript';
-import { normalizeUrl } from '@docusaurus/utils';
 import {
 	DeclarationReflectionMap,
 	DocusaurusPluginTypeDocApiOptions,
 	PackageReflectionGroup,
 	ResolvedPackageConfig,
 } from '../types';
+import { joinUrl } from '../utils/links';
 import { getKindSlug, getPackageSlug } from './url';
 
 function shouldEmit(projectRoot: string, tsconfigPath: string) {
-	const { config, error } = ts.readConfigFile(tsconfigPath, (name) =>
-		fs.readFileSync(name, 'utf8'),
-	);
+	const { config, error } = ts.readConfigFile(tsconfigPath, (name) => fs.readFileSync(name, 'utf8'));
 
 	if (error) {
 		throw new Error(`Failed to load ${tsconfigPath}`);
@@ -89,9 +88,7 @@ export async function generateJson(
 	return false;
 }
 
-export function createReflectionMap(
-	items: JSONOutput.DeclarationReflection[] = [],
-): DeclarationReflectionMap {
+export function createReflectionMap(items: JSONOutput.DeclarationReflection[] = []): DeclarationReflectionMap {
 	const map: DeclarationReflectionMap = {};
 
 	items.forEach((item) => {
@@ -128,7 +125,7 @@ export function addMetadataToReflections(
 	packageSlug: string,
 	urlPrefix: string,
 ): JSONOutput.ProjectReflection {
-	const permalink = `/${path.join(urlPrefix, packageSlug).replace(/\\/g, '/')}`;
+	const permalink = `/${joinUrl(urlPrefix, packageSlug)}`;
 	const children: JSONOutput.DeclarationReflection[] = [];
 
 	if (project.children) {
@@ -274,7 +271,7 @@ export function flattenAndGroupPackages(
 
 		packageConfigs.some((cfg) =>
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
-				const relEntryPoint = path.join(cfg.packagePath, entry.path);
+				const relEntryPoint = joinUrl(cfg.packagePath, entry.path);
 				const isUsingDeepImports = !entry.path.match(/\.tsx?$/);
 
 				if (
@@ -305,9 +302,7 @@ export function flattenAndGroupPackages(
 				// Add metadata to package and children reflections
 				const urlSlug = getPackageSlug(cfg, importPath);
 				const reflection = addMetadataToReflections(mod, urlSlug, urlPrefix);
-				const existingEntry = packages[cfg.packagePath].entryPoints.find(
-					(ep) => ep.urlSlug === urlSlug,
-				);
+				const existingEntry = packages[cfg.packagePath].entryPoints.find((ep) => ep.urlSlug === urlSlug);
 
 				if (existingEntry) {
 					if (isUsingDeepImports) {
@@ -333,7 +328,7 @@ export function flattenAndGroupPackages(
 				reflection.name =
 					importPath === 'index'
 						? packages[cfg.packagePath].packageName
-						: path.join(packages[cfg.packagePath].packageName, importPath);
+						: joinUrl(packages[cfg.packagePath].packageName, importPath);
 
 				return true;
 			}),
