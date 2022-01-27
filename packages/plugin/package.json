@@ -17,6 +17,7 @@
   "main": "./lib/index.js",
   "types": "./dts/index.d.ts",
   "files": [
+    "assets/**/*",
     "dts/**/*.d.ts",
     "lib/**/*.{js,map}",
     "src/**/*.{ts,tsx,json}",
@@ -45,9 +46,9 @@
     "typescript": "^4.0.0"
   },
   "dependencies": {
+    "@docusaurus/plugin-content-docs": "2.0.0-beta.14",
     "@docusaurus/types": "2.0.0-beta.14",
     "@docusaurus/utils": "2.0.0-beta.14",
-    "@docusaurus/plugin-content-docs": "2.0.0-beta.14",
     "@vscode/codicons": "^0.0.27",
     "marked": "^3.0.8",
     "typedoc": "^0.22.11"
