@@ -1,9 +1,9 @@
-import { normalizeUrl } from '@docusaurus/utils';
 import fs from 'fs';
 import path from 'path';
 import * as TypeDoc from 'typedoc';
 import { JSONOutput, ReflectionKind } from 'typedoc';
 import ts from 'typescript';
+import { normalizeUrl } from '@docusaurus/utils';
 import {
 	DeclarationReflectionMap,
 	DocusaurusPluginTypeDocApiOptions,
@@ -14,7 +14,9 @@ import { joinUrl } from '../utils/links';
 import { getKindSlug, getPackageSlug } from './url';
 
 function shouldEmit(projectRoot: string, tsconfigPath: string) {
-	const { config, error } = ts.readConfigFile(tsconfigPath, (name) => fs.readFileSync(name, 'utf8'));
+	const { config, error } = ts.readConfigFile(tsconfigPath, (name) =>
+		fs.readFileSync(name, 'utf8'),
+	);
 
 	if (error) {
 		throw new Error(`Failed to load ${tsconfigPath}`);
@@ -88,7 +90,9 @@ export async function generateJson(
 	return false;
 }
 
-export function createReflectionMap(items: JSONOutput.DeclarationReflection[] = []): DeclarationReflectionMap {
+export function createReflectionMap(
+	items: JSONOutput.DeclarationReflection[] = [],
+): DeclarationReflectionMap {
 	const map: DeclarationReflectionMap = {};
 
 	items.forEach((item) => {
@@ -302,7 +306,9 @@ export function flattenAndGroupPackages(
 				// Add metadata to package and children reflections
 				const urlSlug = getPackageSlug(cfg, importPath);
 				const reflection = addMetadataToReflections(mod, urlSlug, urlPrefix);
-				const existingEntry = packages[cfg.packagePath].entryPoints.find((ep) => ep.urlSlug === urlSlug);
+				const existingEntry = packages[cfg.packagePath].entryPoints.find(
+					(ep) => ep.urlSlug === urlSlug,
+				);
 
 				if (existingEntry) {
 					if (isUsingDeepImports) {
