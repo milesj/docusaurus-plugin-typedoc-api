@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { JSONOutput, ReflectionKind } from 'typedoc';
 import * as TypeDoc from 'typedoc';
+import { JSONOutput, ReflectionKind } from 'typedoc';
 import ts from 'typescript';
 import { normalizeUrl } from '@docusaurus/utils';
 import {
@@ -10,6 +10,7 @@ import {
 	PackageReflectionGroup,
 	ResolvedPackageConfig,
 } from '../types';
+import { joinUrl } from '../utils/links';
 import { getKindSlug, getPackageSlug } from './url';
 
 function shouldEmit(projectRoot: string, tsconfigPath: string) {
@@ -128,7 +129,7 @@ export function addMetadataToReflections(
 	packageSlug: string,
 	urlPrefix: string,
 ): JSONOutput.ProjectReflection {
-	const permalink = `/${path.join(urlPrefix, packageSlug).replace(/\\/g, '/')}`;
+	const permalink = `/${joinUrl(urlPrefix, packageSlug)}`;
 	const children: JSONOutput.DeclarationReflection[] = [];
 
 	if (project.children) {
@@ -274,7 +275,7 @@ export function flattenAndGroupPackages(
 
 		packageConfigs.some((cfg) =>
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
-				const relEntryPoint = path.join(cfg.packagePath, entry.path);
+				const relEntryPoint = joinUrl(cfg.packagePath, entry.path);
 				const isUsingDeepImports = !entry.path.match(/\.tsx?$/);
 
 				if (
@@ -333,7 +334,7 @@ export function flattenAndGroupPackages(
 				reflection.name =
 					importPath === 'index'
 						? packages[cfg.packagePath].packageName
-						: path.join(packages[cfg.packagePath].packageName, importPath);
+						: joinUrl(packages[cfg.packagePath].packageName, importPath);
 
 				return true;
 			}),
