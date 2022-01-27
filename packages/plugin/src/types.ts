@@ -1,6 +1,9 @@
 import type { JSONOutput, TypeDocOptions } from 'typedoc';
-import type { PropSidebarItem } from '@docusaurus/plugin-content-docs';
-import type { VersionBanner, VersionsOptions } from '@docusaurus/plugin-content-docs/lib/types';
+import type {
+	PropSidebarItem,
+	VersionBanner,
+	VersionsOptions,
+} from '@docusaurus/plugin-content-docs';
 
 export type { VersionBanner };
 

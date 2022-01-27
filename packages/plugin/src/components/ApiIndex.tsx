@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import Link from '@docusaurus/Link';
-import { useDocsPreferredVersion } from '@docusaurus/theme-common';
+import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
+import type { GlobalVersion } from '@docusaurus/plugin-content-docs/client';
+import { useDocsPreferredVersion, useDocsVersion } from '@docusaurus/theme-common';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import { MainHeading } from '@theme/Heading';
-import { GlobalVersion, useLatestVersion } from '@theme/hooks/useDocs';
 import { PackageReflectionGroup } from '../types';
 import { Footer } from './Footer';
 import { VersionBanner } from './VersionBanner';
@@ -18,14 +19,14 @@ export interface ApiIndexProps extends Pick<DocItemProps, 'route' | 'versionMeta
 
 function addVersionToUrl(
 	url: string,
-	latestVersion: GlobalVersion,
+	latestVersion: PropVersionMetadata,
 	preferredVersion: GlobalVersion | null | undefined,
 ) {
 	if (
 		!url.match(/api\/(\d\.\d\.\d)/) &&
 		!url.includes('api/next') &&
 		preferredVersion &&
-		preferredVersion.name !== latestVersion.name
+		preferredVersion.name !== latestVersion.label
 	) {
 		const version = preferredVersion.name === 'current' ? 'next' : preferredVersion.name;
 
@@ -40,8 +41,10 @@ function addVersionToUrl(
 }
 
 export default function ApiIndex({ packages, history, versionMetadata }: ApiIndexProps) {
-	const latestVersion = useLatestVersion();
+	const latestVersion = useDocsVersion();
 	const { preferredVersion } = useDocsPreferredVersion(versionMetadata.pluginId);
+
+	console.log({ latestVersion, preferredVersion });
 
 	useEffect(() => {
 		// Redirect to package when only 1
