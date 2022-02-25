@@ -23,7 +23,7 @@ function addVersionToUrl(
 	preferredVersion: GlobalVersion | null | undefined,
 ) {
 	if (
-		!url.match(/api\/(\d\.\d\.\d)/) &&
+		!url.match(/api\/([\d.]+)/) &&
 		!url.includes('api/next') &&
 		preferredVersion &&
 		preferredVersion.name !== latestVersion.label
