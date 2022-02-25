@@ -19,7 +19,7 @@
     "@types/marked": "^3.0.3",
     "@types/react": "^17.0.39",
     "lerna": "^4.0.0",
-    "packemon": "^1.11.1",
+    "packemon": "^1.14.0",
     "react": "^17.0.2"
   },
   "workspaces": [
