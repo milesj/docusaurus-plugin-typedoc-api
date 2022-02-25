@@ -231,3 +231,18 @@ module.exports = {
 - The header/footer API links are _not_ version aware, as their values are static.
 - We suggest only versioning major versions, as the size of these JSON files and the webpack build
   will get very large very fast.
+
+## Comparison
+
+There's another plugin called
+[docusaurus-plugin-typedoc](https://github.com/tgreyuk/typedoc-plugin-markdown/tree/master/packages/docusaurus-plugin-typedoc),
+that offers a similar solution. However, there are many differences between that package and this
+one, with the biggest being that theirs generates markdown files and `/docs/api/...` styled routes,
+while ours renders custom React pages with `/api/...` styled routes. Some other differences are:
+
+- An index of all packages.
+- Readme inclusion and rendering.
+- Custom styles, sections, and headings.
+- Multiple function and method signatures.
+- [Versioning](#versioning)!
+- And probably more....
