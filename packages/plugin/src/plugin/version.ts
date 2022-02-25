@@ -1,78 +1,32 @@
 // BASED ON: https://github.com/facebook/docusaurus/blob/main/packages/docusaurus-plugin-content-docs/src/versions.ts
 
-import fs from 'fs';
-import { CURRENT_VERSION_NAME } from '@docusaurus/plugin-content-docs/lib/constants';
-import { getVersionsFilePath } from '@docusaurus/plugin-content-docs/lib/versions';
+import path from 'path';
+import {
+	CURRENT_VERSION_NAME,
+	filterVersions,
+	getDefaultVersionBanner,
+	readVersionNames,
+	VERSIONED_DOCS_DIR,
+} from '@docusaurus/plugin-content-docs/server';
 import type { LoadContext } from '@docusaurus/types';
-import { normalizeUrl } from '@docusaurus/utils';
-import type { DocusaurusPluginTypeDocApiOptions, VersionBanner, VersionMetadata } from '../types';
+import { DEFAULT_PLUGIN_ID, normalizeUrl } from '@docusaurus/utils';
+import type { DocusaurusPluginTypeDocApiOptions, VersionMetadata } from '../types';
 
 type PluginOptions = DocusaurusPluginTypeDocApiOptions;
 
-function readVersionsFile(siteDir: string, pluginId: string): string[] | null {
-	const versionsFilePath = getVersionsFilePath(siteDir, pluginId);
-
-	if (fs.existsSync(versionsFilePath)) {
-		return JSON.parse(fs.readFileSync(versionsFilePath, 'utf8')) as string[];
-	}
-
-	return null;
+export function getVersionedDocsDirPath(siteDir: string, pluginId: string): string {
+	return path.join(
+		siteDir,
+		pluginId === DEFAULT_PLUGIN_ID ? VERSIONED_DOCS_DIR : `${pluginId}_${VERSIONED_DOCS_DIR}`,
+	);
 }
 
-function readVersionNames(siteDir: string, options: PluginOptions): string[] {
-	const versionFileContent = readVersionsFile(siteDir, options.id ?? 'default');
-
-	if (!versionFileContent && options.disableVersioning) {
-		throw new Error(
-			`API: using "disableVersioning=${options.disableVersioning}" option on a non-versioned site does not make sense.`,
-		);
-	}
-
-	const versions = options.disableVersioning ? [] : versionFileContent ?? [];
-
-	if (options.includeCurrentVersion && !versions.includes(CURRENT_VERSION_NAME)) {
-		versions.unshift(CURRENT_VERSION_NAME);
-	}
-
-	if (versions.length === 0) {
-		throw new Error(
-			`It is not possible to use API without any version. Please check the configuration of these options: "includeCurrentVersion=${options.includeCurrentVersion}", "disableVersioning=${options.disableVersioning}".`,
-		);
-	}
-
-	return versions;
-}
-
-function filterVersions(versionNamesUnfiltered: string[], options: PluginOptions) {
-	if (options.onlyIncludeVersions && options.onlyIncludeVersions.length > 0) {
-		return versionNamesUnfiltered.filter((name) => options.onlyIncludeVersions?.includes(name));
-	}
-
-	return versionNamesUnfiltered;
-}
-
-function getDefaultVersionBanner(
-	versionName: string,
-	versionNames: string[],
-	lastVersionName?: string,
-): VersionBanner | null {
-	if (!lastVersionName || versionName === lastVersionName) {
-		return null;
-	}
-
-	if (versionNames.indexOf(versionName) < versionNames.indexOf(lastVersionName)) {
-		return 'unreleased';
-	}
-
-	return 'unmaintained';
-}
-
-function getDefaultLastVersionName(versionNames: string[]) {
+function getDefaultLastVersionName(versionNames: string[]): string {
 	if (versionNames.length === 1) {
 		return versionNames[0];
 	}
 
-	return versionNames.find((versionName) => versionName !== CURRENT_VERSION_NAME);
+	return versionNames.find((versionName) => versionName !== CURRENT_VERSION_NAME) ?? '';
 }
 
 function createVersionMetadata({
@@ -84,7 +38,7 @@ function createVersionMetadata({
 }: {
 	versionName: string;
 	versionNames: string[];
-	lastVersionName: string | undefined;
+	lastVersionName: string;
 	context: LoadContext;
 	options: PluginOptions;
 }): VersionMetadata {
@@ -109,7 +63,7 @@ function createVersionMetadata({
 		isLast: versionName === lastVersionName,
 		routePriority: versionPathPart === '' ? -1 : undefined,
 		versionBadge: versionOptions?.badge ?? versionNames.length !== 1,
-		versionBanner: getDefaultVersionBanner(versionName, versionNames, lastVersionName),
+		versionBanner: getDefaultVersionBanner({ lastVersionName, versionName, versionNames }),
 		versionClassName: versionOptions?.className ?? `api-version-${versionName}`,
 		versionLabel,
 		versionName,
@@ -117,12 +71,21 @@ function createVersionMetadata({
 	};
 }
 
-export function readVersionsMetadata(
+export async function readVersionsMetadata(
 	context: LoadContext,
 	options: DocusaurusPluginTypeDocApiOptions,
-): VersionMetadata[] {
-	const versionNamesUnfiltered = readVersionNames(context.siteDir, options);
-	const versionNames = filterVersions(versionNamesUnfiltered, options);
+): Promise<VersionMetadata[]> {
+	const versionNamesUnfiltered = await readVersionNames(context.siteDir, {
+		disableVersioning: options.disableVersioning ?? false,
+		id: options.id ?? 'default',
+		includeCurrentVersion: options.includeCurrentVersion ?? true,
+	});
+	const versionNames = filterVersions(versionNamesUnfiltered, {
+		onlyIncludeVersions:
+			options.onlyIncludeVersions && options.onlyIncludeVersions.length > 0
+				? options.onlyIncludeVersions
+				: undefined,
+	});
 	const lastVersionName = options.lastVersion
 		? options.lastVersion
 		: getDefaultLastVersionName(versionNames);
