@@ -167,7 +167,7 @@ module.exports = {
 										to: i === 0 ? 'api' : `api/${version}`,
 									})),
 							  ]
-							: undefined,
+							: [],
 				},
 				{
 					href: 'https://github.com/facebook/docusaurus',
