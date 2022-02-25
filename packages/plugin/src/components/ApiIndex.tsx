@@ -4,7 +4,7 @@ import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
 import type { GlobalVersion } from '@docusaurus/plugin-content-docs/client';
 import { useDocsPreferredVersion, useDocsVersion } from '@docusaurus/theme-common';
 import type { Props as DocItemProps } from '@theme/DocItem';
-import { MainHeading } from '@theme/Heading';
+import Heading from '@theme/Heading';
 import { PackageReflectionGroup } from '../types';
 import { Footer } from './Footer';
 import { VersionBanner } from './VersionBanner';
@@ -44,8 +44,6 @@ export default function ApiIndex({ packages, history, versionMetadata }: ApiInde
 	const latestVersion = useDocsVersion();
 	const { preferredVersion } = useDocsPreferredVersion(versionMetadata.pluginId);
 
-	console.log({ latestVersion, preferredVersion });
-
 	useEffect(() => {
 		// Redirect to package when only 1
 		if (packages.length === 1) {
@@ -71,7 +69,9 @@ export default function ApiIndex({ packages, history, versionMetadata }: ApiInde
 				<div className="apiItemContainer">
 					<article>
 						<div className="markdown">
-							<MainHeading>API</MainHeading>
+							<header>
+								<Heading as="h1">API</Heading>
+							</header>
 
 							<section className="tsd-panel">
 								<h3 className="tsd-panel-header">Packages</h3>

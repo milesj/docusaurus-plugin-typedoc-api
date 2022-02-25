@@ -9,7 +9,7 @@ import { TOCItem } from '@docusaurus/types';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import DocPaginator from '@theme/DocPaginator';
 import DocVersionBadge from '@theme/DocVersionBadge';
-import { MainHeading } from '@theme/Heading';
+import Heading from '@theme/Heading';
 import useWindowSize from '@theme/hooks/useWindowSize';
 import Seo from '@theme/Seo';
 import TOC from '@theme/TOC';
@@ -42,6 +42,7 @@ function extractTOC(
 
 			if (!child.permalink || child.permalink.includes('#')) {
 				toc.push({
+					// @ts-expect-error Not typed upstream
 					children: [],
 					id: child.name,
 					value: iconHtml ? `${iconHtml} ${child.name}` : child.name,
@@ -116,9 +117,11 @@ export default function ApiItem({ readme: Readme, route, versionMetadata }: ApiI
 							)}
 
 							<div className={`${ThemeClassNames.docs.docMarkdown ?? ''} markdown`}>
-								<MainHeading>
-									{item.name} <TypeParametersGeneric params={item.typeParameter} />
-								</MainHeading>
+								<header>
+									<Heading as="h1">
+										{item.name} <TypeParametersGeneric params={item.typeParameter} />
+									</Heading>
+								</header>
 
 								{Readme && (
 									<section className="tsd-readme">
@@ -132,7 +135,7 @@ export default function ApiItem({ readme: Readme, route, versionMetadata }: ApiI
 							<Footer />
 						</article>
 
-						<DocPaginator metadata={pagingMetadata} />
+						<DocPaginator {...pagingMetadata} />
 					</div>
 				</div>
 
