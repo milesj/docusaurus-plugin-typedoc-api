@@ -4,8 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import type { JSONOutput } from 'typedoc';
 import type { PropVersionDocs, PropVersionMetadata } from '@docusaurus/plugin-content-docs';
-import { CURRENT_VERSION_NAME } from '@docusaurus/plugin-content-docs/lib/constants';
-import { getVersionedDocsDirPath } from '@docusaurus/plugin-content-docs/lib/versions';
+import { CURRENT_VERSION_NAME } from '@docusaurus/plugin-content-docs/server';
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
 import { DEFAULT_PLUGIN_ID, normalizeUrl } from '@docusaurus/utils';
 import {
@@ -14,7 +13,7 @@ import {
 	generateJson,
 } from './plugin/data';
 import { extractSidebar } from './plugin/sidebar';
-import { readVersionsMetadata } from './plugin/version';
+import { getVersionedDocsDirPath, readVersionsMetadata } from './plugin/version';
 import {
 	DocusaurusPluginTypeDocApiOptions,
 	LoadedContent,
@@ -131,9 +130,11 @@ export default function typedocApiPlugin(
 		},
 
 		async loadContent() {
+			const versionsMetadataList = await versionsMetadata;
+
 			return {
 				loadedVersions: await Promise.all(
-					versionsMetadata.map(async (metadata: VersionMetadata) => {
+					versionsMetadataList.map(async (metadata: VersionMetadata) => {
 						let packages: PackageReflectionGroup[] = [];
 
 						// Current data needs to be generated on demand

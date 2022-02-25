@@ -4,13 +4,12 @@
 
 import React, { useMemo } from 'react';
 import type { JSONOutput } from 'typedoc';
-import { ThemeClassNames } from '@docusaurus/theme-common';
+import { ThemeClassNames, useWindowSize } from '@docusaurus/theme-common';
 import { TOCItem } from '@docusaurus/types';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import DocPaginator from '@theme/DocPaginator';
 import DocVersionBadge from '@theme/DocVersionBadge';
 import Heading from '@theme/Heading';
-import useWindowSize from '@theme/hooks/useWindowSize';
 import Seo from '@theme/Seo';
 import TOC from '@theme/TOC';
 import TOCCollapsible from '@theme/TOCCollapsible';
