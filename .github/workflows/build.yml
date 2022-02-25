@@ -36,4 +36,4 @@ jobs:
       - uses: actions/setup-node@v2
       - run: yarn install --immutable
       - run: yarn run build
-      - run: cd docs && yarn run build
+      - run: yarn workspace website run build
