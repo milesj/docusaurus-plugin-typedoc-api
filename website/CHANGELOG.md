@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 0.2.2 - 2022-02-25
+
+#### 📦 Dependencies
+
+- **[beemo-dev]** Update to latest configs. ([5b59357](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/5b59357))
+- **[docusaurus]** Update to beta.16. (#20) ([a0e3fdd](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/a0e3fdd)), closes [#20](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/20)
+
+**Note:** Version bump only for package website
+
+
+
+
+
 ### 0.2.1 - 2022-01-12
 
 #### 🐞 Fixes

@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 1.7.2 - 2022-02-25
+
+#### 🐞 Fixes
+
+- Add `@docusaurus/plugin-content-docs` as dependency (#19) ([e90163f](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/e90163f)), closes [#19](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/19)
+- Consistently replace `\\` on Windows (#21) ([2dba7d3](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/2dba7d3)), closes [#21](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/21)
+- Dont redirect on versions missing a patch. ([e826556](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/e826556))
+- Include package name and version when versioning. ([07fb9aa](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/07fb9aa))
+
+#### 📦 Dependencies
+
+- **[beemo-dev]** Update to latest configs. ([5b59357](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/5b59357))
+- **[docusaurus]** Update to beta.16. (#20) ([a0e3fdd](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/a0e3fdd)), closes [#20](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/20)
+- **[packemon]** Update to v1.11. ([e17f6b5](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/e17f6b5))
+- **[packemon]** Update to v1.14. ([2ee4a6e](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/2ee4a6e))
+- **[typescript]** Update to v4.5 latest. ([b46fdcb](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/b46fdcb))
+
+#### 📘 Docs
+
+- Add comparison. ([bd02fc5](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/bd02fc5))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 1.7.1 - 2022-01-12
 
 #### 🐞 Fixes
