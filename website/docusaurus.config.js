@@ -158,13 +158,16 @@ module.exports = {
 					to: 'api',
 					label: 'API',
 					position: 'left',
-					items: [
-						{ label: 'Next', to: 'api/next' },
-						...versions.map((version, i) => ({
-							label: version,
-							to: i === 0 ? 'api' : `api/${version}`,
-						})),
-					],
+					items:
+						versions.length > 0
+							? [
+									{ label: 'Next', to: 'api/next' },
+									...versions.map((version, i) => ({
+										label: version,
+										to: i === 0 ? 'api' : `api/${version}`,
+									})),
+							  ]
+							: undefined,
 				},
 				{
 					href: 'https://github.com/facebook/docusaurus',
