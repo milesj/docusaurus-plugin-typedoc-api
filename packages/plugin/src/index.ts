@@ -1,4 +1,4 @@
-/* eslint-disable sort-keys */
+/* eslint-disable no-console, sort-keys */
 
 import fs from 'fs';
 import path from 'path';
@@ -11,6 +11,7 @@ import {
 	flattenAndGroupPackages,
 	formatPackagesWithoutHostInfo,
 	generateJson,
+	loadPackageJsonAndReadme,
 } from './plugin/data';
 import { extractSidebar } from './plugin/sidebar';
 import { getVersionedDocsDirPath, readVersionsMetadata } from './plugin/version';
@@ -92,6 +93,9 @@ export default function typedocApiPlugin(
 			entryPoints: entries,
 			packagePath: pkgConfig.path || '.',
 			packageSlug: pkgConfig.slug ?? path.basename(pkgConfig.path),
+			// Load later on
+			packageName: '',
+			packageVersion: '',
 		};
 	});
 
@@ -110,6 +114,9 @@ export default function typedocApiPlugin(
 				.description(commandDescription)
 				.action(async (version) => {
 					const outDir = path.join(versionsDocsDir, `version-${version}`);
+					const prefix = isDefaultPluginId ? 'api' : pluginId;
+
+					console.log(`[${prefix}]:`, 'Generating docs...');
 
 					await generateJson(
 						projectRoot,
@@ -118,14 +125,29 @@ export default function typedocApiPlugin(
 						options,
 					);
 
+					console.log(`[${prefix}]:`, 'Persisting packages...');
+
+					// Load info from `package.json`s
+					packageConfigs.forEach((cfg) => {
+						const { packageJson } = loadPackageJsonAndReadme(
+							path.join(options.projectRoot, cfg.packagePath),
+							options.packageJsonName,
+							options.readmeName,
+						);
+
+						// eslint-disable-next-line no-param-reassign
+						cfg.packageName = packageJson.name;
+						// eslint-disable-next-line no-param-reassign
+						cfg.packageVersion = packageJson.version;
+					});
+
 					await fs.promises.writeFile(
 						path.join(outDir, 'api-packages.json'),
 						JSON.stringify(packageConfigs),
 						'utf8',
 					);
 
-					// eslint-disable-next-line no-console
-					console.log(`[${isDefaultPluginId ? 'api' : pluginId}]: version ${version} created!`);
+					console.log(`[${prefix}]:`, `version ${version} created!`);
 				});
 		},
 
@@ -159,6 +181,7 @@ export default function typedocApiPlugin(
 								await importFile(path.join(outDir, 'api-typedoc.json')),
 								metadata.versionPath,
 								options,
+								true,
 							);
 						}
 

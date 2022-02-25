@@ -102,7 +102,7 @@ export function createReflectionMap(
 	return map;
 }
 
-function loadPackageJsonAndReadme(
+export function loadPackageJsonAndReadme(
 	initialDir: string,
 	pkgFileName: string = 'package.json',
 	readmeFileName: string = 'README.md',
@@ -262,6 +262,7 @@ export function flattenAndGroupPackages(
 	project: JSONOutput.ProjectReflection,
 	urlPrefix: string,
 	options: DocusaurusPluginTypeDocApiOptions,
+	versioned: boolean = false,
 ): PackageReflectionGroup[] {
 	const isSinglePackage = packageConfigs.length === 1;
 	const modules = extractReflectionModules(project, isSinglePackage);
@@ -297,10 +298,15 @@ export function flattenAndGroupPackages(
 
 					packages[cfg.packagePath] = {
 						entryPoints: [],
-						packageName: packageJson.name,
-						packageVersion: packageJson.version,
+						packageName: (versioned && cfg.packageName) || packageJson.name,
+						packageVersion: (versioned && cfg.packageVersion) || packageJson.version,
 						readmePath,
 					};
+
+					// eslint-disable-next-line no-param-reassign
+					cfg.packageName = packages[cfg.packagePath].packageName;
+					// eslint-disable-next-line no-param-reassign
+					cfg.packageVersion = packages[cfg.packagePath].packageVersion;
 				}
 
 				// Add metadata to package and children reflections

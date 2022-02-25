@@ -61,6 +61,8 @@ export interface ResolvedPackageConfig {
 	entryPoints: Record<string, PackageEntryConfig>;
 	packagePath: string;
 	packageSlug: string;
+	packageName: string;
+	packageVersion: string;
 }
 
 // VERSIONING
