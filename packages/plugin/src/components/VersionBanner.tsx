@@ -1,22 +1,23 @@
 import React, { useCallback } from 'react';
 import Link from '@docusaurus/Link';
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
-import { ThemeClassNames, useDocsPreferredVersion, useDocsVersion } from '@docusaurus/theme-common';
+import { useDocVersionSuggestions } from '@docusaurus/plugin-content-docs/client';
+import { ThemeClassNames, useDocsPreferredVersion } from '@docusaurus/theme-common';
 
 interface VersionBannerProps {
 	versionMetadata: PropVersionMetadata;
 }
 
 export function VersionBanner({ versionMetadata }: VersionBannerProps): JSX.Element | null {
-	const { banner, version } = versionMetadata;
-	const latestVersion = useDocsVersion();
-	const { savePreferredVersionName } = useDocsPreferredVersion(versionMetadata.pluginId);
+	const { banner, pluginId, version } = versionMetadata;
+	const { latestVersionSuggestion: latestVersion } = useDocVersionSuggestions(pluginId);
+	const { savePreferredVersionName } = useDocsPreferredVersion(pluginId);
 
 	const handleClick = useCallback(() => {
-		savePreferredVersionName(latestVersion.label);
-	}, [latestVersion.label, savePreferredVersionName]);
+		savePreferredVersionName(latestVersion.name);
+	}, [latestVersion.name, savePreferredVersionName]);
 
-	if (!banner) {
+	if (!banner || !latestVersion) {
 		return null;
 	}
 
