@@ -8,6 +8,118 @@ try {
 	versions = require('./versions.json');
 } catch {}
 
+// MONOREPO
+const monorepo = {
+	projectRoot: path.join(__dirname, '../fixtures/monorepo'),
+	packages: [
+		{
+			path: 'deep-imports',
+			entry: 'src/',
+		},
+		{
+			path: 'multi-imports',
+			entry: {
+				index: 'src/index.ts',
+				test: { path: 'src/test.ts', label: 'Test utilities' },
+			},
+		},
+		'standard',
+	],
+};
+
+// POLYREPO STANDARD
+const polyrepo = {
+	projectRoot: path.join(__dirname, '../fixtures/polyrepo-standard'),
+	packages: ['.'],
+};
+
+// POLYREPO DEEP IMPORTS
+const polyrepoDeep = {
+	projectRoot: path.join(__dirname, '../fixtures/polyrepo-deep-imports'),
+	packages: [
+		{
+			path: '.',
+			entry: 'src/',
+		},
+	],
+};
+
+// POLYREPO MULTIPLE IMPORTS
+const polyrepoMultiple = {
+	projectRoot: path.join(__dirname, '../fixtures/polyrepo-multi-imports'),
+	packages: [
+		{
+			path: '.',
+			entry: {
+				index: 'src/index.ts',
+				test: { path: 'src/test.ts', label: 'Test utilities' },
+			},
+		},
+	],
+};
+
+// LOCAL DEV
+const local = {
+	projectRoot: path.join(__dirname, '../../boost'),
+	packages: [
+		...[
+			'args',
+			'common',
+			'config',
+			'decorators',
+			'event',
+			'pipeline',
+			'plugin',
+			'terminal',
+			'translate',
+		].map((pkg) => `packages/${pkg}`),
+		{
+			path: 'packages/cli',
+			entry: {
+				index: 'src/index.ts',
+				react: { path: 'src/react.ts', label: 'Components & hooks' },
+				test: { path: 'src/test.ts', label: 'Test utilities' },
+			},
+		},
+		{
+			path: 'packages/debug',
+			entry: {
+				index: { path: 'src/index.ts', label: 'Index' },
+				test: { path: 'src/test.ts', label: 'Test utilities' },
+			},
+		},
+		{
+			path: 'packages/log',
+			entry: {
+				index: { path: 'src/index.ts', label: 'Index' },
+				test: { path: 'src/test.ts', label: 'Test utilities' },
+			},
+		},
+		{
+			path: 'packages/module',
+			entry: {
+				index: 'src/index.ts',
+				loader: { path: 'src/loaders/index.ts', label: 'ESM Loaders' },
+			},
+		},
+	],
+};
+
+function getPluginConfig() {
+	switch (process.env.DOCS_REPO_TYPE) {
+		case 'monorepo':
+			return monorepo;
+		case 'polyrepo':
+			return polyrepo;
+		case 'polyrepo-deep':
+			return polyrepoDeep;
+		case 'polyrepo-multi':
+			return polyrepoMultiple;
+		default:
+			return local;
+	}
+}
+
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
 	title: 'My Site',
@@ -134,93 +246,7 @@ module.exports = {
 				exclude: ['**/themes/*', '**/website/*'],
 				minimal: false,
 				readmes: false,
-
-				// BOOST
-				projectRoot: path.join(__dirname, '../../boost'),
-				packages: [
-					...[
-						'args',
-						'common',
-						'config',
-						'decorators',
-						'event',
-						'pipeline',
-						'plugin',
-						'terminal',
-						'translate',
-					].map((pkg) => `packages/${pkg}`),
-					{
-						path: 'packages/cli',
-						entry: {
-							index: 'src/index.ts',
-							react: { path: 'src/react.ts', label: 'Components & hooks' },
-							test: { path: 'src/test.ts', label: 'Test utilities' },
-						},
-					},
-					{
-						path: 'packages/debug',
-						entry: {
-							index: { path: 'src/index.ts', label: 'Index' },
-							test: { path: 'src/test.ts', label: 'Test utilities' },
-						},
-					},
-					{
-						path: 'packages/log',
-						entry: {
-							index: { path: 'src/index.ts', label: 'Index' },
-							test: { path: 'src/test.ts', label: 'Test utilities' },
-						},
-					},
-					{
-						path: 'packages/module',
-						entry: {
-							index: 'src/index.ts',
-							loader: { path: 'src/loaders/index.ts', label: 'ESM Loaders' },
-						},
-					},
-				],
-
-				// MONOREPO
-				// projectRoot: path.join(__dirname, '../fixtures/monorepo'),
-				// packages: [
-				// 	{
-				// 		path: 'deep-imports',
-				// 		entry: 'src/',
-				// 	},
-				// 	{
-				// 		path: 'multi-imports',
-				// 		entry: {
-				// 			index: 'src/index.ts',
-				// 			test: { path: 'src/test.ts', label: 'Test utilities' },
-				// 		},
-				// 	},
-				// 	'standard',
-				// ],
-
-				// POLYREPO STANDARD
-				// projectRoot: path.join(__dirname, '../fixtures/polyrepo-standard'),
-				// packages: ['.'],
-
-				// POLYREPO DEEP IMPORTS
-				// projectRoot: path.join(__dirname, '../fixtures/polyrepo-deep-imports'),
-				// packages: [
-				// 	{
-				// 		path: '.',
-				// 		entry: 'src/',
-				// 	},
-				// ],
-
-				// POLYREPO MULTIPLE IMPORTS
-				// projectRoot: path.join(__dirname, '../fixtures/polyrepo-multi-imports'),
-				// packages: [
-				// 	{
-				// 		path: '.',
-				// 		entry: {
-				// 			index: 'src/index.ts',
-				// 			test: { path: 'src/test.ts', label: 'Test utilities' },
-				// 		},
-				// 	},
-				// ],
+				...getPluginConfig(),
 			},
 		],
 	],

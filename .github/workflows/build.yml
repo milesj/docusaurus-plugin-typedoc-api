@@ -28,3 +28,22 @@ jobs:
       - uses: actions/setup-node@v2
       - run: yarn install --immutable
       - run: yarn run pack
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repo-type:
+          - monorepo
+          - polyrepo
+          - polyrepo-deep
+          - polyrepo-multi
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: yarn install --immutable
+      - run: yarn run build
+      - run: yarn workspace website run build
+        env:
+          DOCS_REPO_TYPE: ${{ matrix.repo-type }}
