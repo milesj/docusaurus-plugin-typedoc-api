@@ -243,3 +243,11 @@ html[data-theme='light'] .tsd-panel-content {
 		display: none;
 	}
 }
+
+/* DOCUSAURUS */
+
+.tsd-kind-icon,
+.menu__link,
+.table-of-contents__link {
+	word-break: break-all;
+}
