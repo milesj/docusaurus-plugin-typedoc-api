@@ -14,6 +14,7 @@ import Heading from '@theme/Heading';
 import Seo from '@theme/Seo';
 import TOC from '@theme/TOC';
 import TOCCollapsible from '@theme/TOCCollapsible';
+import { useBreadcrumbs } from '../hooks/useBreadcrumbs';
 import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { DeclarationReflectionMap } from '../types';
@@ -67,6 +68,7 @@ export default function ApiItem({ readme: Readme, route, versionMetadata }: ApiI
 	const nextItem = useReflection(item.nextId);
 	const reflections = useReflectionMap();
 	const windowSize = useWindowSize();
+	const breadcrumbs = useBreadcrumbs();
 
 	// Table of contents
 	const toc = useMemo(() => extractTOC(item, reflections), [item, reflections]);
@@ -105,7 +107,8 @@ export default function ApiItem({ readme: Readme, route, versionMetadata }: ApiI
 
 					<div className="apiItemContainer">
 						<article>
-							<DocBreadcrumbs />
+							{breadcrumbs && <DocBreadcrumbs />}
+
 							<DocVersionBadge />
 
 							{canRenderTOC && (

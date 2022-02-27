@@ -5,6 +5,6 @@ export const ApiDataContext = createContext<{
 	options: ApiOptions;
 	reflections: DeclarationReflectionMap;
 }>({
-	options: { minimal: false, pluginId: 'default' },
+	options: { breadcrumbs: true, minimal: false, pluginId: 'default' },
 	reflections: {},
 });
