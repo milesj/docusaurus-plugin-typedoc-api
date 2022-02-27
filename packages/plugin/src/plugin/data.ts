@@ -130,24 +130,32 @@ export function addMetadataToReflections(
 	urlPrefix: string,
 ): JSONOutput.ProjectReflection {
 	const permalink = `/${joinUrl(urlPrefix, packageSlug)}`;
-	const children: JSONOutput.DeclarationReflection[] = [];
 
 	if (project.children) {
-		project.children.forEach((child) => {
+		// eslint-disable-next-line no-param-reassign
+		project.children = project.children.map((child) => {
 			const kindSlugPart = getKindSlug(child);
 			const childSlug = kindSlugPart ? `/${kindSlugPart}/${child.name}` : `#${child.name}`;
 			const childPermalink = permalink + childSlug;
 
-			children.push({
+			// We need to go another level deeper and only use fragments
+			if (child.kind === ReflectionKind.Namespace && child.children) {
+				// eslint-disable-next-line no-param-reassign
+				child.children = child.children.map((grandChild) => ({
+					...grandChild,
+					permalink: normalizeUrl([`${childPermalink}#${grandChild.name}`]),
+				}));
+			}
+
+			return {
 				...child,
 				permalink: normalizeUrl([childPermalink]),
-			});
+			};
 		});
 	}
 
 	return {
 		...project,
-		children,
 		permalink: normalizeUrl([permalink]),
 	};
 }
