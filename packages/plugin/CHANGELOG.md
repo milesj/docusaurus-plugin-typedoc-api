@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.8.0 - 2022-02-27
+
+#### 🚀 Updates
+
+- Add breadcrumbs to the top of each page. ([2e3e49f](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/2e3e49f))
+- Add option to control breadcrumbs. ([1fab8ef](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1fab8ef))
+
+#### 🐞 Fixes
+
+- Add fragments for items within namespaces. ([f7cf6b3](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/f7cf6b3))
+- Break long entity names. ([e068222](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/e068222))
+- Mute generic types. ([9e042f0](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/9e042f0))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 1.7.2 - 2022-02-25
 
 #### 🐞 Fixes
