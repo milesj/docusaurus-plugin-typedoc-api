@@ -6,6 +6,7 @@ import React, { useMemo } from 'react';
 import type { JSONOutput } from 'typedoc';
 import { ThemeClassNames, useWindowSize } from '@docusaurus/theme-common';
 import { TOCItem } from '@docusaurus/types';
+import DocBreadcrumbs from '@theme/DocBreadcrumbs';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import DocPaginator from '@theme/DocPaginator';
 import DocVersionBadge from '@theme/DocVersionBadge';
@@ -104,6 +105,7 @@ export default function ApiItem({ readme: Readme, route, versionMetadata }: ApiI
 
 					<div className="apiItemContainer">
 						<article>
+							<DocBreadcrumbs />
 							<DocVersionBadge />
 
 							{canRenderTOC && (
