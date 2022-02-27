@@ -194,15 +194,20 @@ export function Type({ needsParens = false, type: base }: TypeProps) {
 		case 'reference': {
 			const type = base as JSONOutput.ReferenceType;
 			const ref = type.id ? reflections[type.id] : null;
+			const genericClass = ref?.id && !ref.sources ? 'tsd-signature-type-generic' : '';
 
 			return (
 				<>
 					{ref?.permalink ? (
-						<Link className="tsd-signature-type" data-tsd-kind={ref.kindString} to={ref.permalink}>
+						<Link
+							className={`tsd-signature-type ${genericClass}`}
+							data-tsd-kind={ref.kindString}
+							to={ref.permalink}
+						>
 							{type.name}
 						</Link>
 					) : (
-						<span className="tsd-signature-type">{type.name}</span>
+						<span className={`tsd-signature-type ${genericClass}`}>{type.name}</span>
 					)}
 					{type.typeArguments && type.typeArguments.length > 0 && (
 						<>

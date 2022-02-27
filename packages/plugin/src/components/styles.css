@@ -205,7 +205,8 @@ html[data-theme='light'] .tsd-panel-content {
 	font-weight: normal;
 }
 
-.tsd-signature-symbol {
+.tsd-signature-symbol,
+.tsd-signature-type-generic {
 	color: var(--tsd-muted-text);
 	font-weight: normal;
 }
