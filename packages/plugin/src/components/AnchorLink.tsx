@@ -6,7 +6,8 @@ export interface AnchorLinkProps {
 
 export function AnchorLink({ id }: AnchorLinkProps) {
 	return (
-		<a className="tsd-anchor" href={`#${id}`} id={id}>
+		<a className="tsd-anchor" href={`#${id}`}>
+			<span className="tsd-anchor-id" id={id} />
 			<i className="codicon codicon-symbol-numeric" />
 		</a>
 	);

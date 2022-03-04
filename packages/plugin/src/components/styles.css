@@ -21,6 +21,7 @@
 	background-color: var(--ifm-card-background-color);
 	padding: var(--tsd-spacing-vertical) var(--tsd-spacing-horizontal);
 	margin: 0;
+	position: relative;
 }
 
 .tsd-panel-content {
@@ -49,6 +50,12 @@
 .tsd-panel-header .tsd-anchor {
 	margin-left: 0.5rem;
 	float: right;
+}
+
+.tsd-panel-header .tsd-anchor-id {
+	position: absolute;
+	top: -4.5rem;
+	right: 0;
 }
 
 .tsd-divider {

@@ -239,7 +239,7 @@ export function Type({ needsParens = false, type: base }: TypeProps) {
 								{i > 0 && <span className="tsd-signature-symbol">; </span>}
 								<span>
 									{child.name}
-									<span className="tsd-signature-symbol">{child.flags?.isOptional}?: </span>
+									<span className="tsd-signature-symbol">{child.flags?.isOptional && '?'}: </span>
 									{child.type ? <Type type={child.type} /> : 'any'}
 								</span>
 							</React.Fragment>
