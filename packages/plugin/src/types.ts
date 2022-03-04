@@ -8,6 +8,7 @@ import type {
 export type { VersionBanner };
 
 export interface DocusaurusPluginTypeDocApiOptions extends VersionsOptions {
+	banner?: string;
 	breadcrumbs?: boolean;
 	debug?: boolean;
 	exclude?: string[];
@@ -94,6 +95,7 @@ export interface LoadedContent {
 export type SidebarItem = PropSidebarItem;
 
 export interface ApiOptions {
+	banner: string;
 	breadcrumbs: boolean;
 	minimal: boolean;
 	pluginId: string;

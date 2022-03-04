@@ -25,6 +25,7 @@ import {
 } from './types';
 
 const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
+	banner: '',
 	breadcrumbs: true,
 	debug: false,
 	disableVersioning: false,
@@ -58,7 +59,7 @@ export default function typedocApiPlugin(
 		...DEFAULT_OPTIONS,
 		...pluginOptions,
 	};
-	const { breadcrumbs, id: pluginId, minimal, projectRoot, readmes } = options;
+	const { banner, breadcrumbs, id: pluginId, minimal, projectRoot, readmes } = options;
 	const isDefaultPluginId = pluginId === DEFAULT_PLUGIN_ID;
 	const versionsMetadata = readVersionsMetadata(context, options);
 	const versionsDocsDir = getVersionedDocsDirPath(context.siteDir, pluginId);
@@ -244,7 +245,7 @@ export default function typedocApiPlugin(
 
 					const optionsData = await createData(
 						'options.json',
-						JSON.stringify({ breadcrumbs, minimal, pluginId }),
+						JSON.stringify({ banner, breadcrumbs, minimal, pluginId }),
 					);
 
 					function createRoute(info: JSONOutput.Reflection, readmePath?: string): RouteConfig {

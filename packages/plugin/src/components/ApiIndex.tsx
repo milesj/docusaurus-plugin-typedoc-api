@@ -5,7 +5,7 @@ import type { GlobalVersion } from '@docusaurus/plugin-content-docs/client';
 import { useDocsPreferredVersion, useDocsVersion } from '@docusaurus/theme-common';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import Heading from '@theme/Heading';
-import { PackageReflectionGroup } from '../types';
+import { ApiOptions, PackageReflectionGroup } from '../types';
 import { Footer } from './Footer';
 import { VersionBanner } from './VersionBanner';
 
@@ -14,6 +14,7 @@ export interface ApiIndexProps extends Pick<DocItemProps, 'route' | 'versionMeta
 		location: { pathname: string };
 		replace: (path: string) => void;
 	};
+	options: ApiOptions;
 	packages: PackageReflectionGroup[];
 }
 
@@ -40,7 +41,7 @@ function addVersionToUrl(
 	return url;
 }
 
-export default function ApiIndex({ packages, history, versionMetadata }: ApiIndexProps) {
+export default function ApiIndex({ options, packages, history, versionMetadata }: ApiIndexProps) {
 	const latestVersion = useDocsVersion();
 	const { preferredVersion } = useDocsPreferredVersion(versionMetadata.pluginId);
 
@@ -64,6 +65,13 @@ export default function ApiIndex({ packages, history, versionMetadata }: ApiInde
 	return (
 		<div className="row">
 			<div className="col apiItemCol">
+				{options.banner && (
+					<div className="alert alert--info margin-bottom--md" role="alert">
+						{/* eslint-disable-next-line react/no-danger, react-perf/jsx-no-new-object-as-prop */}
+						<div dangerouslySetInnerHTML={{ __html: options.banner }} />
+					</div>
+				)}
+
 				<VersionBanner versionMetadata={versionMetadata} />
 
 				<div className="apiItemContainer">

@@ -80,6 +80,7 @@ The following options are available to the plugin:
   _(Required)_
 - `packages` (`(string | PackageConfig)[]`) - List of packages relative to the project root.
   _(Required)_
+- `banner` (`string`) - Banner message to display at the top of the index page. Supports HTML.
 - `exclude` (`string[]`) - List of glob patterns to exclude unwanted packages. This is necessary
   when using TypeScript project references.
 - `minimal` (`boolean`) - Render a minimal layout and reduce the amount of information displayed.
