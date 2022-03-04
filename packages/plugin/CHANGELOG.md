@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.9.0 - 2022-03-04
+
+#### 🚀 Updates
+
+- Support a banner message at the top of the index page. ([c00d7b4](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/c00d7b4))
+
+#### 🐞 Fixes
+
+- Fix anchor fragment being hidden. ([90ee341](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/90ee341))
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to beta.17. ([e81c3d1](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/e81c3d1))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 1.8.0 - 2022-02-27
 
 #### 🚀 Updates
