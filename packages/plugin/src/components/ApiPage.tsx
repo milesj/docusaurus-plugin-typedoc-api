@@ -3,9 +3,9 @@
 import '@vscode/codicons/dist/codicon.css';
 import './styles.css';
 import React, { useMemo } from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 import DocPage, { Props as DocPageProps } from '@theme/DocPage';
-import { ApiOptions, DeclarationReflectionMap, PackageReflectionGroup } from '../types';
+import type { ApiOptions, DeclarationReflectionMap, PackageReflectionGroup } from '../types';
 import { ApiDataContext } from './ApiDataContext';
 
 function isObject(value: unknown): value is JSONOutput.Reflection {

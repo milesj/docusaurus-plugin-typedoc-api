@@ -5,7 +5,7 @@
 import React, { useMemo } from 'react';
 import type { JSONOutput } from 'typedoc';
 import { PageMetadata, ThemeClassNames, useWindowSize } from '@docusaurus/theme-common';
-import { TOCItem } from '@docusaurus/types';
+import type { TOCItem } from '@docusaurus/types';
 import DocBreadcrumbs from '@theme/DocBreadcrumbs';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import DocPaginator from '@theme/DocPaginator';
@@ -16,7 +16,7 @@ import TOCCollapsible from '@theme/TOCCollapsible';
 import { useBreadcrumbs } from '../hooks/useBreadcrumbs';
 import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
-import { DeclarationReflectionMap } from '../types';
+import type { DeclarationReflectionMap } from '../types';
 import { getKindIconHtml } from '../utils/icons';
 import { Footer } from './Footer';
 import { Reflection } from './Reflection';

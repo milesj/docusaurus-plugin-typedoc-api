@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 import { ApiDataContext } from '../components/ApiDataContext';
 
 export function useReflection<T = JSONOutput.DeclarationReflection>(id?: number): T | null {

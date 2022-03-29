@@ -1,6 +1,6 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/comment.hbs
 import React from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 
 function removePrefix(value: string) {
 	return value.replace(/^is([A-Z])/, (match, char) => String(char).toLocaleLowerCase());

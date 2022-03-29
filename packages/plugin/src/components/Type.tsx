@@ -3,7 +3,7 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/type.hbs
 
 import React from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 import Link from '@docusaurus/Link';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { MemberSignatureTitle } from './MemberSignatureTitle';

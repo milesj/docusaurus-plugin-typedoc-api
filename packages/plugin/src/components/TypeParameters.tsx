@@ -1,7 +1,7 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/typeParameters.hbs
 
 import React from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 import { Comment } from './Comment';
 import { DefaultValue } from './DefaultValue';
 import { Type } from './Type';

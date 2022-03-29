@@ -1,10 +1,10 @@
 import React from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 function replaceWithSrc(url: string): string {
 	// Always link the source file
-	return url.replace(/\/(dts|dist|lib|build)\//, '/src/');
+	return url.replace(/\/(dts|dist|lib|build|es|esm|cjs|mjs)\//, '/src/');
 }
 
 export interface SourceLinkProps {

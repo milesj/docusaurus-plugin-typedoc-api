@@ -1,5 +1,5 @@
 import React from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 import Link from '@docusaurus/Link';
 import { useReflection } from '../hooks/useReflection';
 import { AnchorLink } from './AnchorLink';

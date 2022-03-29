@@ -3,7 +3,7 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.signatures.hbs
 
 import React, { useState } from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { Icon } from './Icon';
 import { hasSigBody, MemberSignatureBody } from './MemberSignatureBody';

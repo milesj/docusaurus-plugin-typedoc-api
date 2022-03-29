@@ -1,5 +1,5 @@
 import React from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 
 export interface TypeParametersGenericProps {
 	params?: JSONOutput.TypeParameterReflection[];

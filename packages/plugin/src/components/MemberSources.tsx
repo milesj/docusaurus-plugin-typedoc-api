@@ -1,7 +1,7 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.sources.hbs
 
 import React from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 import { TypeAndParent } from './TypeAndParent';
 
 export function hasSources(reflection: JSONOutput.DeclarationReflection) {

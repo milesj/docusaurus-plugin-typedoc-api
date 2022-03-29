@@ -1,5 +1,5 @@
 import React from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 import { Type } from './Type';
 
 export interface DefaultValueProps {

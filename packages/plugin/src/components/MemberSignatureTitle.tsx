@@ -2,7 +2,7 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.signature.title.hbs
 
 import React from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 import { Type } from './Type';
 import { TypeParametersGeneric } from './TypeParametersGeneric';
 

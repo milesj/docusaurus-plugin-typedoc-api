@@ -5,7 +5,7 @@ import type { GlobalVersion } from '@docusaurus/plugin-content-docs/client';
 import { useDocsPreferredVersion, useDocsVersion } from '@docusaurus/theme-common';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import Heading from '@theme/Heading';
-import { ApiOptions, PackageReflectionGroup } from '../types';
+import type { ApiOptions, PackageReflectionGroup } from '../types';
 import { removeScopes } from '../utils/links';
 import { Footer } from './Footer';
 import { VersionBanner } from './VersionBanner';

@@ -2,7 +2,7 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/Parameter.hbs
 
 import React from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { Comment } from './Comment';
 import { Flags } from './Flags';

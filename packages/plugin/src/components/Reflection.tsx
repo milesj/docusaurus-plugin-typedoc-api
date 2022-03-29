@@ -1,7 +1,7 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/templates/reflection.hbs
 
 import React, { useMemo } from 'react';
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 import { createHierarchy } from '../utils/hierarchy';
 import { Comment, hasComment } from './Comment';
 import { Hierarchy } from './Hierarchy';
