@@ -68,12 +68,6 @@
 	text-align: center;
 }
 
-.tsd-truncate {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
 html[data-theme='light'] .tsd-panel-header {
 	background-color: var(--ifm-hover-overlay);
 }
@@ -254,8 +248,15 @@ html[data-theme='light'] .tsd-panel-content {
 
 /* DOCUSAURUS */
 
-.tsd-kind-icon,
-.menu__link,
-.table-of-contents__link {
+.tsd-kind-icon {
 	word-break: break-all;
+}
+
+.apiPage .menu__link:not(.menu__link--sublist),
+.apiPage .table-of-contents__link,
+.tsd-truncate {
+	display: block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }

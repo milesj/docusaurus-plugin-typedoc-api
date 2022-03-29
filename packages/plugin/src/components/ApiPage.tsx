@@ -68,7 +68,9 @@ function ApiPage({ options, packages, ...props }: ApiPageProps) {
 
 	return (
 		<ApiDataContext.Provider value={value}>
-			<DocPage {...props} />
+			<div className="apiPage">
+				<DocPage {...props} />
+			</div>
 		</ApiDataContext.Provider>
 	);
 }
