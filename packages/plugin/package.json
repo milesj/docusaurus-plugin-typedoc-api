@@ -49,7 +49,7 @@
     "@docusaurus/plugin-content-docs": "2.0.0-beta.18",
     "@docusaurus/types": "2.0.0-beta.18",
     "@docusaurus/utils": "2.0.0-beta.18",
-    "@vscode/codicons": "^0.0.28",
+    "@vscode/codicons": "^0.0.29",
     "marked": "^3.0.8",
     "typedoc": "^0.22.12"
   },
@@ -57,6 +57,6 @@
     "@docusaurus/module-type-aliases": "2.0.0-beta.18",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "typescript": "^4.5.5"
+    "typescript": "^4.6.3"
   }
 }
