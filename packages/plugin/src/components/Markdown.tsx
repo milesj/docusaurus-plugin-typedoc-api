@@ -63,7 +63,7 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 			}
 
 			case 'image':
-				elements.push(<img key={counter} alt={token.title} src={token.href} />);
+				elements.push(<MDX.img key={counter} alt={token.title} src={token.href} />);
 				break;
 
 			case 'link':
@@ -98,7 +98,7 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 				break;
 
 			case 'space':
-				elements.push(token.raw ?? ' ');
+				elements.push(token.raw || ' ');
 				break;
 
 			case 'table':
