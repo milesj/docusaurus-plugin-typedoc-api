@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.10.0 - 2022-03-29
+
+#### 🚀 Updates
+
+- Add `removeScopes` option. ([301a38a](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/301a38a))
+- Support `@apilink` and `@doclink` markdown tokens. ([3378479](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/3378479))
+
+#### 🐞 Fixes
+
+- Truncate with ellipsis instead of break word. ([9adae93](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/9adae93))
+- Use MDX image. ([cdae8d9](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/cdae8d9))
+
+#### 📦 Dependencies
+
+- **[beemo-dev]** Update to latest configs. ([0f99f57](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/0f99f57))
+- **[docusaurus]** Update to beta.18. ([1f9125a](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1f9125a))
+- **[typedoc]** Update to v0.22.13, to support TS 4.6. ([9fa365b](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/9fa365b))
+
+#### 🛠 Internals
+
+- Use type imports. ([a35584f](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/a35584f))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 1.9.0 - 2022-03-04
 
 #### 🚀 Updates
