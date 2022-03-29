@@ -1,5 +1,5 @@
-import { JSONOutput } from 'typedoc';
-import { DeclarationReflectionMap } from '../types';
+import type { JSONOutput } from 'typedoc';
+import type { DeclarationReflectionMap } from '../types';
 
 // https://github.com/TypeStrong/typedoc/blob/master/src/lib/output/themes/DefaultTheme.ts#L264
 export function hasOwnDocument(id: number, reflections: DeclarationReflectionMap): boolean {

@@ -2,6 +2,10 @@ import path from 'path';
 import { JSONOutput, ReflectionKind } from 'typedoc';
 import { ResolvedPackageConfig } from '../types';
 
+export function joinUrl(...paths: string[]): string {
+	return path.join(...paths).replace(/\\/g, '/');
+}
+
 export function getKindSlug(decl: JSONOutput.DeclarationReflection): string {
 	switch (decl.kind) {
 		case ReflectionKind.Module:

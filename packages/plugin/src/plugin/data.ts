@@ -10,8 +10,7 @@ import {
 	PackageReflectionGroup,
 	ResolvedPackageConfig,
 } from '../types';
-import { joinUrl } from '../utils/links';
-import { getKindSlug, getPackageSlug } from './url';
+import { getKindSlug, getPackageSlug, joinUrl } from './url';
 
 function shouldEmit(projectRoot: string, tsconfigPath: string) {
 	const { config, error } = ts.readConfigFile(tsconfigPath, (name) =>

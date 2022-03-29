@@ -16,6 +16,7 @@ import {
 import { extractSidebar } from './plugin/sidebar';
 import { getVersionedDocsDirPath, readVersionsMetadata } from './plugin/version';
 import {
+	ApiOptions,
 	DocusaurusPluginTypeDocApiOptions,
 	LoadedContent,
 	PackageEntryConfig,
@@ -40,6 +41,7 @@ const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
 	projectRoot: '.',
 	readmeName: 'README.md',
 	readmes: false,
+	removeScopes: [],
 	routeBasePath: 'api',
 	tsconfigName: 'tsconfig.json',
 	typedocOptions: {},
@@ -190,7 +192,7 @@ export default function typedocApiPlugin(
 						return {
 							...metadata,
 							packages,
-							sidebars: await extractSidebar(packages),
+							sidebars: await extractSidebar(packages, options.removeScopes),
 						};
 					}),
 				),
@@ -243,10 +245,14 @@ export default function typedocApiPlugin(
 						JSON.stringify(formatPackagesWithoutHostInfo(loadedVersion.packages)),
 					);
 
-					const optionsData = await createData(
-						'options.json',
-						JSON.stringify({ banner, breadcrumbs, minimal, pluginId }),
-					);
+					const optionsContextData: ApiOptions = {
+						banner,
+						breadcrumbs,
+						minimal,
+						pluginId,
+						scopes: options.removeScopes,
+					};
+					const optionsData = await createData('options.json', JSON.stringify(optionsContextData));
 
 					function createRoute(info: JSONOutput.Reflection, readmePath?: string): RouteConfig {
 						const modules = {};

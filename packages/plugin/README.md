@@ -89,6 +89,8 @@ The following options are available to the plugin:
 - `readmeName` (`string`) - Name of the readme file within a package. Defaults to `README.md`.
 - `readmes` (`boolean`) - Include and render the readme file from every package. Defaults to
   `false`.
+- `removeScopes` (`string[]`) - Package scopes and prefixes to remove when displaying the package
+  name in the sidebar and index. For example, `boost` will remove `@boost/` and `boost-`.
 - `tsconfigName` (`string`) - Name of the TypeScript config file in the project root. Defaults to
   `tsconfig.json`.
 - `typedocOptions` (`object`) - [TypeDoc options](https://typedoc.org/guides/options/#input-options)

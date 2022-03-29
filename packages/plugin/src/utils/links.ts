@@ -1,5 +1,10 @@
-import { join } from 'path';
+export function removeScopes(text: string, scopes: string[]): string {
+	if (scopes.length === 0) {
+		return text;
+	}
 
-export function joinUrl(...paths: string[]): string {
-	return join(...paths).replace(/\\/g, '/');
+	return scopes.reduce(
+		(value, scope) => value.replace(new RegExp(`^(${scope}-|@${scope}/)`), ''),
+		text,
+	);
 }

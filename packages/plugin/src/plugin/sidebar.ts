@@ -1,5 +1,6 @@
 import { JSONOutput } from 'typedoc';
 import { DeclarationReflectionMap, PackageReflectionGroup, SidebarItem } from '../types';
+import { removeScopes } from '../utils/links';
 import { createReflectionMap } from './data';
 
 export function groupSidebarItems(
@@ -62,7 +63,10 @@ export function extractReflectionSidebar(pkg: JSONOutput.ProjectReflection): Sid
 	return pkg.groups ? groupSidebarItems(createReflectionMap(pkg.children), pkg.groups) : [];
 }
 
-export function extractSidebar(packages: PackageReflectionGroup[]): SidebarItem[] {
+export function extractSidebar(
+	packages: PackageReflectionGroup[],
+	scopes: string[],
+): SidebarItem[] {
 	if (packages.length === 0) {
 		return [];
 	}
@@ -97,7 +101,7 @@ export function extractSidebar(packages: PackageReflectionGroup[]): SidebarItem[
 			collapsed: true,
 			collapsible: true,
 			items: subItems,
-			label: pkg.packageName,
+			label: removeScopes(pkg.packageName, scopes),
 			type: 'category',
 		} as const;
 	});

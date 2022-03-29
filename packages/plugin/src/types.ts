@@ -19,6 +19,7 @@ export interface DocusaurusPluginTypeDocApiOptions extends VersionsOptions {
 	projectRoot: string;
 	readmeName?: string;
 	readmes?: boolean;
+	removeScopes?: string[];
 	tsconfigName?: string;
 	typedocOptions?: Partial<
 		Pick<
@@ -99,6 +100,7 @@ export interface ApiOptions {
 	breadcrumbs: boolean;
 	minimal: boolean;
 	pluginId: string;
+	scopes: string[];
 }
 
 // REFLECTIONS

@@ -6,6 +6,7 @@ import { useDocsPreferredVersion, useDocsVersion } from '@docusaurus/theme-commo
 import type { Props as DocItemProps } from '@theme/DocItem';
 import Heading from '@theme/Heading';
 import { ApiOptions, PackageReflectionGroup } from '../types';
+import { removeScopes } from '../utils/links';
 import { Footer } from './Footer';
 import { VersionBanner } from './VersionBanner';
 
@@ -92,7 +93,7 @@ export default function ApiIndex({ options, packages, history, versionMetadata }
 													to={pkg.entryPoints[0].reflection.permalink}
 												>
 													<span className="tsd-signature-symbol">v{pkg.packageVersion}</span>{' '}
-													<span>{pkg.packageName}</span>
+													<span>{removeScopes(pkg.packageName, options.scopes)}</span>
 												</Link>
 											</li>
 										))}

@@ -1,4 +1,4 @@
-import { JSONOutput } from 'typedoc';
+import type { JSONOutput } from 'typedoc';
 
 export interface HierarchyNode {
 	types: JSONOutput.SomeType[];
