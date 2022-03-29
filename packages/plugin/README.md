@@ -13,8 +13,8 @@ package's entry point), so any private, protected, or internal code will not be 
 ## Requirements
 
 - `typescript` >= v4
-- `@docusaurus/core` >= v2.0.0-beta.17
-- `@docusaurus/preset-classic` >= v2.0.0-beta.17
+- `@docusaurus/core` >= v2.0.0-beta.18
+- `@docusaurus/preset-classic` >= v2.0.0-beta.18
 
 ## Examples
 
@@ -159,6 +159,35 @@ module.exports = {
 ```
 
 > Index entry points don't require a label, so a file path can be passed directly.
+
+## Linking
+
+This plugin supports API and documentation linking within source code docblocks via the `@apilink`
+and `@doclink` tokens respectively. This works in a similar fashion to
+[TypeDoc's `@link` resolution](https://typedoc.org/guides/link-resolution/), but also supports
+Docusaurus versioning and routing patterns.
+
+### `@apilink`
+
+When linking to other APIs, you must reference them by class name, function name, property, etc,
+_instead of_ the actual `/api` route.
+
+```sh
+# Maps to /api/<package>/class/Registry#register
+{@apilink Registry.register}
+{@apilink Registry.register | Text to use as the label}
+```
+
+### `@doclink`
+
+When linking to documentation pages, you must reference the article by its URL identifier without
+the `/docs` prefix.
+
+```sh
+# Maps to /docs/commands/setup
+{@doclink commands/setup}
+{@doclink commands/setup | Text to use as the label}
+```
 
 ## Versioning
 

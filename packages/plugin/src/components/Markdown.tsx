@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import marked, { TokensList } from 'marked';
+import { useDocsVersion } from '@docusaurus/theme-common';
 import MDX from '@theme/MDXComponents';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { replaceLinkTokens } from '../utils/markdown';
@@ -164,7 +165,10 @@ export interface MarkdownProps {
 // Too bad we cant use `@mdx-js` here...
 export function Markdown({ content }: MarkdownProps) {
 	const reflections = useReflectionMap();
-	const [ast] = useState<TokensList>(() => marked.lexer(replaceLinkTokens(content, reflections)));
+	const version = useDocsVersion();
+	const [ast] = useState<TokensList>(() =>
+		marked.lexer(replaceLinkTokens(content, reflections, version)),
+	);
 
 	if (!content) {
 		return null;

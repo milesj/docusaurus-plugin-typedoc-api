@@ -1,5 +1,6 @@
 import type { JSONOutput } from 'typedoc';
-import { DeclarationReflectionMap } from '../types';
+import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
+import type { DeclarationReflectionMap } from '../types';
 
 function splitLinkText(text: string): { caption: string; target: string } {
 	let splitIndex = text.indexOf('|');
@@ -40,11 +41,15 @@ function findReflectionWithMatchingTarget(
 
 // TypeDoc JSON output does not replace links, so we need to do this manually.
 // @see https://github.com/TypeStrong/typedoc/blob/master/src/lib/output/plugins/MarkedLinksPlugin.ts
-export function replaceLinkTokens(markdown: string, reflections: DeclarationReflectionMap) {
+export function replaceLinkTokens(
+	markdown: string,
+	reflections: DeclarationReflectionMap,
+	currentVersion: PropVersionMetadata,
+) {
 	const reflectionList = Object.values(reflections);
 
-	return markdown.replace(
-		/{@(link|linkcode|linkplain)\s+([^}]+?)}/gi,
+	let result = markdown.replace(
+		/{@(link|linkcode|linkplain|apilink)\s+([^}]+?)}/gi,
 		(match: string, tagName: string, content: string): string => {
 			const { caption, target } = splitLinkText(content);
 			const [symbol, member] = target.split('.');
@@ -58,4 +63,16 @@ export function replaceLinkTokens(markdown: string, reflections: DeclarationRefl
 			return `[${label}](${reflection.permalink}${member ? `#${member}` : ''})`;
 		},
 	);
+
+	result = markdown.replace(/{@doclink\s+([^}]+?)}/gi, (match: string, content: string): string => {
+		const { caption, target } = splitLinkText(content);
+		const version = currentVersion.version === 'current' ? 'next' : currentVersion.version;
+
+		// TODO: Handle `routeBasePath`? Something else besides "docs"?
+		const url = currentVersion.isLast ? `/docs/${target}` : `/docs/${version}/${target}`;
+
+		return `[${caption}](${url})`;
+	});
+
+	return result;
 }
