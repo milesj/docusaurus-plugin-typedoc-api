@@ -1,4 +1,3 @@
-import type { JSONOutput } from 'typedoc';
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
 import type { DeclarationReflectionMap } from '../types';
 
@@ -26,17 +25,44 @@ function splitLinkText(text: string): { caption: string; target: string } {
 }
 
 function findReflectionWithMatchingTarget(
-	reflectionList: JSONOutput.DeclarationReflection[],
+	reflections: DeclarationReflectionMap,
 	symbol: string,
 	member?: string,
 ) {
-	return reflectionList.find((ref) => {
+	return Object.values(reflections).find((ref) => {
 		if (ref.name !== symbol) {
 			return false;
 		}
 
 		return !member ? true : ref.children?.some((child) => child.name === member);
 	});
+}
+
+function replaceApiLinks(reflections: DeclarationReflectionMap): (match: string, tagName: string, content: string) => string {
+	return (match: string, tagName: string, content: string) => {
+		const { caption, target } = splitLinkText(content);
+		const [symbol, member] = target.split('.');
+		const reflection = findReflectionWithMatchingTarget(reflections, symbol, member);
+		const label = tagName === 'linkcode' ? `\`${caption}\`` : caption;
+
+		if (!reflection || !reflection.permalink) {
+			return label;
+		}
+
+		return `[${label}](${reflection.permalink}${member ? `#${member}` : ''})`;
+	}
+}
+
+function replaceDocLinks(currentVersion: PropVersionMetadata): (match: string, content: string) => string {
+	return (match: string, content: string) => {
+		const { caption, target } = splitLinkText(content);
+		const version = currentVersion.version === 'current' ? 'next' : currentVersion.version;
+
+		// TODO: Handle `routeBasePath`? Something else besides "docs"?
+		const url = currentVersion.isLast ? `/docs/${target}` : `/docs/${version}/${target}`;
+
+		return `[${caption}](${url})`;
+	}
 }
 
 // TypeDoc JSON output does not replace links, so we need to do this manually.
@@ -46,33 +72,7 @@ export function replaceLinkTokens(
 	reflections: DeclarationReflectionMap,
 	currentVersion: PropVersionMetadata,
 ) {
-	const reflectionList = Object.values(reflections);
-
-	let result = markdown.replace(
-		/{@(link|linkcode|linkplain|apilink)\s+([^}]+?)}/gi,
-		(match: string, tagName: string, content: string): string => {
-			const { caption, target } = splitLinkText(content);
-			const [symbol, member] = target.split('.');
-			const reflection = findReflectionWithMatchingTarget(reflectionList, symbol, member);
-			const label = tagName === 'linkcode' ? `\`${caption}\`` : caption;
-
-			if (!reflection || !reflection.permalink) {
-				return label;
-			}
-
-			return `[${label}](${reflection.permalink}${member ? `#${member}` : ''})`;
-		},
-	);
-
-	result = markdown.replace(/{@doclink\s+([^}]+?)}/gi, (match: string, content: string): string => {
-		const { caption, target } = splitLinkText(content);
-		const version = currentVersion.version === 'current' ? 'next' : currentVersion.version;
-
-		// TODO: Handle `routeBasePath`? Something else besides "docs"?
-		const url = currentVersion.isLast ? `/docs/${target}` : `/docs/${version}/${target}`;
-
-		return `[${caption}](${url})`;
-	});
-
-	return result;
+	return markdown
+		.replace(/{@(link|linkcode|linkplain|apilink)\s+([^}]+?)}/gi, replaceApiLinks(reflections))
+		.replace(/{@doclink\s+([^}]+?)}/gi, replaceDocLinks(currentVersion));
 }
