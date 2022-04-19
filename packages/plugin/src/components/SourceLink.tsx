@@ -1,15 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import type { JSONOutput } from 'typedoc';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import { ApiDataContext } from './ApiDataContext';
+import { useGitRefName } from '../hooks/useGitRefName';
 
 function replaceWithSrc(url: string): string {
 	// Always link the source file
 	return url.replace(/\/(dts|dist|lib|build|es|esm|cjs|mjs)\//, '/src/');
-}
-
-export function useGitRefName(): string {
-	return useContext(ApiDataContext).options.gitRefName;
 }
 
 export interface SourceLinkProps {
