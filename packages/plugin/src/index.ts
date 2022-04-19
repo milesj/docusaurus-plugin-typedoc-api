@@ -31,6 +31,7 @@ const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
 	debug: false,
 	disableVersioning: false,
 	exclude: [],
+	gitRefName: 'master',
 	id: DEFAULT_PLUGIN_ID,
 	includeCurrentVersion: true,
 	lastVersion: '',
@@ -61,7 +62,7 @@ export default function typedocApiPlugin(
 		...DEFAULT_OPTIONS,
 		...pluginOptions,
 	};
-	const { banner, breadcrumbs, id: pluginId, minimal, projectRoot, readmes } = options;
+	const { banner, breadcrumbs, id: pluginId, gitRefName, minimal, projectRoot, readmes } = options;
 	const isDefaultPluginId = pluginId === DEFAULT_PLUGIN_ID;
 	const versionsMetadata = readVersionsMetadata(context, options);
 	const versionsDocsDir = getVersionedDocsDirPath(context.siteDir, pluginId);
@@ -248,6 +249,7 @@ export default function typedocApiPlugin(
 					const optionsContextData: ApiOptions = {
 						banner,
 						breadcrumbs,
+						gitRefName,
 						minimal,
 						pluginId,
 						scopes: options.removeScopes,

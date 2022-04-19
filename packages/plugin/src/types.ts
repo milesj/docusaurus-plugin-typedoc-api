@@ -10,6 +10,7 @@ export type { VersionBanner };
 export interface DocusaurusPluginTypeDocApiOptions extends VersionsOptions {
 	banner?: string;
 	breadcrumbs?: boolean;
+	gitRefName?: string;
 	debug?: boolean;
 	exclude?: string[];
 	id?: string;
@@ -76,6 +77,7 @@ export interface VersionMetadata {
 	versionPath: string; // /baseUrl/api/1.0.0
 	versionBadge: boolean;
 	versionBanner: VersionBanner | null;
+	versionGitRefName: string; // master
 	versionClassName: string;
 	isLast: boolean;
 	routePriority: number | undefined; // -1 for the latest
@@ -98,6 +100,7 @@ export type SidebarItem = PropSidebarItem;
 export interface ApiOptions {
 	banner: string;
 	breadcrumbs: boolean;
+	gitRefName: string;
 	minimal: boolean;
 	pluginId: string;
 	scopes: string[];
