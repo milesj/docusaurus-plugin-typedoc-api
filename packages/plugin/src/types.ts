@@ -77,7 +77,6 @@ export interface VersionMetadata {
 	versionPath: string; // /baseUrl/api/1.0.0
 	versionBadge: boolean;
 	versionBanner: VersionBanner | null;
-	versionGitRefName: string; // master
 	versionClassName: string;
 	isLast: boolean;
 	routePriority: number | undefined; // -1 for the latest
