@@ -61,6 +61,7 @@ const polyrepoMultiple = {
 // LOCAL DEV
 const local = {
 	projectRoot: path.join(__dirname, '../../boost'),
+	gitRefName: 'master',
 	packages: [
 		...[
 			'args',

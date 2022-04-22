@@ -1,6 +1,7 @@
 import React from 'react';
 import type { JSONOutput } from 'typedoc';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import { useGitRefName } from '../hooks/useGitRefName';
 
 function replaceWithSrc(url: string): string {
 	// Always link the source file
@@ -13,6 +14,7 @@ export interface SourceLinkProps {
 
 export function SourceLink({ sources = [] }: SourceLinkProps) {
 	const { siteConfig } = useDocusaurusContext();
+	const gitRefName = useGitRefName();
 
 	if (sources.length === 0) {
 		return null;
@@ -26,7 +28,7 @@ export function SourceLink({ sources = [] }: SourceLinkProps) {
 					className="tsd-anchor"
 					href={`https://github.com/${siteConfig.organizationName}/${
 						siteConfig.projectName
-					}/blob/master/${replaceWithSrc(source.fileName)}#L${source.line}`}
+					}/blob/${gitRefName}/${replaceWithSrc(source.fileName)}#L${source.line}`}
 					rel="noreferrer"
 					target="_blank"
 				>

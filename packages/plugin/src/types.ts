@@ -10,6 +10,7 @@ export type { VersionBanner };
 export interface DocusaurusPluginTypeDocApiOptions extends VersionsOptions {
 	banner?: string;
 	breadcrumbs?: boolean;
+	gitRefName?: string;
 	debug?: boolean;
 	exclude?: string[];
 	id?: string;
@@ -98,6 +99,7 @@ export type SidebarItem = PropSidebarItem;
 export interface ApiOptions {
 	banner: string;
 	breadcrumbs: boolean;
+	gitRefName: string;
 	minimal: boolean;
 	pluginId: string;
 	scopes: string[];
