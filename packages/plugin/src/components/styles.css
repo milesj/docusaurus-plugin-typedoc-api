@@ -64,6 +64,10 @@
 	border-bottom: 0;
 }
 
+.tsd-header-flags {
+	float: right;
+}
+
 .tsd-footer {
 	text-align: center;
 }

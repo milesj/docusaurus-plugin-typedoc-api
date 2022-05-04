@@ -18,6 +18,7 @@ import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import type { DeclarationReflectionMap } from '../types';
 import { getKindIconHtml } from '../utils/icons';
+import { Flags } from './Flags';
 import { Footer } from './Footer';
 import { Reflection } from './Reflection';
 import { TypeParametersGeneric } from './TypeParametersGeneric';
@@ -122,6 +123,9 @@ export default function ApiItem({ readme: Readme, route, versionMetadata }: ApiI
 							<div className={`${ThemeClassNames.docs.docMarkdown ?? ''} markdown`}>
 								<header>
 									<Heading as="h1">
+										<span className="tsd-header-flags">
+											<Flags flags={item.flags} />
+										</span>
 										{item.name} <TypeParametersGeneric params={item.typeParameter} />
 									</Heading>
 								</header>
