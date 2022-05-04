@@ -355,8 +355,6 @@ export default function typedocApiPlugin(
 			// otherwise we collide with the native docs/blog plugins.
 			const include = packageConfigs.map((cfg) => path.join(options.projectRoot, cfg.packagePath));
 
-			console.log(include);
-
 			return {
 				module: {
 					rules: [
