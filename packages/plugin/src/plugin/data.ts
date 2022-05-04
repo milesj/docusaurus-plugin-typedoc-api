@@ -101,10 +101,11 @@ export function createReflectionMap(
 	return map;
 }
 
-export function loadPackageJsonAndReadme(
+export function loadPackageJsonAndDocs(
 	initialDir: string,
 	pkgFileName: string = 'package.json',
 	readmeFileName: string = 'README.md',
+	changelogFileName: string = 'CHANGELOG.md',
 ) {
 	let currentDir = initialDir;
 
@@ -113,6 +114,7 @@ export function loadPackageJsonAndReadme(
 	}
 
 	const readmePath = path.join(currentDir, readmeFileName);
+	const changelogPath = path.join(currentDir, changelogFileName);
 
 	return {
 		packageJson: JSON.parse(fs.readFileSync(path.join(currentDir, pkgFileName), 'utf8')) as {
@@ -120,6 +122,7 @@ export function loadPackageJsonAndReadme(
 			version: string;
 		},
 		readmePath: fs.existsSync(readmePath) ? readmePath : '',
+		changelogPath: fs.existsSync(changelogPath) ? changelogPath : '',
 	};
 }
 
@@ -297,10 +300,11 @@ export function flattenAndGroupPackages(
 
 				// We have a matching entry point, so store the record
 				if (!packages[cfg.packagePath]) {
-					const { packageJson, readmePath } = loadPackageJsonAndReadme(
+					const { packageJson, readmePath, changelogPath } = loadPackageJsonAndDocs(
 						path.join(options.projectRoot, cfg.packagePath),
 						options.packageJsonName,
 						options.readmeName,
+						options.changelogName,
 					);
 
 					packages[cfg.packagePath] = {
@@ -308,6 +312,7 @@ export function flattenAndGroupPackages(
 						packageName: (versioned && cfg.packageName) || packageJson.name,
 						packageVersion: (versioned && cfg.packageVersion) || packageJson.version,
 						readmePath,
+						changelogPath,
 					};
 
 					// eslint-disable-next-line no-param-reassign
@@ -362,5 +367,5 @@ export function flattenAndGroupPackages(
 }
 
 export function formatPackagesWithoutHostInfo(packages: PackageReflectionGroup[]) {
-	return packages.map(({ readmePath, ...pkg }) => pkg);
+	return packages.map(({ changelogPath, readmePath, ...pkg }) => pkg);
 }

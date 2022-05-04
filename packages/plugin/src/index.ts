@@ -11,7 +11,7 @@ import {
 	flattenAndGroupPackages,
 	formatPackagesWithoutHostInfo,
 	generateJson,
-	loadPackageJsonAndReadme,
+	loadPackageJsonAndDocs,
 } from './plugin/data';
 import { extractSidebar } from './plugin/sidebar';
 import { getVersionedDocsDirPath, readVersionsMetadata } from './plugin/version';
@@ -28,6 +28,8 @@ import {
 const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
 	banner: '',
 	breadcrumbs: true,
+	changelogName: 'CHANGELOG.md',
+	changelogs: false,
 	debug: false,
 	disableVersioning: false,
 	exclude: [],
@@ -62,7 +64,17 @@ export default function typedocApiPlugin(
 		...DEFAULT_OPTIONS,
 		...pluginOptions,
 	};
-	const { banner, breadcrumbs, id: pluginId, gitRefName, minimal, projectRoot, readmes } = options;
+	const {
+		banner,
+		breadcrumbs,
+		changelogs,
+		id: pluginId,
+		gitRefName,
+		minimal,
+		projectRoot,
+		readmes,
+		removeScopes,
+	} = options;
 	const isDefaultPluginId = pluginId === DEFAULT_PLUGIN_ID;
 	const versionsMetadata = readVersionsMetadata(context, options);
 	const versionsDocsDir = getVersionedDocsDirPath(context.siteDir, pluginId);
@@ -134,10 +146,11 @@ export default function typedocApiPlugin(
 
 					// Load info from `package.json`s
 					packageConfigs.forEach((cfg) => {
-						const { packageJson } = loadPackageJsonAndReadme(
+						const { packageJson } = loadPackageJsonAndDocs(
 							path.join(options.projectRoot, cfg.packagePath),
 							options.packageJsonName,
 							options.readmeName,
+							options.changelogName,
 						);
 
 						// eslint-disable-next-line no-param-reassign
@@ -193,7 +206,7 @@ export default function typedocApiPlugin(
 						return {
 							...metadata,
 							packages,
-							sidebars: await extractSidebar(packages, options.removeScopes),
+							sidebars: await extractSidebar(packages, removeScopes, changelogs),
 						};
 					}),
 				),
@@ -252,20 +265,14 @@ export default function typedocApiPlugin(
 						gitRefName,
 						minimal,
 						pluginId,
-						scopes: options.removeScopes,
+						scopes: removeScopes,
 					};
 					const optionsData = await createData('options.json', JSON.stringify(optionsContextData));
 
-					function createRoute(info: JSONOutput.Reflection, readmePath?: string): RouteConfig {
-						const modules = {};
-
-						// Rely on mdx to convert the file path to a component
-						if (readmes && readmePath) {
-							Object.assign(modules, {
-								readme: readmePath,
-							});
-						}
-
+					function createRoute(
+						info: JSONOutput.Reflection,
+						modules?: Record<string, string>,
+					): RouteConfig {
 						return {
 							path: info.permalink,
 							exact: true,
@@ -290,8 +297,21 @@ export default function typedocApiPlugin(
 
 							// Map a top-level package route, otherwise `DocPage` shows a page not found
 							subRoutes.push(
-								createRoute(entry.reflection, entry.index ? pkg.readmePath : undefined),
+								createRoute(
+									entry.reflection,
+									entry.index && readmes && pkg.readmePath ? { readme: pkg.readmePath } : undefined,
+								),
 							);
+
+							if (entry.index && changelogs && pkg.changelogPath) {
+								subRoutes.push({
+									path: normalizeUrl([entry.reflection.permalink, 'changelog']),
+									exact: true,
+									component: path.join(__dirname, './components/ApiChangelog.js'),
+									modules: { changelog: pkg.changelogPath },
+									sidebar: 'api',
+								});
+							}
 
 							routes.push(...subRoutes);
 						});
@@ -328,7 +348,7 @@ export default function typedocApiPlugin(
 		},
 
 		configureWebpack(config, isServer, utils) {
-			if (!readmes) {
+			if (!readmes && !changelogs) {
 				return {};
 			}
 

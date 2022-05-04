@@ -81,9 +81,14 @@ The following options are available to the plugin:
 - `packages` (`(string | PackageConfig)[]`) - List of packages relative to the project root.
   _(Required)_
 - `banner` (`string`) - Banner message to display at the top of the index page. Supports HTML.
+- `changelogName` (`string`) - Name of the changelog file within a package. Defaults to
+  `CHANGELOG.md`.
+- `changelogs` (`boolean`) - Include and render the changelog file from every package. Defaults to
+  `false`.
 - `exclude` (`string[]`) - List of glob patterns to exclude unwanted packages. This is necessary
   when using TypeScript project references.
-- `gitRefName` (`string`) - GitHub repository ref name to point the API links to. Defaults to `master`.
+- `gitRefName` (`string`) - GitHub repository ref name to point the API links to. Defaults to
+  `master`.
 - `minimal` (`boolean`) - Render a minimal layout and reduce the amount of information displayed.
   Defaults to `false`.
 - `packageJsonName` (`string`) - Name of the `package.json file`. Defaults to `package.json`.
