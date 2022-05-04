@@ -15,9 +15,9 @@
   "devDependencies": {
     "@beemo/cli": "^2.0.6",
     "@beemo/core": "^2.1.4",
-    "@beemo/dev": "^1.7.11",
+    "@beemo/dev": "^1.7.13",
     "@types/marked": "^3.0.3",
-    "@types/react": "^17.0.43",
+    "@types/react": "^17.0.44",
     "lerna": "^4.0.0",
     "packemon": "^1.14.1",
     "react": "^17.0.2"
