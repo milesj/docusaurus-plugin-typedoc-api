@@ -73,6 +73,7 @@ export default function typedocApiPlugin(
 		minimal,
 		projectRoot,
 		readmes,
+		removeScopes,
 	} = options;
 	const isDefaultPluginId = pluginId === DEFAULT_PLUGIN_ID;
 	const versionsMetadata = readVersionsMetadata(context, options);
@@ -205,7 +206,7 @@ export default function typedocApiPlugin(
 						return {
 							...metadata,
 							packages,
-							sidebars: await extractSidebar(packages, options.removeScopes, changelogs),
+							sidebars: await extractSidebar(packages, removeScopes, changelogs),
 						};
 					}),
 				),
@@ -264,7 +265,7 @@ export default function typedocApiPlugin(
 						gitRefName,
 						minimal,
 						pluginId,
-						scopes: options.removeScopes,
+						scopes: removeScopes,
 					};
 					const optionsData = await createData('options.json', JSON.stringify(optionsContextData));
 

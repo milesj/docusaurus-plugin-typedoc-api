@@ -101,11 +101,13 @@ export function extractSidebar(
 			type: 'link',
 		});
 
-		subItems.push({
-			href: normalizeUrl([indexHref, 'changelog']),
-			label: 'Changelog',
-			type: 'link',
-		});
+		if (changelogs) {
+			subItems.push({
+				href: normalizeUrl([indexHref, 'changelog']),
+				label: 'Changelog',
+				type: 'link',
+			});
+		}
 
 		return {
 			collapsed: true,
