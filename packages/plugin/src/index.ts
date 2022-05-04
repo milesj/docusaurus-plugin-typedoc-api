@@ -11,7 +11,7 @@ import {
 	flattenAndGroupPackages,
 	formatPackagesWithoutHostInfo,
 	generateJson,
-	loadPackageJsonAndReadme,
+	loadPackageJsonAndDocs,
 } from './plugin/data';
 import { extractSidebar } from './plugin/sidebar';
 import { getVersionedDocsDirPath, readVersionsMetadata } from './plugin/version';
@@ -145,7 +145,7 @@ export default function typedocApiPlugin(
 
 					// Load info from `package.json`s
 					packageConfigs.forEach((cfg) => {
-						const { packageJson } = loadPackageJsonAndReadme(
+						const { packageJson } = loadPackageJsonAndDocs(
 							path.join(options.projectRoot, cfg.packagePath),
 							options.packageJsonName,
 							options.readmeName,
@@ -205,7 +205,7 @@ export default function typedocApiPlugin(
 						return {
 							...metadata,
 							packages,
-							sidebars: await extractSidebar(packages, options.removeScopes),
+							sidebars: await extractSidebar(packages, options.removeScopes, changelogs),
 						};
 					}),
 				),
@@ -270,26 +270,14 @@ export default function typedocApiPlugin(
 
 					function createRoute(
 						info: JSONOutput.Reflection,
-						readmePath?: string,
-						changelogPath?: string,
+						modules?: Record<string, string>,
 					): RouteConfig {
-						const modules: Record<string, string> = {};
-
-						// Rely on mdx to convert the file path to a component
-						if (readmes && readmePath) {
-							modules.readme = readmePath;
-						}
-
-						if (changelogs && changelogPath) {
-							modules.changelog = changelogPath;
-						}
-
 						return {
 							path: info.permalink,
 							exact: true,
 							component: path.join(__dirname, './components/ApiItem.js'),
-							modules,
 							sidebar: 'api',
+							modules,
 							// Map the ID here instead of creating a JSON data file,
 							// otherwise this will create thousands of files!
 							id: info.id,
@@ -310,10 +298,19 @@ export default function typedocApiPlugin(
 							subRoutes.push(
 								createRoute(
 									entry.reflection,
-									entry.index ? pkg.readmePath : undefined,
-									entry.index ? pkg.changelogPath : undefined,
+									entry.index && readmes && pkg.readmePath ? { readme: pkg.readmePath } : undefined,
 								),
 							);
+
+							if (entry.index && changelogs && pkg.changelogPath) {
+								subRoutes.push({
+									path: normalizeUrl([entry.reflection.permalink, 'changelog']),
+									exact: true,
+									component: path.join(__dirname, './components/ApiChangelog.js'),
+									modules: { changelog: pkg.changelogPath },
+									sidebar: 'api',
+								});
+							}
 
 							routes.push(...subRoutes);
 						});
@@ -357,6 +354,8 @@ export default function typedocApiPlugin(
 			// Whitelist the folders that this webpack rule applies to,
 			// otherwise we collide with the native docs/blog plugins.
 			const include = packageConfigs.map((cfg) => path.join(options.projectRoot, cfg.packagePath));
+
+			console.log(include);
 
 			return {
 				module: {

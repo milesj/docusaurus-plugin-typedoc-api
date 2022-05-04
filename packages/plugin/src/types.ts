@@ -120,7 +120,7 @@ export interface PackageReflectionGroup {
 	entryPoints: PackageReflectionGroupEntry[];
 	packageName: string;
 	packageVersion: string;
-	changelogPath: string;
+	changelogPath?: string;
 	readmePath?: string;
 }
 

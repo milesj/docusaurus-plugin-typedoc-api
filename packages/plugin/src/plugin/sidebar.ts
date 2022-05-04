@@ -1,4 +1,5 @@
 import { JSONOutput } from 'typedoc';
+import { normalizeUrl } from '@docusaurus/utils';
 import { DeclarationReflectionMap, PackageReflectionGroup, SidebarItem } from '../types';
 import { removeScopes } from '../utils/links';
 import { createReflectionMap } from './data';
@@ -66,6 +67,7 @@ export function extractReflectionSidebar(pkg: JSONOutput.ProjectReflection): Sid
 export function extractSidebar(
 	packages: PackageReflectionGroup[],
 	scopes: string[],
+	changelogs: boolean,
 ): SidebarItem[] {
 	if (packages.length === 0) {
 		return [];
@@ -91,9 +93,17 @@ export function extractSidebar(
 		});
 
 		// Always include the overview as the 1st item
+		const indexHref = pkg.entryPoints.find((entry) => entry.index)?.reflection.permalink ?? '';
+
 		subItems.unshift({
-			href: pkg.entryPoints.find((entry) => entry.index)?.reflection.permalink ?? '',
+			href: indexHref,
 			label: 'Overview',
+			type: 'link',
+		});
+
+		subItems.push({
+			href: normalizeUrl([indexHref, 'changelog']),
+			label: 'Changelog',
 			type: 'link',
 		});
 

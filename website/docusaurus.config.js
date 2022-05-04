@@ -249,7 +249,8 @@ module.exports = {
 			{
 				exclude: ['**/themes/*', '**/website/*'],
 				minimal: false,
-				readmes: false,
+				readmes: true,
+				changelogs: true,
 				// removeScopes: ['boost'],
 				...getPluginConfig(),
 			},
