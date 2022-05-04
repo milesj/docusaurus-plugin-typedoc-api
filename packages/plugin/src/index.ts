@@ -277,8 +277,8 @@ export default function typedocApiPlugin(
 							path: info.permalink,
 							exact: true,
 							component: path.join(__dirname, './components/ApiItem.js'),
-							sidebar: 'api',
 							modules,
+							sidebar: 'api',
 							// Map the ID here instead of creating a JSON data file,
 							// otherwise this will create thousands of files!
 							id: info.id,

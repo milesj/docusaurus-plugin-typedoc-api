@@ -20,11 +20,9 @@ export default function ApiChangelog({
 			toc={Changelog.toc}
 			versionMetadata={versionMetadata}
 		>
-			{Changelog && (
-				<section className="tsd-readme">
-					<Changelog />
-				</section>
-			)}
+			<section className="tsd-readme">
+				<Changelog />
+			</section>
 		</ApiItemLayout>
 	);
 }
