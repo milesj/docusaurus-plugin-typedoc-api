@@ -10,6 +10,8 @@ export type { VersionBanner };
 export interface DocusaurusPluginTypeDocApiOptions extends VersionsOptions {
 	banner?: string;
 	breadcrumbs?: boolean;
+	changelogName?: string;
+	changelogs?: boolean;
 	gitRefName?: string;
 	debug?: boolean;
 	exclude?: string[];
@@ -118,6 +120,7 @@ export interface PackageReflectionGroup {
 	entryPoints: PackageReflectionGroupEntry[];
 	packageName: string;
 	packageVersion: string;
+	changelogPath: string;
 	readmePath?: string;
 }
 

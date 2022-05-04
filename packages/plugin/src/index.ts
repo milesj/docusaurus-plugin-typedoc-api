@@ -28,6 +28,8 @@ import {
 const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
 	banner: '',
 	breadcrumbs: true,
+	changelogName: 'CHANGELOG.md',
+	changelogs: false,
 	debug: false,
 	disableVersioning: false,
 	exclude: [],
@@ -62,7 +64,16 @@ export default function typedocApiPlugin(
 		...DEFAULT_OPTIONS,
 		...pluginOptions,
 	};
-	const { banner, breadcrumbs, id: pluginId, gitRefName, minimal, projectRoot, readmes } = options;
+	const {
+		banner,
+		breadcrumbs,
+		changelogs,
+		id: pluginId,
+		gitRefName,
+		minimal,
+		projectRoot,
+		readmes,
+	} = options;
 	const isDefaultPluginId = pluginId === DEFAULT_PLUGIN_ID;
 	const versionsMetadata = readVersionsMetadata(context, options);
 	const versionsDocsDir = getVersionedDocsDirPath(context.siteDir, pluginId);
@@ -138,6 +149,7 @@ export default function typedocApiPlugin(
 							path.join(options.projectRoot, cfg.packagePath),
 							options.packageJsonName,
 							options.readmeName,
+							options.changelogName,
 						);
 
 						// eslint-disable-next-line no-param-reassign
@@ -256,14 +268,20 @@ export default function typedocApiPlugin(
 					};
 					const optionsData = await createData('options.json', JSON.stringify(optionsContextData));
 
-					function createRoute(info: JSONOutput.Reflection, readmePath?: string): RouteConfig {
-						const modules = {};
+					function createRoute(
+						info: JSONOutput.Reflection,
+						readmePath?: string,
+						changelogPath?: string,
+					): RouteConfig {
+						const modules: Record<string, string> = {};
 
 						// Rely on mdx to convert the file path to a component
 						if (readmes && readmePath) {
-							Object.assign(modules, {
-								readme: readmePath,
-							});
+							modules.readme = readmePath;
+						}
+
+						if (changelogs && changelogPath) {
+							modules.changelog = changelogPath;
 						}
 
 						return {
@@ -290,7 +308,11 @@ export default function typedocApiPlugin(
 
 							// Map a top-level package route, otherwise `DocPage` shows a page not found
 							subRoutes.push(
-								createRoute(entry.reflection, entry.index ? pkg.readmePath : undefined),
+								createRoute(
+									entry.reflection,
+									entry.index ? pkg.readmePath : undefined,
+									entry.index ? pkg.changelogPath : undefined,
+								),
 							);
 
 							routes.push(...subRoutes);
@@ -328,7 +350,7 @@ export default function typedocApiPlugin(
 		},
 
 		configureWebpack(config, isServer, utils) {
-			if (!readmes) {
+			if (!readmes && !changelogs) {
 				return {};
 			}
 
