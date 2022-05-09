@@ -13,8 +13,8 @@ jobs:
         node-version: [12, 14, 16, 18]
       fail-fast: true
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install --immutable
@@ -24,8 +24,8 @@ jobs:
     name: Pack
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       - run: yarn install --immutable
       - run: yarn run pack
   docs:
@@ -39,12 +39,13 @@ jobs:
           - polyrepo-deep
           - polyrepo-multi
       fail-fast: true
+    env:
+      NODE_ENV: production
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       - run: yarn install --immutable
       - run: yarn run build
       - run: yarn workspace website run build
         env:
           DOCS_REPO_TYPE: ${{ matrix.repo-type }}
-          NODE_ENV: production
