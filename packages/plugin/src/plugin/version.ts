@@ -1,6 +1,7 @@
 // BASED ON: https://github.com/facebook/docusaurus/blob/main/packages/docusaurus-plugin-content-docs/src/versions.ts
 
 import path from 'path';
+import type { PluginOptions as DocusaurusNativePluginOptions } from '@docusaurus/plugin-content-docs';
 import {
 	CURRENT_VERSION_NAME,
 	filterVersions,
@@ -63,7 +64,14 @@ function createVersionMetadata({
 		isLast: versionName === lastVersionName,
 		routePriority: versionPathPart === '' ? -1 : undefined,
 		versionBadge: versionOptions?.badge ?? versionNames.length !== 1,
-		versionBanner: getDefaultVersionBanner({ lastVersionName, versionName, versionNames }),
+		versionBanner: getDefaultVersionBanner({
+			context,
+			lastVersionName,
+			// @ts-expect-error Ignore internal options
+			options,
+			versionName,
+			versionNames,
+		}),
 		versionClassName: versionOptions?.className ?? `api-version-${versionName}`,
 		versionLabel,
 		versionName,
@@ -75,12 +83,20 @@ export async function readVersionsMetadata(
 	context: LoadContext,
 	options: DocusaurusPluginTypeDocApiOptions,
 ): Promise<VersionMetadata[]> {
+	// Docusaurus internals require *every* option, but the versioning
+	// does not actually use them. We are casting the types here to
+	// ignore all the missing properties.
+	const specialOptions = options as DocusaurusNativePluginOptions &
+		DocusaurusPluginTypeDocApiOptions;
+
 	const versionNamesUnfiltered = await readVersionNames(context.siteDir, {
+		...specialOptions,
 		disableVersioning: options.disableVersioning ?? false,
 		id: options.id ?? 'default',
 		includeCurrentVersion: options.includeCurrentVersion ?? true,
 	});
 	const versionNames = filterVersions(versionNamesUnfiltered, {
+		...specialOptions,
 		onlyIncludeVersions:
 			options.onlyIncludeVersions && options.onlyIncludeVersions.length > 0
 				? options.onlyIncludeVersions

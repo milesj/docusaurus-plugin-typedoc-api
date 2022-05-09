@@ -5,7 +5,6 @@
 import React from 'react';
 import type { PropNavigation } from '@docusaurus/plugin-content-docs';
 import { ThemeClassNames, useWindowSize } from '@docusaurus/theme-common';
-import type { TOCItem } from '@docusaurus/types';
 import DocBreadcrumbs from '@theme/DocBreadcrumbs';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import DocPaginator from '@theme/DocPaginator';
@@ -14,6 +13,7 @@ import Heading from '@theme/Heading';
 import TOC from '@theme/TOC';
 import TOCCollapsible from '@theme/TOCCollapsible';
 import { useBreadcrumbs } from '../hooks/useBreadcrumbs';
+import type { TOCItem } from '../types';
 import { Footer } from './Footer';
 import { VersionBanner } from './VersionBanner';
 
