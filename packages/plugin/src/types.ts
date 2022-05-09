@@ -7,7 +7,8 @@ import type {
 
 export type { VersionBanner };
 
-export interface DocusaurusPluginTypeDocApiOptions extends VersionsOptions {
+export interface DocusaurusPluginTypeDocApiOptions
+	extends Omit<VersionsOptions, 'disableVersioning' | 'includeCurrentVersion'> {
 	banner?: string;
 	breadcrumbs?: boolean;
 	changelogName?: string;
@@ -105,6 +106,12 @@ export interface ApiOptions {
 	minimal: boolean;
 	pluginId: string;
 	scopes: string[];
+}
+
+export interface TOCItem {
+	readonly value: string;
+	readonly id: string;
+	readonly level: number;
 }
 
 // REFLECTIONS

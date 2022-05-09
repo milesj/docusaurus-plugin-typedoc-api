@@ -1,11 +1,10 @@
 import React, { useMemo } from 'react';
 import type { JSONOutput } from 'typedoc';
 import { PageMetadata } from '@docusaurus/theme-common';
-import type { TOCItem } from '@docusaurus/types';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
-import type { DeclarationReflectionMap } from '../types';
+import type { DeclarationReflectionMap, TOCItem } from '../types';
 import { getKindIconHtml } from '../utils/icons';
 import ApiItemLayout from './ApiItemLayout';
 import { Flags } from './Flags';

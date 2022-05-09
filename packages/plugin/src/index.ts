@@ -228,6 +228,7 @@ export default function typedocApiPlugin(
 					docs[loadedVersion.versionName] = {
 						id: loadedVersion.versionPath,
 						title: loadedVersion.versionLabel,
+						description: loadedVersion.versionLabel,
 					};
 				}
 			});

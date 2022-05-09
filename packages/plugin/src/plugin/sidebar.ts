@@ -101,7 +101,7 @@ export function extractSidebar(
 			type: 'link',
 		});
 
-		if (changelogs) {
+		if (pkg.changelogPath && changelogs) {
 			subItems.push({
 				href: normalizeUrl([indexHref, 'changelog']),
 				label: 'Changelog',
