@@ -8122,7 +8122,7 @@ __metadata:
     "@types/marked": ^3.0.3
     "@types/react": ^17.0.44
     lerna: ^4.0.0
-    packemon: ^1.14.1
+    packemon: ^1.15.0
     react: ^17.0.2
   languageName: unknown
   linkType: soft
@@ -14200,9 +14200,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"packemon@npm:^1.14.1":
-  version: 1.14.1
-  resolution: "packemon@npm:1.14.1"
+"packemon@npm:^1.15.0":
+  version: 1.15.0
+  resolution: "packemon@npm:1.15.0"
   dependencies:
     "@babel/core": ^7.17.8
     "@babel/plugin-proposal-decorators": ^7.17.8
@@ -14236,7 +14236,7 @@ __metadata:
     ink-progress-bar: ^3.0.0
     ink-spinner: ^4.0.3
     magic-string: ^0.26.1
-    micromatch: ^4.0.4
+    micromatch: ^4.0.5
     npm-packlist: ^4.0.0
     react: ^17.0.2
     resolve: ^1.22.0
@@ -14257,7 +14257,7 @@ __metadata:
       optional: true
   bin:
     packemon: lib/bin.js
-  checksum: 41a67a69d6f1a91ab7dfd44c227df97dbc38bef587385933d7db9f1c95186fb2ec4ae70f1ad1ef4692a8b1a98f852ab97b8dcf076dc51bac92bab7e553874275
+  checksum: c3b01e147d6a7acbd2e6396f35a4dae282eb28559a7f39450932675327989560e98fafaf390634f990e8e1898114f716c92241f6dcf37c3ae0115799ab78679b
   languageName: node
   linkType: hard
 
