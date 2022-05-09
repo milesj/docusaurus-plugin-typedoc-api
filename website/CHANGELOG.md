@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 0.4.0 - 2022-05-09
+
+#### 🚀 Updates
+
+- Add `gitRefName` option. (#37) ([b73c836](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/b73c836)), closes [#37](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/37) [#36](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/36)
+- Add changelogs support. (#40) ([f9a9c8c](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/f9a9c8c)), closes [#40](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/40)
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to beta.19. (#41) ([47ee476](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/47ee476)), closes [#41](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/41)
+- **[docusaurus]** Update to beta.20. ([e8991a3](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/e8991a3))
+
+**Note:** Version bump only for package website
+
+
+
+
+
 ## 0.3.0 - 2022-03-29
 
 #### 🚀 Updates

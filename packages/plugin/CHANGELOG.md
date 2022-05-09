@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.11.0 - 2022-05-09
+
+#### 🚀 Updates
+
+- Add `gitRefName` option. (#37) ([b73c836](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/b73c836)), closes [#37](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/37) [#36](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/36)
+- Add changelogs support. (#40) ([f9a9c8c](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/f9a9c8c)), closes [#40](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/40)
+- Add flags to classes. ([90d4eb8](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/90d4eb8))
+
+#### 🐞 Fixes
+
+- [@link](https://github.com/link) and [@apilink](https://github.com/apilink) symbols are now correctly rendered. Closes #34 (#35) ([1b51bc3](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1b51bc3)), closes [#34](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/34) [#35](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/35)
+
+#### 📦 Dependencies
+
+- **[beemo-dev]** Update to latest configs. ([9d5960e](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/9d5960e))
+- **[docusaurus]** Update to beta.19. (#41) ([47ee476](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/47ee476)), closes [#41](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/41)
+- **[docusaurus]** Update to beta.20. ([e8991a3](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/e8991a3))
+- **[typedoc]** Update to v0.22.15. ([1bd2bc1](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1bd2bc1))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 1.10.0 - 2022-03-29
 
 #### 🚀 Updates
