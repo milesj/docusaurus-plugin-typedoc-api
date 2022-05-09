@@ -47,3 +47,4 @@ jobs:
       - run: yarn workspace website run build
         env:
           DOCS_REPO_TYPE: ${{ matrix.repo-type }}
+          NODE_ENV: production
