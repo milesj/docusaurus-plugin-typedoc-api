@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 2.0.1 - 2022-05-29
+
+#### 🐞 Fixes
+
+- Fix unexpected redirect for next versions. ([4e5e4ae](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/4e5e4ae))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 # 2.0.0 - 2022-05-29
 
 #### 💥 Breaking
