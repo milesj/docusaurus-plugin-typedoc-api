@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.0.0 - 2022-05-29
+
+#### 💥 Breaking
+
+- Drop Node.js v12 support. ([7ad6fc8](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/7ad6fc8))
+
+#### 📦 Dependencies
+
+- **[beemo-dev]** Update to v2. ([fefe8f1](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/fefe8f1))
+- **[codicons]** Update to v0.30. ([67b0952](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/67b0952))
+- **[docusaurus]** Update to beta.21. ([ae39220](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/ae39220))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 1.11.0 - 2022-05-09
 
 #### 🚀 Updates
