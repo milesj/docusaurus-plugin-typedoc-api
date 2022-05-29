@@ -28,7 +28,7 @@ function addVersionToUrl(
 		!url.match(/api\/([\d.]+)/) &&
 		!url.includes('api/next') &&
 		preferredVersion &&
-		preferredVersion.name !== latestVersion.label
+		preferredVersion.name !== latestVersion.version
 	) {
 		const version = preferredVersion.name === 'current' ? 'next' : preferredVersion.name;
 
