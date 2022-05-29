@@ -6,7 +6,7 @@
     "clean": "packemon clean",
     "docs": "yarn run build && cd website && yarn run start",
     "build": "packemon build --addEngines",
-    "pack": "NODE_ENV=production packemon pack --addEngines --declaration=standard",
+    "pack": "NODE_ENV=production packemon pack --addEngines --declaration",
     "format": "beemo prettier",
     "lint": "beemo eslint",
     "type": "beemo typescript --build",
@@ -19,7 +19,7 @@
     "@types/marked": "^3.0.3",
     "@types/react": "^17.0.45",
     "lerna": "^4.0.0",
-    "packemon": "^1.15.0",
+    "packemon": "^2.2.2",
     "react": "^17.0.2"
   },
   "workspaces": [
