@@ -6,7 +6,6 @@ import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { Comment, hasComment } from './Comment';
 import { DefaultValue } from './DefaultValue';
 import { Flags } from './Flags';
-import { Markdown } from './Markdown';
 import { hasSources, MemberSources } from './MemberSources';
 import { Parameter } from './Parameter';
 import { Type } from './Type';
@@ -55,7 +54,7 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 			{showTypes && (
 				<>
 					<h4 className="tsd-type-parameters-title">Type parameters</h4>
-					<TypeParameters params={sig.typeParameter!} />
+					<TypeParameters params={sig.typeParameter} />
 				</>
 			)}
 
@@ -87,7 +86,7 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 						Returns <Type type={sig.type} />
 					</h4>
 
-					{sig.comment?.returns && <Markdown content={sig.comment.returns} />}
+					<Comment comment={sig.comment} />
 
 					<Parameter param={sig.type?.declaration} />
 				</>

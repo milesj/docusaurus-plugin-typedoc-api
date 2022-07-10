@@ -7,6 +7,7 @@ import { useReflectionMap } from '../hooks/useReflectionMap';
 import type { DeclarationReflectionMap, TOCItem } from '../types';
 import { getKindIconHtml } from '../utils/icons';
 import ApiItemLayout from './ApiItemLayout';
+import { displayPartsToMarkdown } from './Comment';
 import { Flags } from './Flags';
 import { Reflection } from './Reflection';
 import { TypeParametersGeneric } from './TypeParametersGeneric';
@@ -82,12 +83,12 @@ export default function ApiItem({ readme: Readme, route, versionMetadata }: ApiI
 					<span className="tsd-header-flags">
 						<Flags flags={item.flags} />
 					</span>
-					{item.name} <TypeParametersGeneric params={item.typeParameter} />
+					{item.name} <TypeParametersGeneric params={item.typeParameters} />
 				</>
 			}
 			pageMetadata={
 				<PageMetadata
-					description={item.comment?.shortText ?? item.comment?.text}
+					description={item.comment?.summary ? displayPartsToMarkdown(item.comment.summary) : ''}
 					title={`${item.name} | API`}
 				/>
 			}

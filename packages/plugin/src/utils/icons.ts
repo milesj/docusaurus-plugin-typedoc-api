@@ -28,8 +28,7 @@ const KIND_ICONS: Record<ReflectionKind, string> = {
 	1_048_576: 'symbol-field', // SetSignature
 	2_097_152: 'bracket', // ObjectLiteral
 	4_194_304: 'symbol-parameter', // TypeAlias
-	8_388_608: 'symbol-event', // Event
-	16_777_216: 'references', // Reference
+	8_388_608: 'references', // Reference
 };
 
 export function getKindIcon(kind: ReflectionKind, name: string): string {
@@ -37,7 +36,7 @@ export function getKindIcon(kind: ReflectionKind, name: string): string {
 
 	// Use event icon when property starts with "on"
 	if (kind === 1024 && name.match(/^on[A-Z]/)) {
-		icon = KIND_ICONS[8_388_608];
+		icon = 'symbol-event';
 	}
 
 	return icon;

@@ -16,7 +16,6 @@ export interface ParameterProps {
 	param?: JSONOutput.DeclarationReflection;
 }
 
-// eslint-disable-next-line complexity
 function ParameterChild({ param }: ParameterProps) {
 	if (!param) {
 		return null;
@@ -59,8 +58,8 @@ function ParameterChild({ param }: ParameterProps) {
 		);
 	}
 
-	const [getter] = param.getSignature ?? [];
-	const [setter] = param.setSignature ?? [];
+	const getter = param.getSignature;
+	const setter = param.setSignature;
 
 	return (
 		<>
