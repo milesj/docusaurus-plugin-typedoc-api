@@ -10,6 +10,7 @@ import {
 	PackageReflectionGroup,
 	ResolvedPackageConfig,
 } from '../types';
+import { migrateToVersion0230 } from './structure/0.23';
 import { getKindSlug, getPackageSlug, joinUrl } from './url';
 
 function shouldEmit(projectRoot: string, tsconfigPath: string) {
@@ -136,6 +137,8 @@ export function addMetadataToReflections(
 	if (project.children) {
 		// eslint-disable-next-line no-param-reassign
 		project.children = project.children.map((child) => {
+			migrateToVersion0230(child);
+
 			const kindSlugPart = getKindSlug(child);
 			const childSlug = kindSlugPart ? `/${kindSlugPart}/${child.name}` : `#${child.name}`;
 			const childPermalink = permalink + childSlug;
