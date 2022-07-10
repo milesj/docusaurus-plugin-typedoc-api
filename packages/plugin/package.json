@@ -49,7 +49,7 @@
     "@docusaurus/plugin-content-docs": "2.0.0-beta.21",
     "@docusaurus/types": "2.0.0-beta.21",
     "@docusaurus/utils": "2.0.0-beta.21",
-    "@vscode/codicons": "^0.0.30",
+    "@vscode/codicons": "^0.0.31",
     "marked": "^3.0.8",
     "typedoc": "^0.22.15"
   },
