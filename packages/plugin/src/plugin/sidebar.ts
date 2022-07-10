@@ -9,15 +9,21 @@ export function groupSidebarItems(
 	groups: JSONOutput.ReflectionGroup[],
 ): SidebarItem[] {
 	const items: SidebarItem[] = [];
-	const sortedGroups = groups.sort((a, b) => a.title.localeCompare(b.title));
+
+	const categories = groups.flatMap(group => {
+		// Prefer @category annotation over built-in grouping
+		return group.categories || group
+	});
+
+	const sortedCategories = categories.sort((a, b) =>  a.title.localeCompare(b.title));
 
 	function getLastItemInGroup(index: number) {
-		const length = sortedGroups[index]?.children?.length;
+		const length = sortedCategories[index]?.children?.length;
 
-		return length ? sortedGroups[index]?.children?.[length - 1] : undefined;
+		return length ? sortedCategories[index]?.children?.[length - 1] : undefined;
 	}
 
-	sortedGroups.forEach((group, groupIndex) => {
+	sortedCategories.forEach((group, groupIndex) => {
 		const { children } = group;
 
 		if (!children || children.length === 0) {
