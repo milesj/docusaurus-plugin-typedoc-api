@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.1.0 - 2022-07-10
+
+#### 🚀 Updates
+
+- Support TypeDoc 0.23 syntax, with transformers for previous syntax. ([2063e3f](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/2063e3f))
+
+#### 📦 Dependencies
+
+- **[beemo-dev]** Update to v2 latest. ([ac12011](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/ac12011))
+- **[docusaurus]** Update to beta.22. (#51) ([05395cd](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/05395cd)), closes [#51](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/51)
+- **[packemon]** Update to v2.3. ([43a84e4](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/43a84e4))
+- **[typedoc]** Update to v0.22.18. ([12c4794](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/12c4794))
+- **[typedoc]** Update to v0.23.7. ([aaf4b99](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/aaf4b99))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 2.0.1 - 2022-05-29
 
 #### 🐞 Fixes
