@@ -17,7 +17,7 @@ import type { TOCItem } from '../types';
 import { Footer } from './Footer';
 import { VersionBanner } from './VersionBanner';
 
-export interface ApiItemLayoutProps extends Pick<DocItemProps, 'route' | 'versionMetadata'> {
+export interface ApiItemLayoutProps extends Pick<DocItemProps, 'route'> {
 	children: React.ReactNode;
 	heading: React.ReactNode;
 	toc: readonly TOCItem[];
@@ -31,7 +31,6 @@ export default function ApiItemLayout({
 	pageMetadata,
 	pagingMetadata,
 	toc,
-	versionMetadata,
 }: ApiItemLayoutProps) {
 	const windowSize = useWindowSize();
 	const breadcrumbs = useBreadcrumbs();
@@ -46,7 +45,7 @@ export default function ApiItemLayout({
 
 			<div className="row">
 				<div className="col apiItemCol">
-					<VersionBanner versionMetadata={versionMetadata} />
+					<VersionBanner />
 
 					<div className="apiItemContainer">
 						<article>

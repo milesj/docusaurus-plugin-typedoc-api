@@ -38,6 +38,12 @@ declare module '@docusaurus/plugin-content-docs/server' {
   export * from '@docusaurus/plugin-content-docs/lib/server-export';
 }
 
+declare module '@docusaurus/theme-common/internal' {
+	import { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
+
+	export function useDocsVersion(): PropVersionMetadata;
+}
+
 declare module '*.module.css' {
 	const classes: Readonly<Record<string, string>>;
 	export default classes;
