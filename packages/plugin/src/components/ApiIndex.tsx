@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import Link from '@docusaurus/Link';
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
 import type { GlobalVersion } from '@docusaurus/plugin-content-docs/client';
-import { useDocsPreferredVersion, useDocsVersion } from '@docusaurus/theme-common';
+import { useDocsPreferredVersion } from '@docusaurus/theme-common';
+import { useDocsVersion } from '@docusaurus/theme-common/internal';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import Heading from '@theme/Heading';
 import type { ApiOptions, PackageReflectionGroup } from '../types';
@@ -10,7 +11,7 @@ import { removeScopes } from '../utils/links';
 import { Footer } from './Footer';
 import { VersionBanner } from './VersionBanner';
 
-export interface ApiIndexProps extends Pick<DocItemProps, 'route' | 'versionMetadata'> {
+export interface ApiIndexProps extends Pick<DocItemProps, 'route'> {
 	history: {
 		location: { pathname: string };
 		replace: (path: string) => void;
@@ -42,9 +43,9 @@ function addVersionToUrl(
 	return url;
 }
 
-export default function ApiIndex({ options, packages, history, versionMetadata }: ApiIndexProps) {
+export default function ApiIndex({ options, packages, history }: ApiIndexProps) {
 	const latestVersion = useDocsVersion();
-	const { preferredVersion } = useDocsPreferredVersion(versionMetadata.pluginId);
+	const { preferredVersion } = useDocsPreferredVersion(latestVersion.pluginId);
 
 	useEffect(() => {
 		// Redirect to package when only 1
@@ -73,7 +74,7 @@ export default function ApiIndex({ options, packages, history, versionMetadata }
 					</div>
 				)}
 
-				<VersionBanner versionMetadata={versionMetadata} />
+				<VersionBanner />
 
 				<div className="apiItemContainer">
 					<article>

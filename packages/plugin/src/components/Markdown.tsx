@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import marked, { TokensList } from 'marked';
-import { useDocsVersion } from '@docusaurus/theme-common';
+import { useDocsVersion } from '@docusaurus/theme-common/internal';
 import MDX from '@theme/MDXComponents';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { replaceLinkTokens } from '../utils/markdown';

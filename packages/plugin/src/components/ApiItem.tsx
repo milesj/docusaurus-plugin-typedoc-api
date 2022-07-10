@@ -46,11 +46,11 @@ function extractTOC(
 	return toc;
 }
 
-export interface ApiItemProps extends Pick<DocItemProps, 'route' | 'versionMetadata'> {
+export interface ApiItemProps extends Pick<DocItemProps, 'route'> {
 	readme?: React.ComponentType;
 }
 
-export default function ApiItem({ readme: Readme, route, versionMetadata }: ApiItemProps) {
+export default function ApiItem({ readme: Readme, route }: ApiItemProps) {
 	const item = useReflection((route as unknown as { id: number }).id)!;
 	const reflections = useReflectionMap();
 	const toc = useMemo(() => extractTOC(item, reflections), [item, reflections]);
@@ -95,7 +95,6 @@ export default function ApiItem({ readme: Readme, route, versionMetadata }: ApiI
 			pagingMetadata={pagingMetadata}
 			route={route}
 			toc={toc}
-			versionMetadata={versionMetadata}
 		>
 			{Readme && (
 				<section className="tsd-readme">

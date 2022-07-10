@@ -1,15 +1,11 @@
 import React, { useCallback } from 'react';
 import Link from '@docusaurus/Link';
-import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
 import { useDocVersionSuggestions } from '@docusaurus/plugin-content-docs/client';
 import { ThemeClassNames, useDocsPreferredVersion } from '@docusaurus/theme-common';
+import { useDocsVersion } from '@docusaurus/theme-common/internal';
 
-interface VersionBannerProps {
-	versionMetadata: PropVersionMetadata;
-}
-
-export function VersionBanner({ versionMetadata }: VersionBannerProps): JSX.Element | null {
-	const { banner, pluginId, version } = versionMetadata;
+export function VersionBanner(): JSX.Element | null {
+	const { banner, docs, pluginId, version } = useDocsVersion();
 	const { latestVersionSuggestion: latestVersion } = useDocVersionSuggestions(pluginId);
 	const { savePreferredVersionName } = useDocsPreferredVersion(pluginId);
 
@@ -21,7 +17,7 @@ export function VersionBanner({ versionMetadata }: VersionBannerProps): JSX.Elem
 		return null;
 	}
 
-	const latestVersionInfo = versionMetadata.docs[latestVersion.label];
+	const latestVersionInfo = docs[latestVersion.label];
 
 	return (
 		<div
