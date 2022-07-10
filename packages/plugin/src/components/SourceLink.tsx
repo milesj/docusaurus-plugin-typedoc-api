@@ -26,9 +26,13 @@ export function SourceLink({ sources = [] }: SourceLinkProps) {
 				<a
 					key={source.fileName}
 					className="tsd-anchor"
-					href={`https://github.com/${siteConfig.organizationName}/${
-						siteConfig.projectName
-					}/blob/${gitRefName}/${replaceWithSrc(source.fileName)}#L${source.line}`}
+					href={
+						// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+						source.url ||
+						`https://github.com/${siteConfig.organizationName}/${
+							siteConfig.projectName
+						}/blob/${gitRefName}/${replaceWithSrc(source.fileName)}#L${source.line}`
+					}
 					rel="noreferrer"
 					target="_blank"
 				>

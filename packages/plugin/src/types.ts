@@ -28,6 +28,7 @@ export interface DocusaurusPluginTypeDocApiOptions
 	typedocOptions?: Partial<
 		Pick<
 			TypeDocOptions,
+			| 'commentStyle'
 			| 'disableSources'
 			| 'emit'
 			| 'excludeExternals'
@@ -37,11 +38,11 @@ export interface DocusaurusPluginTypeDocApiOptions
 			| 'excludeProtected'
 			| 'excludeTags'
 			| 'externalPattern'
-			| 'listInvalidSymbolLinks'
 			| 'logger'
 			| 'logLevel'
 			| 'sort'
 			| 'treatWarningsAsErrors'
+			| 'validation'
 		>
 	>;
 

@@ -19,7 +19,7 @@ export interface MemberDeclarationProps {
 export function MemberDeclaration({ id }: MemberDeclarationProps) {
 	const reflection = useReflection(id)!;
 	const minimal = useMinimalLayout();
-	const showTypes = reflection.typeParameter && reflection.typeParameter.length > 0;
+	const showTypes = reflection.typeParameters && reflection.typeParameters.length > 0;
 	const showDeclaration = !minimal && reflection.type?.declaration;
 
 	return (
@@ -28,7 +28,7 @@ export function MemberDeclaration({ id }: MemberDeclarationProps) {
 				<div className="tsd-signature tsd-kind-icon">
 					<Icon reflection={reflection} />
 					{reflection.name}
-					<TypeParametersGeneric params={reflection.typeParameter} />
+					<TypeParametersGeneric params={reflection.typeParameters} />
 					<span className="tsd-signature-symbol">{reflection.flags?.isOptional && '?'}: </span>{' '}
 					<Type type={reflection.type} />
 					<DefaultValue type={reflection.defaultValue} />
@@ -47,7 +47,7 @@ export function MemberDeclaration({ id }: MemberDeclarationProps) {
 				{showTypes && (
 					<div className="tds-type-parameters">
 						<h4 className="tsd-type-parameters-title">Type parameters</h4>
-						<TypeParameters params={reflection.typeParameter!} />
+						<TypeParameters params={reflection.typeParameters} />
 					</div>
 				)}
 

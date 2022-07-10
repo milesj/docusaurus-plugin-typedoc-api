@@ -7,10 +7,14 @@ import { DefaultValue } from './DefaultValue';
 import { Type } from './Type';
 
 export interface TypeParametersProps {
-	params: JSONOutput.TypeParameterReflection[];
+	params?: JSONOutput.TypeParameterReflection[];
 }
 
 export function TypeParameters({ params }: TypeParametersProps) {
+	if (!params || params.length === 0) {
+		return null;
+	}
+
 	return (
 		<ul className="tsd-type-parameters">
 			{params.map((param) => (

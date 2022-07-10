@@ -14,14 +14,8 @@ export interface MemberGetterSetterProps {
 }
 
 // eslint-disable-next-line complexity
-export function MemberGetterSetter({
-	inPanel,
-	getter: baseGetter,
-	setter: baseSetter,
-}: MemberGetterSetterProps) {
+export function MemberGetterSetter({ inPanel, getter, setter }: MemberGetterSetterProps) {
 	const minimal = useMinimalLayout();
-	const [getter] = baseGetter ?? [];
-	const [setter] = baseSetter ?? [];
 
 	if (!getter && !setter) {
 		return null;
