@@ -34,6 +34,30 @@ export interface MemberSignatureBodyProps {
 	sig: JSONOutput.SignatureReflection;
 }
 
+function excludeBlockTags(comment?: JSONOutput.Comment):  JSONOutput.Comment | undefined {
+	if (comment) {
+		const { blockTags, ...rest } = comment;
+		return rest;
+ 	}
+	return undefined;
+}
+
+function intoReturnComment(comment?: JSONOutput.Comment): JSONOutput.Comment | undefined {
+	if (comment?.blockTags) {
+		const tags = comment.blockTags.map((tag) => tag.tag);
+
+		if (tags.includes('@returns')) {
+			const index = tags.indexOf('@returns');
+
+			return {
+				summary: comment.blockTags[index].content
+			}
+		}
+	}
+
+	return undefined;
+}
+
 // eslint-disable-next-line complexity
 export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyProps) {
 	const minimal = useMinimalLayout();
@@ -45,7 +69,7 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 		<>
 			{!hideSources && <MemberSources reflection={sig} />}
 
-			<Comment comment={sig.comment} />
+			<Comment comment={excludeBlockTags(sig.comment)} />
 
 			{hasComment(sig.comment) && (showTypes || showParams || showReturn) && (
 				<hr className="tsd-divider" />
@@ -86,7 +110,7 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 						Returns <Type type={sig.type} />
 					</h4>
 
-					<Comment comment={sig.comment} />
+					<Comment comment={intoReturnComment(sig.comment)} />
 
 					<Parameter param={sig.type?.declaration} />
 				</>
