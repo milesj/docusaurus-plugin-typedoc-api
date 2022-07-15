@@ -204,6 +204,18 @@ html[data-theme='light'] .tsd-panel-content {
 	vertical-align: middle;
 }
 
+/* MODIFIERS */
+
+.badge-group {
+	display: flex;
+	margin-bottom: 1rem;
+}
+
+.badge-group > span {
+	margin-right: 0.5rem;
+}
+
+
 /* SYNTAX */
 
 .tsd-generics {
