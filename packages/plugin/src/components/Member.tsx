@@ -6,6 +6,7 @@ import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { hasOwnDocument } from '../utils/visibility';
 import { AnchorLink } from './AnchorLink';
+import { CommentBadges, isCommentWithModifiers } from './CommentBadges';
 import { Flags } from './Flags';
 import { MemberDeclaration } from './MemberDeclaration';
 import { MemberGetterSetter } from './MemberGetterSetter';
@@ -20,7 +21,7 @@ export interface MemberProps {
 export function Member({ id }: MemberProps) {
 	const reflections = useReflectionMap();
 	const reflection = useReflection(id)!;
-
+	const { comment } = reflection;
 	let content: React.ReactNode = null;
 
 	if (reflection.signatures) {
@@ -46,6 +47,7 @@ export function Member({ id }: MemberProps) {
 				<SourceLink sources={reflection.sources} />
 				<Flags flags={reflection.flags} />
 				{reflection.name}
+				{isCommentWithModifiers(comment) && <CommentBadges comment={comment} />}
 			</h3>
 
 			{content}

@@ -4,6 +4,7 @@ import React from 'react';
 import type { JSONOutput } from 'typedoc';
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { Comment, hasComment } from './Comment';
+import { CommentBadges, isCommentWithModifiers } from './CommentBadges';
 import { DefaultValue } from './DefaultValue';
 import { Flags } from './Flags';
 import { hasSources, MemberSources } from './MemberSources';
@@ -34,11 +35,11 @@ export interface MemberSignatureBodyProps {
 	sig: JSONOutput.SignatureReflection;
 }
 
-function excludeBlockTags(comment?: JSONOutput.Comment):  JSONOutput.Comment | undefined {
+function excludeBlockTags(comment?: JSONOutput.Comment): JSONOutput.Comment | undefined {
 	if (comment) {
 		const { blockTags, ...rest } = comment;
 		return rest;
- 	}
+	}
 	return undefined;
 }
 
@@ -50,8 +51,8 @@ function intoReturnComment(comment?: JSONOutput.Comment): JSONOutput.Comment | u
 			const index = tags.indexOf('@returns');
 
 			return {
-				summary: comment.blockTags[index].content
-			}
+				summary: comment.blockTags[index].content,
+			};
 		}
 	}
 
@@ -68,6 +69,8 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 	return (
 		<>
 			{!hideSources && <MemberSources reflection={sig} />}
+
+			{isCommentWithModifiers(sig.comment) && <CommentBadges comment={sig.comment} />}
 
 			<Comment comment={excludeBlockTags(sig.comment)} />
 
