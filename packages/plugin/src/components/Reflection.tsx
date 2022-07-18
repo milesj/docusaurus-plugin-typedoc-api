@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 import type { JSONOutput } from 'typedoc';
 import { createHierarchy } from '../utils/hierarchy';
 import { Comment, hasComment } from './Comment';
+import { CommentBadges, isCommentWithModifiers } from './CommentBadges';
 import { Hierarchy } from './Hierarchy';
 import { Icon } from './Icon';
 import { Index } from './Index';
@@ -19,13 +20,13 @@ export interface ReflectionProps {
 		| JSONOutput.Reflection
 		| JSONOutput.SignatureReflection;
 }
-
 // eslint-disable-next-line complexity
 export function Reflection({ reflection }: ReflectionProps) {
 	const hierarchy = useMemo(() => createHierarchy(reflection), [reflection]);
 
 	return (
 		<>
+			{isCommentWithModifiers(reflection.comment) && <CommentBadges comment={reflection.comment} />}
 			{hasComment(reflection.comment) && <Comment root comment={reflection.comment} />}
 
 			{'typeParameter' in reflection &&

@@ -24,18 +24,6 @@ export function displayPartsToMarkdown(parts: JSONOutput.CommentDisplayPart[]): 
 	return parts.map((part) => part.text).join('');
 }
 
-function getModifierClassName(tag: string) {
-	switch (tag) {
-		case '@beta':
-		case '@experimental':
-			return 'warning';
-		case '@alpha':
-			return 'danger';
-		default:
-			return 'info';
-	}
-}
-
 export function Comment({ comment, root }: CommentProps) {
 	if (!comment || !hasComment(comment)) {
 		return null;
@@ -43,16 +31,6 @@ export function Comment({ comment, root }: CommentProps) {
 
 	return (
 		<div className={`tsd-comment tsd-typography ${root ? 'tsd-comment-root' : ''}`}>
-			{comment.modifierTags && comment.modifierTags.length > 0 && (
-				<div className="badge-group">
-					{comment.modifierTags.map((tag) => (
-						<span key={tag} className={`badge badge--${getModifierClassName(tag)}`}>
-							{tag.slice(1)}
-						</span>
-					))}
-				</div>
-			)}
-
 			{!!comment.summary && (
 				<div className="lead">
 					<Markdown content={displayPartsToMarkdown(comment.summary)} />

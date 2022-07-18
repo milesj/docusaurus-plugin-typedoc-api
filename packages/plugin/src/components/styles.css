@@ -207,12 +207,17 @@ html[data-theme='light'] .tsd-panel-content {
 /* MODIFIERS */
 
 .badge-group {
-	display: flex;
-	margin-bottom: 1rem;
+	font-size: var(--tsd-font-small);
+	vertical-align: middle;
+}
+
+.tsd-panel-header .badge-group {
+	display: inline-block;
+	margin-left: .25em;
 }
 
 .badge-group > span {
-	margin-right: 0.5rem;
+	margin-right: 0.25rem;
 }
 
 
