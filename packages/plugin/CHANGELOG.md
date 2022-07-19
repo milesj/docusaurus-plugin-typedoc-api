@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.2.0 - 2022-07-19
+
+#### 🚀 Updates
+
+- alpha beta experimental modifiers (#53) ([f32fa95](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/f32fa95)), closes [#53](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/53)
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to rc.1. ([d7538df](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/d7538df))
+- **[marked]** Update to v4. ([ef52f60](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/ef52f60))
+- **[typedoc]** Update to v0.23.8 (#54) ([44a21dc](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/44a21dc)), closes [#54](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/54)
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 2.1.1 - 2022-07-13
 
 **Note:** Version bump only for package docusaurus-plugin-typedoc-api
