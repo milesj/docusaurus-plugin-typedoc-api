@@ -1,11 +1,13 @@
 /* eslint-disable react/no-array-index-key */
 
 import React, { useState } from 'react';
-import marked, { TokensList } from 'marked';
+import { marked } from 'marked';
 import { useDocsVersion } from '@docusaurus/theme-common/internal';
 import MDX from '@theme/MDXComponents';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { replaceLinkTokens } from '../utils/markdown';
+
+type TokensList = marked.TokensList;
 
 marked.setOptions({
 	gfm: true,

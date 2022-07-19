@@ -5215,10 +5215,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/marked@npm:^3.0.3":
-  version: 3.0.3
-  resolution: "@types/marked@npm:3.0.3"
-  checksum: 42d859c2e4b38d738dd09a3d90b695e1188f975c82e40d122cf5f40bf2f52b0f9c5815b217eeb01a5a5549c6cf3a5f2b291478a505d4832f813af22e3040ff00
+"@types/marked@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "@types/marked@npm:4.0.3"
+  checksum: 2fc409a6291cb770688731a444f54e7eab6257c9b565dea4e9d2f3b6654b606e9dd8ea4a924e306b2d2f581dedcb7a27f10f2ca7aed828b11642ab85955341f1
   languageName: node
   linkType: hard
 
@@ -8476,7 +8476,7 @@ __metadata:
     "@beemo/cli": ^2.0.6
     "@beemo/core": ^2.1.4
     "@beemo/dev": ^2.1.1
-    "@types/marked": ^3.0.3
+    "@types/marked": ^4.0.3
     "@types/react": ^17.0.45
     lerna: ^5.0.0
     packemon: ^2.3.1
@@ -8493,7 +8493,7 @@ __metadata:
     "@docusaurus/types": 2.0.0-rc.1
     "@docusaurus/utils": 2.0.0-rc.1
     "@vscode/codicons": ^0.0.31
-    marked: ^3.0.8
+    marked: ^4.0.18
     react: ^17.0.2
     react-dom: ^17.0.2
     typedoc: ^0.23.8
@@ -13068,21 +13068,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"marked@npm:^3.0.8":
-  version: 3.0.8
-  resolution: "marked@npm:3.0.8"
-  bin:
-    marked: bin/marked
-  checksum: 3cdeaa126bbeca5b1b8d2f91e9728018dcd63b250233f3607009a4d70bb6bd9df8c769f1bc52ce9856d1316c91c9dacb1d94d80696f76d094146b4fab126a4eb
-  languageName: node
-  linkType: hard
-
-"marked@npm:^4.0.16":
-  version: 4.0.17
-  resolution: "marked@npm:4.0.17"
+"marked@npm:^4.0.16, marked@npm:^4.0.18":
+  version: 4.0.18
+  resolution: "marked@npm:4.0.18"
   bin:
     marked: bin/marked.js
-  checksum: 33a3c43a20b47bddaf045a59bfc7c3d41cc321931cc663ed231ca3b5b3b195fb2ac2973e687c2afd65b79539c14619baa07d19793f70130160f0af80c06d9b3a
+  checksum: a13e886d5059a8500a6fd552feecc16e18fc3636aa491fce372384b1fdea67e323d67ac49f7618f6977e66ca96e39f27400eb5c1273d5ee9c2301e8c33e90dce
   languageName: node
   linkType: hard
 

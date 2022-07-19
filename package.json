@@ -16,7 +16,7 @@
     "@beemo/cli": "^2.0.6",
     "@beemo/core": "^2.1.4",
     "@beemo/dev": "^2.1.1",
-    "@types/marked": "^3.0.3",
+    "@types/marked": "^4.0.3",
     "@types/react": "^17.0.45",
     "lerna": "^5.0.0",
     "packemon": "^2.3.1",
