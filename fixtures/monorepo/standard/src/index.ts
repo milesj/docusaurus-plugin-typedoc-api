@@ -5,6 +5,23 @@
 export type Type = 'standard';
 
 /**
+ * short description
+ *
+ * long description with a link to {@link bizz}. did it work?
+ * what about our own tokens: {@apilink Foo} and {@doclink some/url}!
+ * and some inline `code`???
+ *
+ * ```
+ * let dontForget = 'block code';
+ * ```
+ *
+ * @param {String} msg description
+ * @param other without type
+ * @returns returns the param
+ */
+export function comments(msg: string, other: boolean) {}
+
+/**
  * newy new guy
  * @param a a thing
  * @param b b thing

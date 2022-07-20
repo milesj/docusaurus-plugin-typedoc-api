@@ -21,7 +21,15 @@ export function hasComment(comment?: JSONOutput.Comment): boolean {
 }
 
 export function displayPartsToMarkdown(parts: JSONOutput.CommentDisplayPart[]): string {
-	return parts.map((part) => part.text).join('');
+	return parts
+		.map((part) => {
+			if (part.kind === 'inline-tag') {
+				return `{${part.tag} ${part.text}}`;
+			}
+
+			return part.text;
+		})
+		.join('');
 }
 
 export function Comment({ comment, root }: CommentProps) {
