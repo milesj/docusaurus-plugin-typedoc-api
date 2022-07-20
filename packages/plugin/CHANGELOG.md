@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 2.2.1 - 2022-07-20
+
+#### 🐞 Fixes
+
+- Fix 'Duplicate routes found!' warning for polyrepos (#56) ([9b7b285](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/9b7b285)), closes [#56](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/56)
+- Fix links/code not rendering correctly in comments. ([5447047](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/5447047))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 2.2.0 - 2022-07-19
 
 #### 🚀 Updates
