@@ -320,17 +320,21 @@ export default function typedocApiPlugin(
 
 					const indexPermalink = normalizeUrl([loadedVersion.versionPath]);
 
-					routes.push({
-						path: indexPermalink,
-						exact: true,
-						component: path.join(__dirname, './components/ApiIndex.js'),
-						modules: {
-							options: optionsData,
-							packages: packagesData,
-							versionMetadata,
-						},
-						sidebar: 'api',
-					});
+					if (loadedVersion.packages.length > 1) {
+						// Only write out the ApiIndex only when we have multiple packages
+						// otherwise we will have 2 top-level entries in the route entries
+						routes.push({
+							path: indexPermalink,
+							exact: true,
+							component: path.join(__dirname, './components/ApiIndex.js'),
+							modules: {
+								options: optionsData,
+								packages: packagesData,
+								versionMetadata,
+							},
+							sidebar: 'api',
+						});
+					}
 
 					addRoute({
 						path: indexPermalink,
