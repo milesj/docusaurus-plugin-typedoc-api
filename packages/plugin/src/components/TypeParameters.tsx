@@ -27,7 +27,7 @@ export function TypeParameters({ params }: TypeParametersProps) {
 						</>
 					)}
 
-					<DefaultValue type={param.default} />
+					<DefaultValue comment={param.comment} type={param.default} />
 
 					<Comment comment={param.comment} />
 				</li>

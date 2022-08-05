@@ -47,16 +47,18 @@ export function Comment({ comment, root }: CommentProps) {
 
 			{comment.blockTags && comment.blockTags.length > 0 && (
 				<dl className="tsd-comment-tags">
-					{comment.blockTags?.map((tag) => (
-						<React.Fragment key={tag.tag}>
-							<dt>
-								<strong>{tag.tag}</strong>
-							</dt>
-							<dd>
-								<Markdown content={displayPartsToMarkdown(tag.content)} />
-							</dd>
-						</React.Fragment>
-					))}
+					{comment.blockTags
+						?.filter((tag) => tag.tag !== '@default')
+						.map((tag) => (
+							<React.Fragment key={tag.tag}>
+								<dt>
+									<strong>{tag.tag}</strong>
+								</dt>
+								<dd>
+									<Markdown content={displayPartsToMarkdown(tag.content)} />
+								</dd>
+							</React.Fragment>
+						))}
 				</dl>
 			)}
 		</div>

@@ -31,7 +31,7 @@ export function MemberDeclaration({ id }: MemberDeclarationProps) {
 					<TypeParametersGeneric params={reflection.typeParameters} />
 					<span className="tsd-signature-symbol">{reflection.flags?.isOptional && '?'}: </span>{' '}
 					<Type type={reflection.type} />
-					<DefaultValue type={reflection.defaultValue} />
+					<DefaultValue comment={reflection.comment} type={reflection.defaultValue} />
 				</div>
 			</div>
 
