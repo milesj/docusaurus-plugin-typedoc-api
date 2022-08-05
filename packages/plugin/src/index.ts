@@ -52,8 +52,13 @@ const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
 };
 
 async function importFile<T>(file: string): Promise<T> {
-	// eslint-disable-next-line promise/prefer-await-to-then
-	return import(file).then((res) => res.default as T);
+	const data = await fs.promises.readFile(file, 'utf8');
+
+	if (file.endsWith('.json')) {
+		return JSON.parse(data) as T;
+	}
+
+	return data as unknown as T;
 }
 
 export default function typedocApiPlugin(
