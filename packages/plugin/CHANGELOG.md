@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.3.0 - 2022-08-05
+
+#### 🚀 Updates
+
+- Add `sortPackages` option. ([113ea09](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/113ea09))
+- Support rendering of [@default](https://github.com/default) values. ([67c4238](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/67c4238))
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Add as a peer dependency. ([1e43d76](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1e43d76))
+- **[docusaurus]** Update to v2.0 official. ([e8ea855](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/e8ea855))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 2.2.1 - 2022-07-20
 
 #### 🐞 Fixes
