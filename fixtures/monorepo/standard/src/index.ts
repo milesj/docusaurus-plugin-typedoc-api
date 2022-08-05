@@ -8,7 +8,7 @@ export type Type = 'standard';
  * short description
  *
  * long description with a link to {@link bizz}. did it work?
- * what about our own tokens: {@apilink Foo} and {@doclink some/url}!
+ * what about our own tokens: {@apilink Foo} and {@doclink intro}!
  * and some inline `code`???
  *
  * ```

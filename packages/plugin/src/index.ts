@@ -42,6 +42,7 @@ const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
 	packageJsonName: 'package.json',
 	packages: [],
 	projectRoot: '.',
+	sortPackages: (a, d) => a.packageName.localeCompare(d.packageName),
 	readmeName: 'README.md',
 	readmes: false,
 	removeScopes: [],
@@ -207,6 +208,8 @@ export default function typedocApiPlugin(
 								true,
 							);
 						}
+
+						packages.sort((a, d) => options.sortPackages(a, d));
 
 						return {
 							...metadata,
