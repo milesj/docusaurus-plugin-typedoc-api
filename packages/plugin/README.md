@@ -97,6 +97,8 @@ The following options are available to the plugin:
   `false`.
 - `removeScopes` (`string[]`) - Package scopes and prefixes to remove when displaying the package
   name in the sidebar and index. For example, `boost` will remove `@boost/` and `boost-`.
+- `sortPackages` (`(a, d) => number`) - Function to sort the package list in the sidebar and on the
+  index page. Defaults to alphabetical.
 - `tsconfigName` (`string`) - Name of the TypeScript config file in the project root. Defaults to
   `tsconfig.json`.
 - `typedocOptions` (`object`) - [TypeDoc options](https://typedoc.org/guides/options/#input-options)

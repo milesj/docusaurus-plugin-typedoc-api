@@ -24,6 +24,7 @@ export interface DocusaurusPluginTypeDocApiOptions
 	readmeName?: string;
 	readmes?: boolean;
 	removeScopes?: string[];
+	sortPackages?: (a: PackageReflectionGroup, d: PackageReflectionGroup) => number;
 	tsconfigName?: string;
 	typedocOptions?: Partial<
 		Pick<
