@@ -49,6 +49,13 @@ export function bizz(...args: string[]): string {
 }
 
 /**
+ * @param {string} [a] thing
+ * @param {string} [b="b"] thing
+ * @param {string} [c="c override"] thing
+ */
+export function defs(a?: string, b?: string, c: string = 'c') {}
+
+/**
  * thing for a thing
  * @beta
  */
@@ -56,6 +63,7 @@ export interface Foo {
 	/**
 	 * very experimental
 	 * @alpha
+	 * @default "foo"
 	 */
 	foo: string;
 
@@ -64,4 +72,9 @@ export interface Foo {
 	 * @experimental
 	 */
 	a: string;
+
+	/**
+	 * @default 123
+	 */
+	int?: number;
 }
