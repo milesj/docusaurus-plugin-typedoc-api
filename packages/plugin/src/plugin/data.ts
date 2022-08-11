@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import * as TypeDoc from 'typedoc';
 import { JSONOutput, ReflectionKind } from 'typedoc';
-import { inlineTags } from 'typedoc/dist/lib/utils/options/tsdoc-defaults';
 import ts from 'typescript';
 import { normalizeUrl } from '@docusaurus/utils';
 import {
@@ -68,7 +67,7 @@ export async function generateJson(
 		excludeProtected: true,
 		// Enable verbose logging when debugging
 		logLevel: options.debug ? 'Verbose' : 'Info',
-		inlineTags: [...inlineTags, '@apilink', '@doclink'] as `@${string}`[],
+		inlineTags: ['@link', '@inheritDoc', '@label', '@linkcode', '@linkplain', '@apilink', '@doclink'] as `@${string}`[],
 		...options.typedocOptions,
 		// Control how config and packages are detected
 		tsconfig,
