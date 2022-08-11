@@ -68,10 +68,7 @@ export async function generateJson(
 		excludeProtected: true,
 		// Enable verbose logging when debugging
 		logLevel: options.debug ? 'Verbose' : 'Info',
-		inlineTags: inlineTags.concat(
-                  '@doclink',
-                  '@apilink'
-                ),
+		inlineTags: [...inlineTags, '@apilink', '@doclink'] as `@${string}`[],
 		...options.typedocOptions,
 		// Control how config and packages are detected
 		tsconfig,
