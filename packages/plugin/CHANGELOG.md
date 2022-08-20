@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.4.0 - 2022-08-20
+
+#### 🚀 Updates
+
+- Allow domain/host to be configured in source links. ([531b036](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/531b036))
+- Support admonitions in doc blocks. ([5e9bf5a](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/5e9bf5a))
+
+#### 🐞 Fixes
+
+- Configured TypeDoc to recognise `@apilink` and `@doclink` tags (#67) ([c6ba967](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/c6ba967)), closes [#67](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/67) [#64](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/64)
+- Fix certain block tags not displaying. ([1ed193e](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1ed193e))
+- Fix readmes/changelogs not rendering code blocks with prism. ([8949cf3](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/8949cf3))
+- Render default value with correct type. ([d270901](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/d270901))
+
+#### 📦 Dependencies
+
+- **[packemon]** Update to v2.3.4. ([53b313d](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/53b313d))
+- **[typedoc]** Update to v0.23.10. ([e9d25ab](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/e9d25ab))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 2.3.0 - 2022-08-05
 
 #### 🚀 Updates
