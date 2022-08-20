@@ -7,15 +7,16 @@ import { Markdown } from './Markdown';
 export interface CommentProps {
 	comment?: JSONOutput.Comment;
 	root?: boolean;
+	hideTags?: string[];
 }
 
 export function hasComment(comment?: JSONOutput.Comment): boolean {
-	if (!comment || !comment.summary || comment.summary.length === 0) {
+	if (!comment) {
 		return false;
 	}
 
 	return Boolean(
-		comment.summary.some((x) => x.kind !== 'text' || x.text !== '') ||
+		comment.summary?.some((x) => x.kind !== 'text' || x.text !== '') ||
 			(comment.blockTags && comment.blockTags?.length > 0),
 	);
 }
@@ -32,10 +33,19 @@ export function displayPartsToMarkdown(parts: JSONOutput.CommentDisplayPart[]): 
 		.join('');
 }
 
-export function Comment({ comment, root }: CommentProps) {
+export function Comment({ comment, root, hideTags = [] }: CommentProps) {
 	if (!comment || !hasComment(comment)) {
 		return null;
 	}
+
+	const blockTags =
+		comment.blockTags?.filter((tag) => {
+			if (hideTags.includes(tag.tag)) {
+				return false;
+			}
+
+			return tag.tag !== '@default';
+		}) ?? [];
 
 	return (
 		<div className={`tsd-comment tsd-typography ${root ? 'tsd-comment-root' : ''}`}>
@@ -45,20 +55,18 @@ export function Comment({ comment, root }: CommentProps) {
 				</div>
 			)}
 
-			{comment.blockTags && comment.blockTags.length > 0 && (
+			{blockTags.length > 0 && (
 				<dl className="tsd-comment-tags">
-					{comment.blockTags
-						?.filter((tag) => tag.tag !== '@default')
-						.map((tag) => (
-							<React.Fragment key={tag.tag}>
-								<dt>
-									<strong>{tag.tag}</strong>
-								</dt>
-								<dd>
-									<Markdown content={displayPartsToMarkdown(tag.content)} />
-								</dd>
-							</React.Fragment>
-						))}
+					{blockTags.map((tag) => (
+						<React.Fragment key={tag.tag}>
+							<dt>
+								<strong>{tag.tag}</strong>
+							</dt>
+							<dd>
+								<Markdown content={displayPartsToMarkdown(tag.content)} />
+							</dd>
+						</React.Fragment>
+					))}
 				</dl>
 			)}
 		</div>

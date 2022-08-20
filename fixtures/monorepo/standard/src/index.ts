@@ -105,3 +105,8 @@ export interface Foo {
  * :::
  */
 export function admonitions() {}
+
+/**
+ * @throws something
+ */
+export function errors() {}

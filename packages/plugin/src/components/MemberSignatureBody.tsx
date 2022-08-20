@@ -35,14 +35,6 @@ export interface MemberSignatureBodyProps {
 	sig: JSONOutput.SignatureReflection;
 }
 
-function excludeBlockTags(comment?: JSONOutput.Comment): JSONOutput.Comment | undefined {
-	if (comment) {
-		const { blockTags, ...rest } = comment;
-		return rest;
-	}
-	return undefined;
-}
-
 function intoReturnComment(comment?: JSONOutput.Comment): JSONOutput.Comment | undefined {
 	if (comment?.blockTags) {
 		const tags = comment.blockTags.map((tag) => tag.tag);
@@ -59,6 +51,8 @@ function intoReturnComment(comment?: JSONOutput.Comment): JSONOutput.Comment | u
 	return undefined;
 }
 
+const HIDE_TAGS = ['@returns', '@param'];
+
 // eslint-disable-next-line complexity
 export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyProps) {
 	const minimal = useMinimalLayout();
@@ -72,7 +66,7 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 
 			{isCommentWithModifiers(sig.comment) && <CommentBadges comment={sig.comment} />}
 
-			<Comment comment={excludeBlockTags(sig.comment)} />
+			<Comment comment={sig.comment} hideTags={HIDE_TAGS} />
 
 			{hasComment(sig.comment) && (showTypes || showParams || showReturn) && (
 				<hr className="tsd-divider" />
@@ -97,7 +91,11 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 									{param.flags?.isRest && <span className="tsd-signature-symbol">...</span>}
 									{`${param.name}: `}
 									<Type type={param.type} />
-									<DefaultValue comment={param.comment} type={param.type} value={param.defaultValue} />
+									<DefaultValue
+										comment={param.comment}
+										type={param.type}
+										value={param.defaultValue}
+									/>
 								</h5>
 
 								<Comment comment={param.comment} />
