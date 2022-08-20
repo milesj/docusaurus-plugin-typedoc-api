@@ -10,6 +10,7 @@ import type { Props as DocItemProps } from '@theme/DocItem';
 import DocPaginator from '@theme/DocPaginator';
 import DocVersionBadge from '@theme/DocVersionBadge';
 import Heading from '@theme/Heading';
+import MDXContent from '@theme/MDXContent';
 import TOC from '@theme/TOC';
 import TOCCollapsible from '@theme/TOCCollapsible';
 import { useBreadcrumbs } from '../hooks/useBreadcrumbs';
@@ -67,7 +68,7 @@ export default function ApiItemLayout({
 									<Heading as="h1">{heading}</Heading>
 								</header>
 
-								{children}
+								<MDXContent>{children}</MDXContent>
 							</div>
 
 							<Footer />

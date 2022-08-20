@@ -249,7 +249,7 @@ module.exports = {
 			{
 				exclude: ['**/themes/*', '**/website/*'],
 				minimal: false,
-				readmes: false,
+				readmes: !!process.env.DOCS_REPO_TYPE,
 				changelogs: false,
 				// removeScopes: ['boost'],
 				...getPluginConfig(),

@@ -380,6 +380,7 @@ export default function typedocApiPlugin(
 								{
 									loader: require.resolve('@docusaurus/mdx-loader'),
 									options: {
+										admonitions: true,
 										staticDir: path.join(context.siteDir, 'static'),
 										// Since this isnt a doc/blog page, we can get
 										// away with it being a partial!
