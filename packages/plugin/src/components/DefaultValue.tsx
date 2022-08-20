@@ -1,3 +1,5 @@
+/* eslint-disable react-perf/jsx-no-new-object-as-prop */
+
 import React from 'react';
 import type { JSONOutput } from 'typedoc';
 import { displayPartsToMarkdown } from './Comment';
@@ -5,7 +7,8 @@ import { Type } from './Type';
 
 export interface DefaultValueProps {
 	comment?: JSONOutput.Comment;
-	type?: JSONOutput.SomeType | string;
+	type?: { type: string };
+	value?: JSONOutput.SomeType | string;
 }
 
 function extractDefaultTag(comment?: JSONOutput.Comment): string | null {
@@ -18,21 +21,28 @@ function extractDefaultTag(comment?: JSONOutput.Comment): string | null {
 	return displayPartsToMarkdown(tag.content);
 }
 
-export function DefaultValue({ comment, type }: DefaultValueProps) {
-	if (!comment && !type) {
+export function DefaultValue({ comment, value, type }: DefaultValueProps) {
+	if (!comment && !value) {
 		return null;
 	}
 
 	const defaultTag = extractDefaultTag(comment);
 
-	if (!defaultTag && !type) {
+	if (!defaultTag && !value) {
 		return null;
 	}
 
 	return (
 		<span className="tsd-signature-symbol">
 			{' = '}
-			{type ? <>{typeof type === 'string' ? type : <Type type={type} />}</> : defaultTag}
+
+			{value && <>{typeof value === 'string' ? value : <Type type={value} />}</>}
+
+			{!value && defaultTag && (
+				<Type
+					type={{ type: 'literal', ...(type?.type === 'intrinsic' ? {} : type), value: defaultTag }}
+				/>
+			)}
 		</span>
 	);
 }

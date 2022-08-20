@@ -97,7 +97,7 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 									{param.flags?.isRest && <span className="tsd-signature-symbol">...</span>}
 									{`${param.name}: `}
 									<Type type={param.type} />
-									<DefaultValue comment={param.comment} type={param.defaultValue} />
+									<DefaultValue comment={param.comment} type={param.type} value={param.defaultValue} />
 								</h5>
 
 								<Comment comment={param.comment} />
