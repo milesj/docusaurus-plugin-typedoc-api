@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-unsafe-regex */
 /* eslint-disable react/no-array-index-key */
 
 import React, { useState } from 'react';
@@ -7,7 +8,16 @@ import MDX from '@theme/MDXComponents';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { replaceLinkTokens } from '../utils/markdown';
 
-type TokensList = marked.TokensList;
+interface Admonition {
+	type: 'admonition';
+	raw: string;
+	title?: string;
+	keyword?: string;
+	text: string;
+	tokens: marked.Token[];
+}
+
+type TokensList = (Admonition | marked.Token)[];
 
 marked.setOptions({
 	gfm: true,
@@ -15,6 +25,49 @@ marked.setOptions({
 	mangle: false,
 	smartLists: true,
 	smartypants: true,
+});
+
+const ADMONITION_START = /^:{3}([a-z]+)? *(.*)\n/;
+const ADMONITION_END = '\n:::';
+
+marked.use({
+	extensions: [
+		{
+			name: 'admonition',
+			level: 'block',
+			start(src) {
+				// eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+				return src.match(ADMONITION_START)?.index!;
+			},
+			tokenizer(src, tokens) {
+				const match = ADMONITION_START.exec(src);
+
+				if (match) {
+					const keyword = match[1] ?? 'info';
+					const title = match[2] ? match[2].trim() : undefined;
+					const startIndex = match.index;
+					const startEndIndex = startIndex + match[0].length;
+					const endIndex = src.indexOf(ADMONITION_END, startEndIndex);
+					const endEndIndex = endIndex + 4;
+
+					const token: Admonition = {
+						type: 'admonition',
+						raw: src.slice(startIndex, endEndIndex),
+						text: src.slice(startEndIndex, endIndex),
+						title,
+						keyword,
+						tokens: [],
+					};
+
+					this.lexer.blockTokens(token.text, token.tokens);
+
+					return token;
+				}
+
+				return undefined;
+			},
+		},
+	],
 });
 
 const TOKEN_TO_TAG: Record<string, keyof JSX.IntrinsicElements> = {
@@ -138,6 +191,14 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 					) : (
 						<React.Fragment key={counter}>{convertAstToElements(children)}</React.Fragment>
 					),
+				);
+				break;
+
+			case 'admonition':
+				elements.push(
+					<MDX.admonition key={counter} title={token.title} type={token.keyword as 'note'}>
+						{convertAstToElements(children) ?? token.text}
+					</MDX.admonition>,
 				);
 				break;
 

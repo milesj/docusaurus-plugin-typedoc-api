@@ -78,3 +78,30 @@ export interface Foo {
 	 */
 	int?: number;
 }
+
+/**
+ * :::
+ * standard
+ * :::
+ *
+ * :::note
+ * with type
+ * :::
+ *
+ * ::: title
+ * title only
+ * :::
+ *
+ * :::info title
+ * with type
+ *
+ * and title
+ * :::
+ *
+ * :::success
+ *
+ * extra new lines
+ *
+ * :::
+ */
+export function admonitions() {}
