@@ -29,7 +29,9 @@ export function SourceLink({ sources = [] }: SourceLinkProps) {
 					href={
 						// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 						source.url ||
-						`https://github.com/${siteConfig.organizationName}/${
+						`https://${siteConfig.githubHost}${
+							siteConfig.githubPort ? `:${siteConfig.githubPort}` : ''
+						}/${siteConfig.organizationName}/${
 							siteConfig.projectName
 						}/blob/${gitRefName}/${replaceWithSrc(source.fileName)}#L${source.line}`
 					}
