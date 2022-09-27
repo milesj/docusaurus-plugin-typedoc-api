@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 0.4.6 - 2022-09-27
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to v2.1. ([1fcccd2](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1fcccd2))
+
+#### 🛠 Internals
+
+- Migrate from beemo to moon. (#74) ([d649407](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/d649407)), closes [#74](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/74)
+- Test changelogs. ([89ecb29](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/89ecb29))
+
+**Note:** Version bump only for package website
+
+
+
+
+
 ### 0.4.5 - 2022-08-20
 
 #### 🐞 Fixes

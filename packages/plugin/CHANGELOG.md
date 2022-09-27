@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 2.4.1 - 2022-09-27
+
+#### 🐞 Fixes
+
+- Disable noIndex. ([1bd0098](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1bd0098))
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to v2.1. ([1fcccd2](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1fcccd2))
+- **[marked]** Update to v4.1. ([bc4cf85](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/bc4cf85))
+- **[typedoc]** Update to v0.23.15. ([33aff5c](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/33aff5c))
+- **[typescript]** Update to v4.8.3. ([1e9e277](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1e9e277))
+
+#### 🛠 Internals
+
+- Migrate from beemo to moon. (#74) ([d649407](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/d649407)), closes [#74](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/74)
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 2.4.0 - 2022-08-20
 
 #### 🚀 Updates
