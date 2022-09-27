@@ -10,7 +10,7 @@
     "format": "prettier --write .",
     "lint": "eslint --cache --color --fix --ext .ts,.tsx ./packages/*/{src,tests} ./website/src",
     "type": "tsc --build",
-    "release": "yarn run pack && yarn run check && yarn beemo run-script lerna-release"
+    "release": "yarn run pack && yarn run check && lerna-release"
   },
   "devDependencies": {
     "@types/marked": "^4.0.7",
