@@ -58,6 +58,7 @@ export async function generateJson(
 	app.options.addReader(new TypeDoc.TypeDocReader());
 
 	app.bootstrap({
+		skipErrorChecking: true,
 		// Only emit when using project references
 		emit: shouldEmit(projectRoot, tsconfig),
 		// Only document the public API by default
@@ -67,7 +68,15 @@ export async function generateJson(
 		excludeProtected: true,
 		// Enable verbose logging when debugging
 		logLevel: options.debug ? 'Verbose' : 'Info',
-		inlineTags: ['@link', '@inheritDoc', '@label', '@linkcode', '@linkplain', '@apilink', '@doclink'] as `@${string}`[],
+		inlineTags: [
+			'@link',
+			'@inheritDoc',
+			'@label',
+			'@linkcode',
+			'@linkplain',
+			'@apilink',
+			'@doclink',
+		] as `@${string}`[],
 		...options.typedocOptions,
 		// Control how config and packages are detected
 		tsconfig,
