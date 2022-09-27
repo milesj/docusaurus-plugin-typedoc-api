@@ -14,6 +14,7 @@ import { migrateToVersion0230 } from './structure/0.23';
 import { getKindSlug, getPackageSlug, joinUrl } from './url';
 
 function shouldEmit(projectRoot: string, tsconfigPath: string) {
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	const { config, error } = ts.readConfigFile(tsconfigPath, (name) =>
 		fs.readFileSync(name, 'utf8'),
 	);

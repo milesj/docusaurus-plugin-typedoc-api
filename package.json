@@ -8,13 +8,15 @@
     "build": "packemon build --addEngines",
     "pack": "NODE_ENV=production packemon pack --addEngines --declaration",
     "format": "prettier --write .",
-    "lint": "beemo eslint",
+    "lint": "eslint --cache --color --fix --ext .ts,.tsx ./packages/*/{src,tests} ./website/src",
     "type": "tsc --build",
     "release": "yarn run pack && yarn run check && yarn beemo run-script lerna-release"
   },
   "devDependencies": {
     "@types/marked": "^4.0.7",
     "@types/react": "^17.0.50",
+    "eslint": "^8.24.0",
+    "eslint-config-moon": "^1.0.2",
     "lerna": "^5.5.2",
     "packemon": "^2.4.1",
     "prettier": "^2.7.1",

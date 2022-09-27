@@ -26,14 +26,8 @@ tmp/
 *.min.js
 *.map
 
-# Beemo configs
-.babelrc
-.eslintignore
-.eslintrc.js
-.flowconfig
+# Configs
 *.tsbuildinfo
-!website/babel.config.js
-!docusaurus.config.js
 
 # Yarn
 .yarn/*
