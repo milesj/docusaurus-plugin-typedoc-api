@@ -250,7 +250,7 @@ module.exports = {
 				exclude: ['**/themes/*', '**/website/*'],
 				minimal: false,
 				readmes: !!process.env.DOCS_REPO_TYPE,
-				changelogs: false,
+				changelogs: !!process.env.DOCS_REPO_TYPE,
 				// removeScopes: ['boost'],
 				...getPluginConfig(),
 			},
