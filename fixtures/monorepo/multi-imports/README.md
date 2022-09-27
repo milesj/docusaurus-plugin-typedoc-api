@@ -2,6 +2,6 @@
 
 ```json
 {
-	"foo": "bar"
+  "foo": "bar"
 }
 ```

@@ -38,7 +38,9 @@ function findReflectionWithMatchingTarget(
 	});
 }
 
-function replaceApiLinks(reflections: DeclarationReflectionMap): (match: string, tagName: string, content: string) => string {
+function replaceApiLinks(
+	reflections: DeclarationReflectionMap,
+): (match: string, tagName: string, content: string) => string {
 	return (match: string, tagName: string, content: string) => {
 		const { caption, target } = splitLinkText(content);
 		const [symbol, member] = target.split('.');
@@ -50,10 +52,12 @@ function replaceApiLinks(reflections: DeclarationReflectionMap): (match: string,
 		}
 
 		return `[${label}](${reflection.permalink}${member ? `#${member}` : ''})`;
-	}
+	};
 }
 
-function replaceDocLinks(currentVersion: PropVersionMetadata): (match: string, content: string) => string {
+function replaceDocLinks(
+	currentVersion: PropVersionMetadata,
+): (match: string, content: string) => string {
 	return (match: string, content: string) => {
 		const { caption, target } = splitLinkText(content);
 		const version = currentVersion.version === 'current' ? 'next' : currentVersion.version;
@@ -62,7 +66,7 @@ function replaceDocLinks(currentVersion: PropVersionMetadata): (match: string, c
 		const url = currentVersion.isLast ? `/docs/${target}` : `/docs/${version}/${target}`;
 
 		return `[${caption}](${url})`;
-	}
+	};
 }
 
 // TypeDoc JSON output does not replace links, so we need to do this manually.

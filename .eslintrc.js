@@ -1,4 +1,10 @@
-export default {
+module.exports = {
+	root: true,
+	extends: ['moon', 'moon/react', 'moon/node'],
+	parserOptions: {
+		project: ['packages/plugin/tsconfig.json', 'website/tsconfig.json'],
+		tsconfigRootDir: __dirname,
+	},
 	rules: {
 		// Our components rely on a ton of composition
 		'react/jsx-no-literals': 'off',
@@ -15,11 +21,5 @@ export default {
 
 		// We import from the default theme but its not a dep
 		'import/no-extraneous-dependencies': 'off',
-
-		// We import CSS modules that are any
-		'@typescript-eslint/no-unsafe-argument': 'off',
-		'@typescript-eslint/no-unsafe-assignment': 'off',
-		'@typescript-eslint/no-unsafe-call': 'off',
-		'@typescript-eslint/no-unsafe-member-access': 'off',
 	},
 };
