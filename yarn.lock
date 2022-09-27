@@ -7054,6 +7054,8 @@ __metadata:
     prettier: ^2.7.1
     prettier-config-moon: ^1.0.1
     react: ^17.0.2
+    tsconfig-moon: ^1.0.1
+    typescript: ^4.8.3
   languageName: unknown
   linkType: soft
 
@@ -14414,6 +14416,13 @@ fsevents@~2.3.2:
   version: 2.0.12
   resolution: "ts-essentials@npm:2.0.12"
   checksum: e46916ef44b4417f0c726faac333c8d2f363a47a5c1994eb9d42045a85d247284a3220cb7f71fb30a9bd2eef43ed7eb3bc1f76f4fedf946200a98cfde7eb3a3f
+  languageName: node
+  linkType: hard
+
+"tsconfig-moon@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "tsconfig-moon@npm:1.0.1"
+  checksum: a4f7ae6117bda3e9668fe29d74dd61174ec8b9e40a9b003268b3b43a849939beaa01e34b60abe320ba3e86b5843ce210befc82c84c72bed02e19e5c59ce80247
   languageName: node
   linkType: hard
 
