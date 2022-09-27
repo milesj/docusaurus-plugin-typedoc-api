@@ -258,6 +258,7 @@ export default function typedocApiPlugin(
 							docsSidebars: { api: loadedVersion.sidebars },
 							isLast: loadedVersion.isLast,
 							label: loadedVersion.versionLabel,
+							noIndex: true,
 							pluginId,
 							version: loadedVersion.versionName,
 						} as PropVersionMetadata),
