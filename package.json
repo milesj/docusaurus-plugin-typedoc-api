@@ -13,6 +13,7 @@
     "release": "yarn run pack && yarn run check && lerna-release"
   },
   "devDependencies": {
+    "@moonrepo/dev": "^1.0.0",
     "@types/marked": "^4.0.7",
     "@types/react": "^17.0.50",
     "eslint": "^8.24.0",

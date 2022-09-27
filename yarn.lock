@@ -7396,6 +7396,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "docusaurus-plugin-typedoc-api-root@workspace:."
   dependencies:
+    "@moonrepo/dev": ^1.0.0
     "@types/marked": ^4.0.7
     "@types/react": ^17.0.50
     eslint: ^8.24.0
