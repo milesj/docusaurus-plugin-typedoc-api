@@ -213,13 +213,12 @@ html[data-theme='light'] .tsd-panel-content {
 
 .tsd-panel-header .badge-group {
 	display: inline-block;
-	margin-left: .25em;
+	margin-left: 0.25em;
 }
 
 .badge-group > span {
 	margin-right: 0.25rem;
 }
-
 
 /* SYNTAX */
 

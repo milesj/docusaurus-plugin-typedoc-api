@@ -31,9 +31,6 @@ tmp/
 .eslintignore
 .eslintrc.js
 .flowconfig
-.prettierignore
-*.config.js
-*.config.ts
 *.tsbuildinfo
 !website/babel.config.js
 !docusaurus.config.js

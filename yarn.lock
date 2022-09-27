@@ -8646,6 +8646,8 @@ __metadata:
     "@types/react": ^17.0.50
     lerna: ^5.5.2
     packemon: ^2.4.1
+    prettier: ^2.7.1
+    prettier-config-moon: ^1.0.1
     react: ^17.0.2
   languageName: unknown
   linkType: soft
@@ -15445,6 +15447,13 @@ __metadata:
   version: 2.0.0
   resolution: "prettier-config-beemo@npm:2.0.0"
   checksum: f1c915e10330ae6359786edd5232c4a705d100b5ce80d9d8d658e60d165be44b960c7ce446286dd31b236cf1794dfd67e7fd12af1df1d57a134beb9309fa28bb
+  languageName: node
+  linkType: hard
+
+"prettier-config-moon@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "prettier-config-moon@npm:1.0.1"
+  checksum: 4db88472dd8378b0d1b5b34f526f7de8c58aad69d30bf5a7dca1d504b197fcb9fd18492520d7d008cd22a2c98d5230efa63fc4e43451f041d6280a25ade97cc0
   languageName: node
   linkType: hard
 

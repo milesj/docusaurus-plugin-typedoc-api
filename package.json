@@ -7,7 +7,7 @@
     "docs": "yarn run build && cd website && yarn run start",
     "build": "packemon build --addEngines",
     "pack": "NODE_ENV=production packemon pack --addEngines --declaration",
-    "format": "beemo prettier",
+    "format": "prettier --write .",
     "lint": "beemo eslint",
     "type": "beemo typescript --build",
     "release": "yarn run pack && yarn run check && yarn beemo run-script lerna-release"
@@ -20,6 +20,8 @@
     "@types/react": "^17.0.50",
     "lerna": "^5.5.2",
     "packemon": "^2.4.1",
+    "prettier": "^2.7.1",
+    "prettier-config-moon": "^1.0.1",
     "react": "^17.0.2"
   },
   "workspaces": [

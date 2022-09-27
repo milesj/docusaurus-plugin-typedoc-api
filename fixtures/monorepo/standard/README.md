@@ -2,6 +2,6 @@
 
 ```ts
 function foo(num: number) {
-	return 123;
+  return 123;
 }
 ```

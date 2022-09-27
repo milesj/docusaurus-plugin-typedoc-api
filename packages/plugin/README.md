@@ -33,21 +33,21 @@ Open your `docusaurus.config.js` and make the following changes:
 
 ```js
 module.exports = {
-	// ...
-	themeConfig: {
-		// ...
-		navbar: {
-			// ...
-			items: [
-				// ...
-				{
-					to: 'api',
-					label: 'API',
-					position: 'left',
-				},
-			],
-		},
-	},
+  // ...
+  themeConfig: {
+    // ...
+    navbar: {
+      // ...
+      items: [
+        // ...
+        {
+          to: 'api',
+          label: 'API',
+          position: 'left',
+        },
+      ],
+    },
+  },
 };
 ```
 
@@ -56,19 +56,19 @@ module.exports = {
 
 ```js
 module.exports = {
-	// ...
-	plugins: [
-		[
-			'docusaurus-plugin-typedoc-api',
-			{
-				projectRoot: path.join(__dirname, '..'),
-				// Monorepo
-				packages: ['packages/example', 'packages/other'],
-				// Polyrepo
-				packages: ['.'],
-			},
-		],
-	],
+  // ...
+  plugins: [
+    [
+      'docusaurus-plugin-typedoc-api',
+      {
+        projectRoot: path.join(__dirname, '..'),
+        // Monorepo
+        packages: ['packages/example', 'packages/other'],
+        // Polyrepo
+        packages: ['.'],
+      },
+    ],
+  ],
 };
 ```
 
@@ -113,7 +113,7 @@ package folder, and a default entry point of `src/index.ts`.
 
 ```js
 module.exports = {
-	packages: ['packages/core', 'packages/react'],
+  packages: ['packages/core', 'packages/react'],
 };
 ```
 
@@ -128,18 +128,18 @@ relative to the package folder, and support 2 formats:
 
 ```js
 module.exports = {
-	packages: [
-		'packages/core',
-		{
-			path: 'packages/react',
-			// Index only imports allowed
-			// import {} from 'package'
-			entry: 'src/index.tsx',
-			// Deep imports allowed
-			// import {} from 'package/some/nested/file'
-			entry: 'src/',
-		},
-	],
+  packages: [
+    'packages/core',
+    {
+      path: 'packages/react',
+      // Index only imports allowed
+      // import {} from 'package'
+      entry: 'src/index.tsx',
+      // Deep imports allowed
+      // import {} from 'package/some/nested/file'
+      entry: 'src/',
+    },
+  ],
 };
 ```
 
@@ -149,22 +149,22 @@ Each entry object requires a `path` and a `label`, which is used for categorizin
 
 ```js
 module.exports = {
-	packages: [
-		'packages/core',
-		{
-			path: 'packages/react',
-			entry: {
-				// import {} from 'package'
-				index: 'src/index.tsx',
-				// import {} from 'package/client'
-				client: { file: 'src/client.tsx', label: 'Client' },
-				// import {} from 'package/server'
-				server: { file: 'src/server.tsx', label: 'Server' },
-				// import {} from 'package/server/test'
-				'server/test': { file: 'src/server/test-utils.tsx', label: 'Server test utils' },
-			},
-		},
-	],
+  packages: [
+    'packages/core',
+    {
+      path: 'packages/react',
+      entry: {
+        // import {} from 'package'
+        index: 'src/index.tsx',
+        // import {} from 'package/client'
+        client: { file: 'src/client.tsx', label: 'Client' },
+        // import {} from 'package/server'
+        server: { file: 'src/server.tsx', label: 'Server' },
+        // import {} from 'package/server/test'
+        'server/test': { file: 'src/server/test-utils.tsx', label: 'Server test utils' },
+      },
+    },
+  ],
 };
 ```
 
@@ -236,29 +236,29 @@ dropdown like so:
 const versions = require('./versions.json');
 
 module.exports = {
-	// ...
-	themeConfig: {
-		// ...
-		navbar: {
-			// ...
-			items: [
-				// ...
-				{
-					type: 'dropdown',
-					to: 'api',
-					label: 'API',
-					position: 'left',
-					items: [
-						{ label: 'Next', to: 'api/next' },
-						...versions.map((version, i) => ({
-							label: version,
-							to: i === 0 ? 'api' : `api/${version}`,
-						})),
-					],
-				},
-			],
-		},
-	},
+  // ...
+  themeConfig: {
+    // ...
+    navbar: {
+      // ...
+      items: [
+        // ...
+        {
+          type: 'dropdown',
+          to: 'api',
+          label: 'API',
+          position: 'left',
+          items: [
+            { label: 'Next', to: 'api/next' },
+            ...versions.map((version, i) => ({
+              label: version,
+              to: i === 0 ? 'api' : `api/${version}`,
+            })),
+          ],
+        },
+      ],
+    },
+  },
 };
 ```
 
