@@ -43,6 +43,7 @@ const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
 	packages: [],
 	projectRoot: '.',
 	sortPackages: (a, d) => a.packageName.localeCompare(d.packageName),
+	sortSidebar: (a, d) => a.localeCompare(d),
 	readmeName: 'README.md',
 	readmes: false,
 	removeScopes: [],
@@ -214,7 +215,12 @@ export default function typedocApiPlugin(
 						return {
 							...metadata,
 							packages,
-							sidebars: await extractSidebar(packages, removeScopes, changelogs),
+							sidebars: await extractSidebar(
+								packages,
+								removeScopes,
+								changelogs,
+								options.sortSidebar,
+							),
 						};
 					}),
 				),

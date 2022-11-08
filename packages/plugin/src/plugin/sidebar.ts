@@ -1,6 +1,11 @@
 import { JSONOutput } from 'typedoc';
 import { normalizeUrl } from '@docusaurus/utils';
-import { DeclarationReflectionMap, PackageReflectionGroup, SidebarItem } from '../types';
+import {
+	DeclarationReflectionMap,
+	DocusaurusPluginTypeDocApiOptions,
+	PackageReflectionGroup,
+	SidebarItem,
+} from '../types';
 import { removeScopes } from '../utils/links';
 import { createReflectionMap } from './data';
 
@@ -68,13 +73,14 @@ export function extractSidebar(
 	packages: PackageReflectionGroup[],
 	scopes: string[],
 	changelogs: boolean,
+	sortSidebar: NonNullable<DocusaurusPluginTypeDocApiOptions['sortSidebar']>,
 ): SidebarItem[] {
 	if (packages.length === 0) {
 		return [];
 	}
 
 	const items: SidebarItem[] = packages.map((pkg) => {
-		const subItems: SidebarItem[] = [];
+		let subItems: SidebarItem[] = [];
 
 		pkg.entryPoints.forEach((entry) => {
 			// Index entry point should always bubble up reflection groups
@@ -94,6 +100,10 @@ export function extractSidebar(
 
 		// Always include the overview as the 1st item
 		const indexHref = pkg.entryPoints.find((entry) => entry.index)?.reflection.permalink ?? '';
+
+		subItems = subItems.sort((a, d) =>
+			sortSidebar('label' in a ? a.label : '', 'label' in d ? d.label : ''),
+		);
 
 		subItems.unshift({
 			href: indexHref,

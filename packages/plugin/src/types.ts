@@ -25,6 +25,7 @@ export interface DocusaurusPluginTypeDocApiOptions
 	readmes?: boolean;
 	removeScopes?: string[];
 	sortPackages?: (a: PackageReflectionGroup, d: PackageReflectionGroup) => number;
+	sortSidebar?: (a: string, d: string) => number;
 	tsconfigName?: string;
 	typedocOptions?: Partial<
 		Pick<
