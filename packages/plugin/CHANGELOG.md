@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 2.5.0 - 2022-11-08
+
+#### 🚀 Updates
+
+- Add sortSidebar setting. ([60a5a69](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/60a5a69))
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to v2.2. (#80) ([3627fef](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/3627fef)), closes [#80](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/80)
+- **[marked]** Update to v4.2. ([e807225](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/e807225))
+- **[typedoc]** Update to v0.23.20. ([34f5b5d](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/34f5b5d))
+- Update dev dependencies. ([06eae24](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/06eae24))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 2.4.1 - 2022-09-27
 
 #### 🐞 Fixes

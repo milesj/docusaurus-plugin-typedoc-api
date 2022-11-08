@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 0.4.7 - 2022-11-08
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to v2.2. (#80) ([3627fef](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/3627fef)), closes [#80](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/80)
+
+**Note:** Version bump only for package website
+
+
+
+
+
 ### 0.4.6 - 2022-09-27
 
 #### 📦 Dependencies
