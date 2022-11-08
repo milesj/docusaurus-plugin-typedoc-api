@@ -7423,7 +7423,7 @@ __metadata:
     "@docusaurus/types": ^2.1.0
     "@docusaurus/utils": ^2.1.0
     "@vscode/codicons": ^0.0.32
-    marked: ^4.1.0
+    marked: ^4.2.2
     react: ^17.0.2
     react-dom: ^17.0.2
     typedoc: ^0.23.15
@@ -11202,12 +11202,12 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"marked@npm:^4.0.19, marked@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "marked@npm:4.1.0"
+"marked@npm:^4.0.19, marked@npm:^4.2.2":
+  version: 4.2.2
+  resolution: "marked@npm:4.2.2"
   bin:
     marked: bin/marked.js
-  checksum: f0b3732a9d6208c933541342e60eb78029bd046c143a6ade0e76ed80b6174f92b186205a9dfe805e435070806ec475b0e87e62d04348eafd2f761c24281b192a
+  checksum: 1593e0632ff8dee1b9c8b669f26c8ce41e675bcb08ef75052845d4943db2c4d887edacd5b2120cf99a2cc06e9fbffc346ebaf98a7555273fda6a935adbfacf50
   languageName: node
   linkType: hard
 
