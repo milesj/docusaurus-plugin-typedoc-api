@@ -16,7 +16,7 @@ export function allCategoryChildrenHaveOwnDocument(
 	let onlyOwnDocuments = true;
 
 	category.children?.forEach((child) => {
-		onlyOwnDocuments = onlyOwnDocuments && hasOwnDocument(child, reflections);
+		onlyOwnDocuments &&= hasOwnDocument(child, reflections);
 	});
 
 	return onlyOwnDocuments;
