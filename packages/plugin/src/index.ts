@@ -376,9 +376,9 @@ export default function typedocApiPlugin(
 			// docs/blog plugins. We need to include the specific files only, as in polyrepo mode, the `cfg.packagePath`
 			// can be project root (where the regular docs are too).
 			const include = packageConfigs.flatMap((cfg) => [
-        		    path.join(options.projectRoot, cfg.packagePath, options.readmeName),
-        		    path.join(options.projectRoot, cfg.packagePath, options.changelogName),
-        		]);
+				path.join(options.projectRoot, cfg.packagePath, options.readmeName),
+				path.join(options.projectRoot, cfg.packagePath, options.changelogName),
+			]);
 
 			return {
 				module: {
