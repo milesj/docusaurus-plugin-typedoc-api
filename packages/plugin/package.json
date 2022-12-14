@@ -52,7 +52,7 @@
     "@docusaurus/utils": "^2.2.0",
     "@vscode/codicons": "^0.0.32",
     "marked": "^4.2.4",
-    "typedoc": "^0.23.20"
+    "typedoc": "^0.23.22"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^2.2.0",
