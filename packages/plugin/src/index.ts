@@ -372,9 +372,13 @@ export default function typedocApiPlugin(
 				return {};
 			}
 
-			// Whitelist the folders that this webpack rule applies to,
-			// otherwise we collide with the native docs/blog plugins.
-			const include = packageConfigs.map((cfg) => path.join(options.projectRoot, cfg.packagePath));
+			// Whitelist the folders that this webpack rule applies to, otherwise we collide with the native
+			// docs/blog plugins. We need to include the specific files only, as in polyrepo mode, the `cfg.packagePath`
+			// can be project root (where the regular docs are too).
+			const include = packageConfigs.flatMap((cfg) => [
+				path.join(options.projectRoot, cfg.packagePath, options.readmeName),
+				path.join(options.projectRoot, cfg.packagePath, options.changelogName),
+			]);
 
 			return {
 				module: {
