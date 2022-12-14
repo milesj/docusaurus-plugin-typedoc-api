@@ -47,7 +47,7 @@ function replaceApiLinks(
 		const reflection = findReflectionWithMatchingTarget(reflections, symbol, member);
 		const label = tagName === 'linkcode' ? `\`${caption}\`` : caption;
 
-		if (!reflection || !reflection.permalink) {
+		if (!reflection?.permalink) {
 			return label;
 		}
 
