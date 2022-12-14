@@ -220,10 +220,10 @@ function sortReflectionGroups(reflections: JSONOutput.ProjectReflection[]) {
 function matchesEntryPoint(
 	sourceFile: string,
 	entryPoint: string,
-	{ deep, poly }: { deep: boolean; poly: boolean },
+	{ deep, single }: { deep: boolean; single: boolean },
 ): boolean {
-	// Polyrepo
-	if (poly) {
+	// Single package
+	if (single) {
 		return (
 			// src/index.ts === src/index.ts
 			(!deep && sourceFile === entryPoint) ||
@@ -234,7 +234,7 @@ function matchesEntryPoint(
 		);
 	}
 
-	// Monorepo
+	// Multiple packages
 	return (
 		// packages/foo/src/index.ts === packages/foo/src/index.ts
 		// foo/src/index.ts ~ packages/foo/src/index.ts
@@ -246,7 +246,7 @@ function matchesEntryPoint(
 
 function extractReflectionModules(
 	project: JSONOutput.ProjectReflection,
-	isPolyrepo: boolean,
+	isSinglePackage: boolean,
 ): JSONOutput.ProjectReflection[] {
 	const modules: JSONOutput.ProjectReflection[] = [];
 
@@ -258,21 +258,25 @@ function extractReflectionModules(
 		});
 	};
 
-	// Polyrepos are extremely difficult, as the TypeDoc structure is
+	// Single packages are extremely difficult, as the TypeDoc structure is
 	// different for every kind of package entry point pattern
-	if (isPolyrepo) {
+	if (isSinglePackage) {
 		const hasNoModules = project.children?.every((child) => child.kind !== ReflectionKind.Module);
 
-		// Standard entry point through index.ts only
-		// No "module" children, but has groups/sources/etc on the "project"
 		if (hasNoModules) {
+			// No "module" children:
+			//	- Polyrepos
+			//	- Monorepos with 1 package
 			modules.push(project);
-			// Multi/deep imports have "module" children
 		} else {
+			// Has "module" children:
+			//	- Polyrepos with deep imports
+			//	- Polyrepos with multi-imports
+			//	- Monorepos
 			inheritChildren();
 		}
 
-		// Monorepo is extremely simple, as every package is a module reflection
+		// Multiple packages are extremely simple, as every package is a module reflection
 		// as a child on the top-level project reflection
 	} else {
 		inheritChildren();
@@ -299,6 +303,7 @@ export function flattenAndGroupPackages(
 		const relSourceFile = mod.sources?.[0]?.fileName ?? '';
 
 		packageConfigs.some((cfg) =>
+			 
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
 				const relEntryPoint = joinUrl(cfg.packagePath, entry.path);
 				const isUsingDeepImports = !entry.path.match(/\.tsx?$/);
@@ -306,7 +311,7 @@ export function flattenAndGroupPackages(
 				if (
 					!matchesEntryPoint(relSourceFile, relEntryPoint, {
 						deep: isUsingDeepImports,
-						poly: isSinglePackage,
+						single: isSinglePackage,
 					})
 				) {
 					return false;
@@ -336,7 +341,7 @@ export function flattenAndGroupPackages(
 				}
 
 				// Add metadata to package and children reflections
-				const urlSlug = getPackageSlug(cfg, importPath);
+				const urlSlug = getPackageSlug(cfg, importPath, isSinglePackage);
 				const reflection = addMetadataToReflections(mod, urlSlug, urlPrefix);
 				const existingEntry = packages[cfg.packagePath].entryPoints.find(
 					(ep) => ep.urlSlug === urlSlug,

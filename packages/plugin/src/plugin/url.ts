@@ -25,16 +25,25 @@ export function getKindSlug(decl: JSONOutput.DeclarationReflection): string {
 	}
 }
 
-export function getPackageSlug(pkgConfig: ResolvedPackageConfig, importPath: string): string {
+export function getPackageSlug(
+	pkgConfig: ResolvedPackageConfig,
+	importPath: string,
+	isSinglePackage: boolean,
+): string {
+	// Monorepo with 1 package has special handling
+	if (isSinglePackage && pkgConfig.packageSlug !== '.') {
+		return '.';
+	}
+
 	// packages/foo -> foo
-	const packageFolder = pkgConfig.packageSlug ?? path.basename(pkgConfig.packagePath);
+	const slug = pkgConfig.packageSlug ?? path.basename(pkgConfig.packagePath);
 
 	// bar/baz -> bar-baz
 	const importName = importPath.replace(/\\/g, '-');
 
 	if (importName === 'index') {
-		return packageFolder;
+		return slug;
 	}
 
-	return `${packageFolder}-${importName}`;
+	return `${slug}-${importName}`;
 }

@@ -35,6 +35,7 @@ jobs:
       matrix:
         repo-type:
           - monorepo
+          - monorepo-1
           - polyrepo
           - polyrepo-deep
           - polyrepo-multi

@@ -27,6 +27,11 @@ const monorepo = {
 	],
 };
 
+const monorepoOnePackage = {
+	projectRoot: path.join(__dirname, '../fixtures/monorepo-1-package'),
+	packages: ['standard'],
+};
+
 // POLYREPO STANDARD
 const polyrepo = {
 	projectRoot: path.join(__dirname, '../fixtures/polyrepo-standard'),
@@ -110,6 +115,8 @@ function getPluginConfig() {
 	switch (process.env.DOCS_REPO_TYPE) {
 		case 'monorepo':
 			return monorepo;
+		case 'monorepo-1':
+			return monorepoOnePackage;
 		case 'polyrepo':
 			return polyrepo;
 		case 'polyrepo-deep':
