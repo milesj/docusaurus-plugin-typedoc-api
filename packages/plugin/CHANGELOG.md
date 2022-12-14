@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 2.5.1 - 2022-12-14
+
+#### 🐞 Fixes
+
+- Fix monorepos with 1 package not working. (#85) ([72c88f3](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/72c88f3)), closes [#85](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/85)
+- Support readme & changelog in polyrepo mode. (#83) ([ff30935](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/ff30935)), closes [#83](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/83) [#82](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/82)
+
+#### 📦 Dependencies
+
+- **[marked]** Update to v4.2.2. ([2c09276](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/2c09276))
+- **[moon-dev]** Update to latest. ([ee25e29](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/ee25e29))
+- **[typedoc]** Update to v0.23.22. ([db65d7d](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/db65d7d))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 2.5.0 - 2022-11-08
 
 #### 🚀 Updates

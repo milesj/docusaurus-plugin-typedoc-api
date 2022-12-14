@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 0.4.8 - 2022-12-14
+
+#### 🐞 Fixes
+
+- Fix monorepos with 1 package not working. (#85) ([72c88f3](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/72c88f3)), closes [#85](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/85)
+
+**Note:** Version bump only for package website
+
+
+
+
+
 ### 0.4.7 - 2022-11-08
 
 #### 📦 Dependencies
