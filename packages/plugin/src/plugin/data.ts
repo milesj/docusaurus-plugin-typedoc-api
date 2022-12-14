@@ -303,7 +303,7 @@ export function flattenAndGroupPackages(
 		const relSourceFile = mod.sources?.[0]?.fileName ?? '';
 
 		packageConfigs.some((cfg) =>
-			// eslint-disable-next-line complexity
+			 
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
 				const relEntryPoint = joinUrl(cfg.packagePath, entry.path);
 				const isUsingDeepImports = !entry.path.match(/\.tsx?$/);
@@ -341,7 +341,7 @@ export function flattenAndGroupPackages(
 				}
 
 				// Add metadata to package and children reflections
-				const urlSlug = isSinglePackage ? '.' : getPackageSlug(cfg, importPath);
+				const urlSlug = getPackageSlug(cfg, importPath, isSinglePackage);
 				const reflection = addMetadataToReflections(mod, urlSlug, urlPrefix);
 				const existingEntry = packages[cfg.packagePath].entryPoints.find(
 					(ep) => ep.urlSlug === urlSlug,
