@@ -23,8 +23,7 @@
     "styles.css"
   ],
   "engines": {
-    "node": ">=16.12.0",
-    "npm": ">=6.14.0"
+    "node": ">=16.12.0"
   },
   "funding": {
     "type": "ko-fi",
