@@ -51,7 +51,7 @@
     "@docusaurus/utils": "^2.4.0",
     "@vscode/codicons": "^0.0.32",
     "marked": "^4.3.0",
-    "typedoc": "^0.23.22"
+    "typedoc": "^0.23.28"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^2.4.0",
