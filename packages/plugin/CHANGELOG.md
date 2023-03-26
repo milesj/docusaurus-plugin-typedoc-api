@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 3.0.0 - 2023-03-26
+
+#### 💥 Breaking
+
+- Drop Node v14 support. Require v16.12+. ([7292bd5](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/7292bd5))
+
+#### 🚀 Updates
+
+- Support TypeScript v5. ([bd78d56](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/bd78d56))
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to v2.4. ([3e86908](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/3e86908))
+- **[packemon]** Update to v3. ([593bdb4](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/593bdb4))
+- **[typedoc]** Update to v0.23.28. ([6654647](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/6654647))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 2.5.1 - 2022-12-14
 
 #### 🐞 Fixes
