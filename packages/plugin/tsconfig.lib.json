@@ -1,8 +1,13 @@
 {
   "compilerOptions": {
-    "emitDeclarationOnly": false,
-    "noEmit": true
+    "declarationDir": "lib",
+    "outDir": "lib",
+    "rootDir": "src",
+    "emitDeclarationOnly": true
   },
+  "exclude": [
+    "tests"
+  ],
   "extends": "../../tsconfig.options.json",
   "include": [
     "src/**/*",
