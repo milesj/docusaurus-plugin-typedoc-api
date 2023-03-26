@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageMetadata } from '@docusaurus/theme-common';
 import type { Props as DocItemProps } from '@theme/DocItem';
-import { TOCItem } from '../types';
+import type { TOCItem } from '../types';
 import ApiItemLayout from './ApiItemLayout';
 
 export interface ApiChangelogProps extends Pick<DocItemProps, 'route'> {

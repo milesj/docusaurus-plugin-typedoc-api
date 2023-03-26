@@ -28,7 +28,7 @@ export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
 						<li
 							key={sig.id}
 							className={`tsd-signature tsd-kind-icon ${
-								i !== activeIndex ? 'tsd-signature-inactive' : ''
+								i === activeIndex ? '' : 'tsd-signature-inactive'
 							} ${hasMultiple ? 'tsd-pressable' : ''}`}
 							onClick={
 								hasMultiple

@@ -4,7 +4,7 @@ import * as TypeDoc from 'typedoc';
 import { JSONOutput, ReflectionKind } from 'typedoc';
 import ts from 'typescript';
 import { normalizeUrl } from '@docusaurus/utils';
-import {
+import type {
 	DeclarationReflectionMap,
 	DocusaurusPluginTypeDocApiOptions,
 	PackageReflectionGroup,
@@ -303,7 +303,6 @@ export function flattenAndGroupPackages(
 		const relSourceFile = mod.sources?.[0]?.fileName ?? '';
 
 		packageConfigs.some((cfg) =>
-			 
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
 				const relEntryPoint = joinUrl(cfg.packagePath, entry.path);
 				const isUsingDeepImports = !entry.path.match(/\.tsx?$/);

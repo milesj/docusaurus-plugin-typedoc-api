@@ -1,6 +1,6 @@
 import path from 'path';
 import { JSONOutput, ReflectionKind } from 'typedoc';
-import { ResolvedPackageConfig } from '../types';
+import type { ResolvedPackageConfig } from '../types';
 
 export function joinUrl(...paths: string[]): string {
 	return path.join(...paths).replace(/\\/g, '/');
