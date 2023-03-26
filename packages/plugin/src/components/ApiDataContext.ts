@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { ApiOptions, DeclarationReflectionMap } from '../types';
+import type { ApiOptions, DeclarationReflectionMap } from '../types';
 
 export const ApiDataContext = createContext<{
 	options: ApiOptions;

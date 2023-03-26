@@ -15,7 +15,7 @@ import {
 } from './plugin/data';
 import { extractSidebar } from './plugin/sidebar';
 import { getVersionedDocsDirPath, readVersionsMetadata } from './plugin/version';
-import {
+import type {
 	ApiOptions,
 	DocusaurusPluginTypeDocApiOptions,
 	LoadedContent,

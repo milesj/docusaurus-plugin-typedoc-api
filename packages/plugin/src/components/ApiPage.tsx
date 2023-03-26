@@ -4,7 +4,7 @@ import '@vscode/codicons/dist/codicon.css';
 import './styles.css';
 import React, { useMemo } from 'react';
 import type { JSONOutput } from 'typedoc';
-import DocPage, { Props as DocPageProps } from '@theme/DocPage';
+import DocPage, { type Props as DocPageProps } from '@theme/DocPage';
 import type { ApiOptions, DeclarationReflectionMap, PackageReflectionGroup } from '../types';
 import { ApiDataContext } from './ApiDataContext';
 

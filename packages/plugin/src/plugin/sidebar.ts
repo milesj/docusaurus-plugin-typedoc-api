@@ -1,6 +1,6 @@
 import { JSONOutput } from 'typedoc';
 import { normalizeUrl } from '@docusaurus/utils';
-import {
+import type {
 	DeclarationReflectionMap,
 	DocusaurusPluginTypeDocApiOptions,
 	PackageReflectionGroup,

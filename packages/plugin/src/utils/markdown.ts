@@ -34,7 +34,7 @@ function findReflectionWithMatchingTarget(
 			return false;
 		}
 
-		return !member ? true : ref.children?.some((child) => child.name === member);
+		return member ? ref.children?.some((child) => child.name === member) : true;
 	});
 }
 
