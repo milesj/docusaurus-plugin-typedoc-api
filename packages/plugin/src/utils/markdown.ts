@@ -1,4 +1,5 @@
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
+import type { DocusaurusConfig } from '@docusaurus/types';
 import type { DeclarationReflectionMap } from '../types';
 
 function splitLinkText(text: string): { caption: string; target: string } {
@@ -57,13 +58,13 @@ function replaceApiLinks(
 
 function replaceDocLinks(
 	currentVersion: PropVersionMetadata,
+	baseUrl: string
 ): (match: string, content: string) => string {
 	return (match: string, content: string) => {
 		const { caption, target } = splitLinkText(content);
 		const version = currentVersion.version === 'current' ? 'next' : currentVersion.version;
-
-		// TODO: Handle `routeBasePath`? Something else besides "docs"?
-		const url = currentVersion.isLast ? `/docs/${target}` : `/docs/${version}/${target}`;
+		
+		const url = currentVersion.isLast ? `${baseUrl === "/" ? "" : baseUrl }/${target}` : `${baseUrl === "/" ? "" : baseUrl }/${version}/${target}`;
 
 		return `[${caption}](${url})`;
 	};
@@ -75,8 +76,9 @@ export function replaceLinkTokens(
 	markdown: string,
 	reflections: DeclarationReflectionMap,
 	currentVersion: PropVersionMetadata,
+	docsBaseUrl: string
 ) {
 	return markdown
 		.replace(/{@(link|linkcode|linkplain|apilink)\s+([^}]+?)}/gi, replaceApiLinks(reflections))
-		.replace(/{@doclink\s+([^}]+?)}/gi, replaceDocLinks(currentVersion));
+		.replace(/{@doclink\s+([^}]+?)}/gi, replaceDocLinks(currentVersion, docsBaseUrl));
 }

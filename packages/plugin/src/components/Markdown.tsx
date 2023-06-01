@@ -3,6 +3,7 @@
 
 import React, { useState } from 'react';
 import { marked } from 'marked';
+import { useDocsData } from '@docusaurus/plugin-content-docs/client';
 import { useDocsVersion } from '@docusaurus/theme-common/internal';
 import MDX from '@theme/MDXComponents';
 import { useReflectionMap } from '../hooks/useReflectionMap';
@@ -229,8 +230,9 @@ export interface MarkdownProps {
 export function Markdown({ content }: MarkdownProps) {
 	const reflections = useReflectionMap();
 	const version = useDocsVersion();
+	const docsData = useDocsData(version.pluginId);
 	const [ast] = useState<TokensList>(() =>
-		marked.lexer(replaceLinkTokens(content, reflections, version)),
+		marked.lexer(replaceLinkTokens(content, reflections, version, docsData.path)),
 	);
 
 	if (!content) {
