@@ -159,11 +159,11 @@ module.exports = {
         // import {} from 'package'
         index: 'src/index.tsx',
         // import {} from 'package/client'
-        client: { file: 'src/client.tsx', label: 'Client' },
+        client: { path: 'src/client.tsx', label: 'Client' },
         // import {} from 'package/server'
-        server: { file: 'src/server.tsx', label: 'Server' },
+        server: { path: 'src/server.tsx', label: 'Server' },
         // import {} from 'package/server/test'
-        'server/test': { file: 'src/server/test-utils.tsx', label: 'Server test utils' },
+        'server/test': { path: 'src/server/test-utils.tsx', label: 'Server test utils' },
       },
     },
   ],
