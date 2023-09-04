@@ -16,7 +16,7 @@ function IndexChild({ id }: IndexChildProps) {
 		<li>
 			<Link className="tsd-kind-icon" to={reflection.permalink ?? `#${reflection.name}`}>
 				<Icon reflection={reflection} />
-				{reflection.name ?? <em>{reflection.kindString}</em>}
+				{reflection.name ?? <em>{reflection.kind}</em>}
 			</Link>
 		</li>
 	);
@@ -44,9 +44,7 @@ export function Index({ reflection }: IndexProps) {
 
 								<div className="tsd-panel-content">
 									<ul className="tsd-index-list">
-										{category.children?.map((child) => (
-											<IndexChild key={child} id={child} />
-										))}
+										{category.children?.map((child) => <IndexChild key={child} id={child} />)}
 									</ul>
 								</div>
 							</section>
@@ -77,9 +75,7 @@ export function Index({ reflection }: IndexProps) {
 
 											<div className="tsd-panel-content">
 												<ul className="tsd-index-list">
-													{category.children?.map((child) => (
-														<IndexChild key={child} id={child} />
-													))}
+													{category.children?.map((child) => <IndexChild key={child} id={child} />)}
 												</ul>
 											</div>
 										</React.Fragment>
@@ -90,9 +86,7 @@ export function Index({ reflection }: IndexProps) {
 
 										<div className="tsd-panel-content">
 											<ul className="tsd-index-list">
-												{group.children?.map((child) => (
-													<IndexChild key={child} id={child} />
-												))}
+												{group.children?.map((child) => <IndexChild key={child} id={child} />)}
 											</ul>
 										</div>
 									</>
