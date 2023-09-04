@@ -23,7 +23,7 @@ function deepMapReflections(
 
 			// Dont overwrite with reference nodes
 			if (!hasType || (hasType && (data as unknown as { type: string }).type !== 'reference')) {
-				map[Number(value)] = data;
+				map[Number(value)] = data as JSONOutput.DeclarationReflection;
 
 				if (parent) {
 					data.parentId = parent.id;
