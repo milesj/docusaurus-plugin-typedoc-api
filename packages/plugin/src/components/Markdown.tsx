@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-unsafe-regex */
 /* eslint-disable react/no-array-index-key */
 
 import React, { useState } from 'react';

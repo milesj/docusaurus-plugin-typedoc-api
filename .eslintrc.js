@@ -6,6 +6,8 @@ module.exports = {
 		tsconfigRootDir: __dirname,
 	},
 	rules: {
+		'@typescript-eslint/prefer-nullish-coalescing': 'off',
+
 		// Our components rely on a ton of composition
 		'react/jsx-no-literals': 'off',
 		'react/jsx-no-useless-fragment': 'off',

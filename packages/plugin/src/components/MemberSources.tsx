@@ -5,7 +5,6 @@ import type { JSONOutput } from 'typedoc';
 import { TypeAndParent } from './TypeAndParent';
 
 export function hasSources(reflection: JSONOutput.DeclarationReflection) {
-	// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 	return Boolean(reflection.implementationOf || reflection.inheritedFrom || reflection.overwrites);
 }
 

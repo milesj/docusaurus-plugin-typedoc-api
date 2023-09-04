@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-/* eslint-disable @typescript-eslint/restrict-plus-operands */
+
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/type.hbs
 
 import React from 'react';

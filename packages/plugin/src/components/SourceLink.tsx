@@ -27,7 +27,6 @@ export function SourceLink({ sources = [] }: SourceLinkProps) {
 					key={source.fileName}
 					className="tsd-anchor"
 					href={
-						// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 						source.url ||
 						`https://${siteConfig.githubHost}${
 							siteConfig.githubPort ? `:${siteConfig.githubPort}` : ''
