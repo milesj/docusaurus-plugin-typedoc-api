@@ -1,5 +1,4 @@
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
-import type { DocusaurusConfig } from '@docusaurus/types';
 import type { DeclarationReflectionMap } from '../types';
 
 function splitLinkText(text: string): { caption: string; target: string } {
@@ -58,13 +57,15 @@ function replaceApiLinks(
 
 function replaceDocLinks(
 	currentVersion: PropVersionMetadata,
-	baseUrl: string
+	baseUrl: string,
 ): (match: string, content: string) => string {
 	return (match: string, content: string) => {
 		const { caption, target } = splitLinkText(content);
 		const version = currentVersion.version === 'current' ? 'next' : currentVersion.version;
-		
-		const url = currentVersion.isLast ? `${baseUrl === "/" ? "" : baseUrl }/${target}` : `${baseUrl === "/" ? "" : baseUrl }/${version}/${target}`;
+
+		const url = currentVersion.isLast
+			? `${baseUrl === '/' ? '' : baseUrl}/${target}`
+			: `${baseUrl === '/' ? '' : baseUrl}/${version}/${target}`;
 
 		return `[${caption}](${url})`;
 	};
@@ -76,7 +77,7 @@ export function replaceLinkTokens(
 	markdown: string,
 	reflections: DeclarationReflectionMap,
 	currentVersion: PropVersionMetadata,
-	docsBaseUrl: string
+	docsBaseUrl: string,
 ) {
 	return markdown
 		.replace(/{@(link|linkcode|linkplain|apilink)\s+([^}]+?)}/gi, replaceApiLinks(reflections))

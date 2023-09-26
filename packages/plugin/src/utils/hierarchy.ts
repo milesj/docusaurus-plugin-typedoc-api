@@ -8,7 +8,7 @@ export interface HierarchyNode {
 
 // The JSON output does not include hierarchy information, so we need to duplicate the logic!
 // https://github.com/TypeStrong/typedoc/blob/master/src/lib/converter/plugins/TypePlugin.ts#L98
-export function createHierarchy(reflection: JSONOutput.DeclarationReflection) {
+export function createHierarchy(reflection: JSONOutput.Reflection) {
 	let root!: HierarchyNode;
 	let hierarchy!: HierarchyNode;
 
@@ -24,22 +24,22 @@ export function createHierarchy(reflection: JSONOutput.DeclarationReflection) {
 		}
 	}
 
-	if (reflection.extendedTypes) {
-		push(reflection.extendedTypes);
+	if ('extendedTypes' in reflection && reflection.extendedTypes) {
+		push((reflection as JSONOutput.DeclarationReflection).extendedTypes!);
 	}
 
 	push([
 		{
-			id: reflection.id,
 			name: reflection.name,
+			target: reflection.id,
 			type: 'reference',
 		},
 	]);
 
 	hierarchy.isTarget = true;
 
-	if (reflection.extendedBy) {
-		push(reflection.extendedBy);
+	if ('extendedBy' in reflection && reflection.extendedBy) {
+		push((reflection as JSONOutput.DeclarationReflection).extendedBy!);
 	}
 
 	return root;

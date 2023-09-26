@@ -58,8 +58,11 @@ export async function generateJson(
 	app.options.addReader(new TypeDoc.TSConfigReader());
 	app.options.addReader(new TypeDoc.TypeDocReader());
 
-	app.bootstrap({
+	await app.bootstrapWithPlugins({
+		gitRevision: options.gitRefName,
+		includeVersion: true,
 		skipErrorChecking: true,
+		// stripYamlFrontmatter: true,
 		// Only emit when using project references
 		emit: shouldEmit(projectRoot, tsconfig),
 		// Only document the public API by default
@@ -82,10 +85,10 @@ export async function generateJson(
 		// Control how config and packages are detected
 		tsconfig,
 		entryPoints: entryPoints.map((ep) => path.join(projectRoot, ep)),
-		entryPointStrategy: 'expand',
+		entryPointStrategy: 'resolve',
 		exclude: options.exclude,
 		// We use a fake category title so that we can fallback to the parent group
-		defaultCategory: 'CATEGORY',
+		defaultCategory: '__CATEGORY__',
 	});
 
 	const project = app.convert();
@@ -139,10 +142,10 @@ export function loadPackageJsonAndDocs(
 }
 
 export function addMetadataToReflections(
-	project: JSONOutput.ProjectReflection,
+	project: JSONOutput.DeclarationReflection,
 	packageSlug: string,
 	urlPrefix: string,
-): JSONOutput.ProjectReflection {
+): JSONOutput.DeclarationReflection {
 	const permalink = `/${joinUrl(urlPrefix, packageSlug)}`;
 
 	if (project.children) {
@@ -176,7 +179,10 @@ export function addMetadataToReflections(
 	};
 }
 
-function mergeReflections(base: JSONOutput.ProjectReflection, next: JSONOutput.ProjectReflection) {
+function mergeReflections(
+	base: JSONOutput.DeclarationReflection,
+	next: JSONOutput.DeclarationReflection,
+) {
 	if (Array.isArray(base.children) && Array.isArray(next.children)) {
 		base.children.push(...next.children);
 	}
@@ -198,7 +204,7 @@ function mergeReflections(base: JSONOutput.ProjectReflection, next: JSONOutput.P
 	}
 }
 
-function sortReflectionGroups(reflections: JSONOutput.ProjectReflection[]) {
+function sortReflectionGroups(reflections: JSONOutput.DeclarationReflection[]) {
 	reflections.forEach((reflection) => {
 		const map = createReflectionMap(reflection.children);
 		const sort = (a: number, b: number) => (map[a].name < map[b].name ? -1 : 1);
@@ -247,8 +253,8 @@ function matchesEntryPoint(
 function extractReflectionModules(
 	project: JSONOutput.ProjectReflection,
 	isSinglePackage: boolean,
-): JSONOutput.ProjectReflection[] {
-	const modules: JSONOutput.ProjectReflection[] = [];
+): JSONOutput.DeclarationReflection[] {
+	const modules: JSONOutput.DeclarationReflection[] = [];
 
 	const inheritChildren = () => {
 		project.children?.forEach((child) => {
@@ -267,7 +273,7 @@ function extractReflectionModules(
 			// No "module" children:
 			//	- Polyrepos
 			//	- Monorepos with 1 package
-			modules.push(project);
+			modules.push(project as unknown as JSONOutput.DeclarationReflection);
 		} else {
 			// Has "module" children:
 			//	- Polyrepos with deep imports
@@ -297,10 +303,10 @@ export function flattenAndGroupPackages(
 
 	// Loop through every TypeDoc module and group based on package and entry point
 	const packages: Record<string, PackageReflectionGroup> = {};
-	const packagesWithDeepImports: JSONOutput.ProjectReflection[] = [];
+	const packagesWithDeepImports: JSONOutput.DeclarationReflection[] = [];
 
 	modules.forEach((mod) => {
-		const relSourceFile = mod.sources?.[0]?.fileName ?? '';
+		const relSourceFile = mod.sources?.find((sf) => !!sf.fileName)?.fileName ?? '';
 
 		packageConfigs.some((cfg) =>
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {

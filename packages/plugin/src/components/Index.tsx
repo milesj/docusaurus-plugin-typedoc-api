@@ -16,7 +16,7 @@ function IndexChild({ id }: IndexChildProps) {
 		<li>
 			<Link className="tsd-kind-icon" to={reflection.permalink ?? `#${reflection.name}`}>
 				<Icon reflection={reflection} />
-				{reflection.name ?? <em>{reflection.kindString}</em>}
+				{reflection.name}
 			</Link>
 		</li>
 	);
@@ -39,14 +39,12 @@ export function Index({ reflection }: IndexProps) {
 						{reflection.categories.map((category) => (
 							<section key={category.title} className="tsd-index-section">
 								<h3 className="tsd-panel-header">
-									{category.title === 'CATEGORY' ? 'Other' : category.title}
+									{category.title === '__CATEGORY__' ? 'Other' : category.title}
 								</h3>
 
 								<div className="tsd-panel-content">
 									<ul className="tsd-index-list">
-										{category.children?.map((child) => (
-											<IndexChild key={child} id={child} />
-										))}
+										{category.children?.map((child) => <IndexChild key={child} id={child} />)}
 									</ul>
 								</div>
 							</section>
@@ -72,14 +70,12 @@ export function Index({ reflection }: IndexProps) {
 									group.categories.map((category) => (
 										<React.Fragment key={category.title}>
 											<h3 className="tsd-panel-header">
-												{category.title === 'CATEGORY' ? group.title : category.title}
+												{category.title === '__CATEGORY__' ? group.title : category.title}
 											</h3>
 
 											<div className="tsd-panel-content">
 												<ul className="tsd-index-list">
-													{category.children?.map((child) => (
-														<IndexChild key={child} id={child} />
-													))}
+													{category.children?.map((child) => <IndexChild key={child} id={child} />)}
 												</ul>
 											</div>
 										</React.Fragment>
@@ -90,9 +86,7 @@ export function Index({ reflection }: IndexProps) {
 
 										<div className="tsd-panel-content">
 											<ul className="tsd-index-list">
-												{group.children?.map((child) => (
-													<IndexChild key={child} id={child} />
-												))}
+												{group.children?.map((child) => <IndexChild key={child} id={child} />)}
 											</ul>
 										</div>
 									</>
