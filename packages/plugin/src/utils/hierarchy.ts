@@ -12,7 +12,6 @@ export function createHierarchy(reflection: JSONOutput.DeclarationReflection) {
 	let root!: HierarchyNode;
 	let hierarchy!: HierarchyNode;
 
-	// JSONOutput.SomeType
 	function push(types: JSONOutput.SomeType[]) {
 		const level: HierarchyNode = { types };
 
@@ -31,9 +30,8 @@ export function createHierarchy(reflection: JSONOutput.DeclarationReflection) {
 
 	push([
 		{
-			// id: reflection.id,
+			id: reflection.id,
 			name: reflection.name,
-			target: -1,
 			type: 'reference',
 		},
 	]);

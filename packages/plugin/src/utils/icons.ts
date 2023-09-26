@@ -26,8 +26,9 @@ const KIND_ICONS: Record<ReflectionKind, string> = {
 	262_144: 'symbol-field', // Accessor
 	524_288: 'symbol-field', // GetSignature
 	1_048_576: 'symbol-field', // SetSignature
-	2_097_152: 'symbol-parameter', // TypeAlias
-	4_194_304: 'references', // Reference
+	2_097_152: 'bracket', // ObjectLiteral
+	4_194_304: 'symbol-parameter', // TypeAlias
+	8_388_608: 'references', // Reference
 };
 
 export function getKindIcon(kind: ReflectionKind, name: string): string {
