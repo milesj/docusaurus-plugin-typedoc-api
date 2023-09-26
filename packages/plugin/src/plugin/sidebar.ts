@@ -65,7 +65,7 @@ export function groupSidebarItems(
 	return items;
 }
 
-export function extractReflectionSidebar(pkg: JSONOutput.ProjectReflection): SidebarItem[] {
+export function extractReflectionSidebar(pkg: JSONOutput.DeclarationReflection): SidebarItem[] {
 	return pkg.groups ? groupSidebarItems(createReflectionMap(pkg.children), pkg.groups) : [];
 }
 

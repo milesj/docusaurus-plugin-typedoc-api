@@ -4,12 +4,14 @@ import React from 'react';
 import type { JSONOutput } from 'typedoc';
 import { TypeAndParent } from './TypeAndParent';
 
-export function hasSources(reflection: JSONOutput.DeclarationReflection) {
+export function hasSources(
+	reflection: JSONOutput.DeclarationReflection | JSONOutput.SignatureReflection,
+) {
 	return Boolean(reflection.implementationOf || reflection.inheritedFrom || reflection.overwrites);
 }
 
 export interface MemberSourcesProps {
-	reflection: JSONOutput.DeclarationReflection;
+	reflection: JSONOutput.DeclarationReflection | JSONOutput.SignatureReflection;
 }
 
 export function MemberSources({ reflection }: MemberSourcesProps) {

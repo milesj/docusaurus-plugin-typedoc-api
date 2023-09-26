@@ -27,26 +27,7 @@ export interface DocusaurusPluginTypeDocApiOptions
 	sortPackages?: (a: PackageReflectionGroup, d: PackageReflectionGroup) => number;
 	sortSidebar?: (a: string, d: string) => number;
 	tsconfigName?: string;
-	typedocOptions?: Partial<
-		Pick<
-			TypeDocOptions,
-			| 'commentStyle'
-			| 'disableSources'
-			| 'emit'
-			| 'excludeExternals'
-			| 'excludeInternal'
-			| 'excludeNotDocumented'
-			| 'excludePrivate'
-			| 'excludeProtected'
-			| 'excludeTags'
-			| 'externalPattern'
-			| 'logger'
-			| 'logLevel'
-			| 'sort'
-			| 'treatWarningsAsErrors'
-			| 'validation'
-		>
-	>;
+	typedocOptions?: Partial<TypeDocOptions>;
 
 	// Versioning, based on Docusaurus
 	disableVersioning?: boolean;
@@ -122,7 +103,7 @@ export interface TOCItem {
 export interface PackageReflectionGroupEntry {
 	index: boolean;
 	label: string;
-	reflection: JSONOutput.ProjectReflection;
+	reflection: JSONOutput.DeclarationReflection;
 	urlSlug: string;
 }
 

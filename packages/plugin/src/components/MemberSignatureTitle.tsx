@@ -17,7 +17,8 @@ export function MemberSignatureTitle({ useArrow, hideName, sig }: MemberSignatur
 		<>
 			{!hideName && sig.name !== '__type' ? (
 				sig.name
-			) : sig.kindString === 'Constructor signature' ? (
+			) : // Constructor signature
+			sig.kind === 16_384 ? (
 				<>
 					{sig.flags?.isAbstract && <span className="tsd-signature-symbol">abstract </span>}
 					<span className="tsd-signature-symbol">new </span>

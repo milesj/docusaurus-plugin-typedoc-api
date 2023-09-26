@@ -128,9 +128,9 @@ export function Reflection({ reflection }: ReflectionProps) {
 				</section>
 			)}
 
-			<Index reflection={reflection} />
+			<Index reflection={reflection as JSONOutput.DeclarationReflection} />
 
-			<Members reflection={reflection} />
+			<Members reflection={reflection as JSONOutput.DeclarationReflection} />
 		</>
 	);
 }
