@@ -18,7 +18,7 @@
     "@types/react": "^18.2.23",
     "eslint": "^8.50.0",
     "eslint-config-moon": "^2.0.10",
-    "lerna": "^6.6.2",
+    "lerna": "^7.3.0",
     "packemon": "^3.2.1",
     "prettier": "^3.0.3",
     "prettier-config-moon": "^1.1.2",
