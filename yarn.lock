@@ -7314,7 +7314,7 @@ __metadata:
     prettier-config-moon: ^1.1.2
     react: ^18.2.0
     tsconfig-moon: ^1.3.0
-    typescript: 5.1.3
+    typescript: ^5.2.2
   languageName: unknown
   linkType: soft
 
@@ -7330,7 +7330,7 @@ __metadata:
     marked: ^4.3.0
     react: ^18.2.0
     react-dom: ^18.2.0
-    typedoc: ^0.24.0
+    typedoc: ^0.24.8
     typescript: ^5.2.2
   peerDependencies:
     "@docusaurus/core": ^2.0.0
@@ -16732,7 +16732,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"typedoc@npm:^0.24.0":
+"typedoc@npm:^0.24.8":
   version: 0.24.8
   resolution: "typedoc@npm:0.24.8"
   dependencies:
