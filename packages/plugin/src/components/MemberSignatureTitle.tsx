@@ -13,12 +13,11 @@ export interface MemberSignatureTitleProps {
 }
 
 export function MemberSignatureTitle({ useArrow, hideName, sig }: MemberSignatureTitleProps) {
-	// 16_384 = Constructor signature
 	return (
 		<>
 			{!hideName && sig.name !== '__type' ? (
 				sig.name
-			) : sig.kind === 16_384 ? (
+			) : sig.kindString === 'Constructor signature' ? (
 				<>
 					{sig.flags?.isAbstract && <span className="tsd-signature-symbol">abstract </span>}
 					<span className="tsd-signature-symbol">new </span>

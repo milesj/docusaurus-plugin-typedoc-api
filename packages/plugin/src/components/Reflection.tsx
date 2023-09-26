@@ -22,10 +22,7 @@ export interface ReflectionProps {
 }
 // eslint-disable-next-line complexity
 export function Reflection({ reflection }: ReflectionProps) {
-	const hierarchy = useMemo(
-		() => createHierarchy(reflection as JSONOutput.DeclarationReflection),
-		[reflection],
-	);
+	const hierarchy = useMemo(() => createHierarchy(reflection), [reflection]);
 
 	return (
 		<>
@@ -131,9 +128,9 @@ export function Reflection({ reflection }: ReflectionProps) {
 				</section>
 			)}
 
-			<Index reflection={reflection as JSONOutput.DeclarationReflection} />
+			<Index reflection={reflection} />
 
-			<Members reflection={reflection as JSONOutput.DeclarationReflection} />
+			<Members reflection={reflection} />
 		</>
 	);
 }

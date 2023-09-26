@@ -3,7 +3,7 @@ import type { JSONOutput } from 'typedoc';
 import { getKindIcon, getKindIconColor } from '../utils/icons';
 
 export interface IconProps {
-	reflection: Omit<JSONOutput.DeclarationReflection, 'variant'>;
+	reflection: JSONOutput.DeclarationReflection;
 }
 
 export function Icon({ reflection }: IconProps) {

@@ -193,7 +193,7 @@ export function Type({ needsParens = false, type: base }: TypeProps) {
 
 		case 'reference': {
 			const type = base as JSONOutput.ReferenceType;
-			const ref = typeof type.target === 'number' ? reflections[type.target] : null;
+			const ref = type.id ? reflections[type.id] : null;
 			const genericClass = ref?.id && !ref.sources ? 'tsd-signature-type-generic' : '';
 
 			return (
@@ -201,7 +201,7 @@ export function Type({ needsParens = false, type: base }: TypeProps) {
 					{ref?.permalink ? (
 						<Link
 							className={`tsd-signature-type ${genericClass}`}
-							data-tsd-kind={ref.kind}
+							data-tsd-kind={ref.kindString}
 							to={ref.permalink}
 						>
 							{type.name}
@@ -339,8 +339,7 @@ export function Type({ needsParens = false, type: base }: TypeProps) {
 			return <span className="tsd-signature-type">{type.name}</span>;
 		}
 
-		case 'named-tuple-member':
-		case 'namedTupleMember': {
+		case 'named-tuple-member': {
 			const type = base as unknown as JSONOutput.NamedTupleMemberType;
 
 			return (
@@ -352,8 +351,7 @@ export function Type({ needsParens = false, type: base }: TypeProps) {
 			);
 		}
 
-		case 'template-literal':
-		case 'templateLiteral': {
+		case 'template-literal': {
 			const type = base as unknown as JSONOutput.TemplateLiteralType;
 
 			return (
