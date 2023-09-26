@@ -59,7 +59,7 @@ export async function generateJson(
 			gitRevision: options.gitRefName,
 			includeVersion: true,
 			skipErrorChecking: true,
-			// stripYamlFrontmatter: true,
+			stripYamlFrontmatter: true,
 			// Only emit when using project references
 			emit: shouldEmit(projectRoot, tsconfig),
 			// Only document the public API by default
