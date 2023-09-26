@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 0.4.10 - 2023-09-26
+
+#### 📦 Dependencies
+
+- **[clsx]** Update to v2. ([0287720](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/0287720))
+- **[docusaurus]** Update to v2.4.1. ([52b6236](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/52b6236))
+- **[react]** Update to v18. ([e9f784d](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/e9f784d))
+- **[typedoc]** Update to v0.25. (#105) ([a06d10f](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/a06d10f)), closes [#105](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/105)
+
+**Note:** Version bump only for package website
+
+
+
+
+
 ### 0.4.9 - 2023-03-26
 
 #### 📦 Dependencies

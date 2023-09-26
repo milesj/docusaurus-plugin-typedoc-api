@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 3.0.1 - 2023-09-26
+
+#### 🚀 Updates
+
+- Use docs path from config (#99) ([10b9121](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/10b9121)), closes [#99](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/99)
+
+#### 📦 Dependencies
+
+- **[clsx]** Update to v2. ([0287720](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/0287720))
+- **[docusaurus]** Update to v2.4.1. ([52b6236](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/52b6236))
+- **[react]** Update to v18. ([e9f784d](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/e9f784d))
+- **[typedoc]** Update to v0.25. (#105) ([a06d10f](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/a06d10f)), closes [#105](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/105)
+- **[typedoc]** Update to v0.25.1. ([1481716](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1481716))
+- **[typescript]** Update to v5.2.2. ([19b3af7](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/19b3af7))
+- Update dev and test dependencies. ([dd60a93](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/dd60a93))
+
+#### 📘 Docs
+
+- fix typo label to path (#102) ([5fc395a](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/5fc395a)), closes [#102](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/102)
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 # 3.0.0 - 2023-03-26
 
 #### 💥 Breaking
