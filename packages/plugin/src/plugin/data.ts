@@ -85,7 +85,7 @@ export async function generateJson(
 		// Control how config and packages are detected
 		tsconfig,
 		entryPoints: entryPoints.map((ep) => path.join(projectRoot, ep)),
-		entryPointStrategy: 'resolve',
+		entryPointStrategy: 'expand',
 		exclude: options.exclude,
 		// We use a fake category title so that we can fallback to the parent group
 		defaultCategory: '__CATEGORY__',
@@ -306,7 +306,9 @@ export function flattenAndGroupPackages(
 	const packagesWithDeepImports: JSONOutput.DeclarationReflection[] = [];
 
 	modules.forEach((mod) => {
-		const relSourceFile = mod.sources?.find((sf) => !!sf.fileName)?.fileName ?? '';
+		// Monorepos of 1 package don't have sources, so use the child sources
+		const relSources = mod.sources ?? mod.children?.[0].sources ?? [];
+		const relSourceFile = relSources.find((sf) => !!sf.fileName)?.fileName ?? '';
 
 		packageConfigs.some((cfg) =>
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
