@@ -34,7 +34,7 @@ const monorepoOnePackage = {
 
 // POLYREPO STANDARD
 const polyrepo = {
-	projectRoot: path.join(__dirname, '../fixtures/polyrepo-standard'),
+	projectRoot: path.join(__dirname, '../fixtures/polyrepo'),
 	packages: ['.'],
 };
 
