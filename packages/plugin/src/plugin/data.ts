@@ -52,46 +52,45 @@ export async function generateJson(
 		return true;
 	}
 
-	const app = new TypeDoc.Application();
 	const tsconfig = path.join(projectRoot, options.tsconfigName!);
 
-	app.options.addReader(new TypeDoc.TSConfigReader());
-	app.options.addReader(new TypeDoc.TypeDocReader());
+	const app = await TypeDoc.Application.bootstrapWithPlugins(
+		{
+			gitRevision: options.gitRefName,
+			includeVersion: true,
+			skipErrorChecking: true,
+			// stripYamlFrontmatter: true,
+			// Only emit when using project references
+			emit: shouldEmit(projectRoot, tsconfig),
+			// Only document the public API by default
+			excludeExternals: true,
+			excludeInternal: true,
+			excludePrivate: true,
+			excludeProtected: true,
+			// Enable verbose logging when debugging
+			logLevel: options.debug ? 'Verbose' : 'Info',
+			inlineTags: [
+				'@link',
+				'@inheritDoc',
+				'@label',
+				'@linkcode',
+				'@linkplain',
+				'@apilink',
+				'@doclink',
+			] as `@${string}`[],
+			...options.typedocOptions,
+			// Control how config and packages are detected
+			tsconfig,
+			entryPoints: entryPoints.map((ep) => path.join(projectRoot, ep)),
+			entryPointStrategy: 'expand',
+			exclude: options.exclude,
+			// We use a fake category title so that we can fallback to the parent group
+			defaultCategory: '__CATEGORY__',
+		},
+		[new TypeDoc.TSConfigReader(), new TypeDoc.TypeDocReader()],
+	);
 
-	await app.bootstrapWithPlugins({
-		gitRevision: options.gitRefName,
-		includeVersion: true,
-		skipErrorChecking: true,
-		// stripYamlFrontmatter: true,
-		// Only emit when using project references
-		emit: shouldEmit(projectRoot, tsconfig),
-		// Only document the public API by default
-		excludeExternals: true,
-		excludeInternal: true,
-		excludePrivate: true,
-		excludeProtected: true,
-		// Enable verbose logging when debugging
-		logLevel: options.debug ? 'Verbose' : 'Info',
-		inlineTags: [
-			'@link',
-			'@inheritDoc',
-			'@label',
-			'@linkcode',
-			'@linkplain',
-			'@apilink',
-			'@doclink',
-		] as `@${string}`[],
-		...options.typedocOptions,
-		// Control how config and packages are detected
-		tsconfig,
-		entryPoints: entryPoints.map((ep) => path.join(projectRoot, ep)),
-		entryPointStrategy: 'expand',
-		exclude: options.exclude,
-		// We use a fake category title so that we can fallback to the parent group
-		defaultCategory: '__CATEGORY__',
-	});
-
-	const project = app.convert();
+	const project = await app.convert();
 
 	if (project) {
 		await app.generateJson(project, outFile);
