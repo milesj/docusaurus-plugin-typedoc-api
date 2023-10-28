@@ -235,7 +235,7 @@ function buildSourceFileNameMap(modChildren: JSONOutput.DeclarationReflection[])
 	return map;
 }
 
-function matchesEntryPoint(
+function sourceFileMatchesEntryPoint(
 	sourceFile: string,
 	entryPoint: string,
 	{ deep, single }: { deep: boolean; single: boolean },
@@ -262,34 +262,34 @@ function matchesEntryPoint(
 	);
 }
 
-function modMatchesEntryPoint(
+function modContainsEntryPoint(
 	mod: JSONOutput.DeclarationReflection,
 	entry: PackageEntryConfig,
-	cfg: {
+	meta: {
+		allSourceFiles: Record<string, boolean>;
 		packagePath: string;
 		isSinglePackage: boolean;
+		isUsingDeepImports: boolean;
 	},
 ) {
 	const relModSources = mod.sources ?? [];
 	const relModSourceFile = relModSources.find((sf) => !!sf.fileName)?.fileName ?? '';
-	const relEntryPoint = joinUrl(cfg.packagePath, entry.path);
-	const isUsingDeepImports = !entry.path.match(/\.tsx?$/);
+	const relEntryPoint = joinUrl(meta.packagePath, entry.path);
 
 	// Monorepos of 1 package don't have sources, so use the child sources
 	if (!relModSourceFile) {
-		const relSourceFiles = buildSourceFileNameMap(mod.children ?? []);
-		const relEntryPointInSourceFiles = !!relSourceFiles[relEntryPoint];
+		const relEntryPointInSourceFiles = !!meta.allSourceFiles[relEntryPoint];
 		if (relEntryPointInSourceFiles) {
-			return matchesEntryPoint(relEntryPoint, relEntryPoint, {
-				deep: isUsingDeepImports,
-				single: cfg.isSinglePackage,
+			return sourceFileMatchesEntryPoint(relEntryPoint, relEntryPoint, {
+				deep: meta.isUsingDeepImports,
+				single: meta.isSinglePackage,
 			});
 		}
 	}
 
-	return matchesEntryPoint(relModSourceFile, relEntryPoint, {
-		deep: isUsingDeepImports,
-		single: cfg.isSinglePackage,
+	return sourceFileMatchesEntryPoint(relModSourceFile, relEntryPoint, {
+		deep: meta.isUsingDeepImports,
+		single: meta.isSinglePackage,
 	});
 }
 
@@ -349,9 +349,20 @@ export function flattenAndGroupPackages(
 	const packagesWithDeepImports: JSONOutput.DeclarationReflection[] = [];
 
 	modules.forEach((mod) => {
+		const allSourceFiles = buildSourceFileNameMap(mod.children ?? []);
+
 		packageConfigs.some((cfg) =>
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
-				if (!modMatchesEntryPoint(mod, entry, { isSinglePackage, packagePath: cfg.packagePath })) {
+				const isUsingDeepImports = !entry.path.match(/\.tsx?$/);
+
+				if (
+					!modContainsEntryPoint(mod, entry, {
+						allSourceFiles,
+						isSinglePackage,
+						isUsingDeepImports,
+						packagePath: cfg.packagePath,
+					})
+				) {
 					return false;
 				}
 
