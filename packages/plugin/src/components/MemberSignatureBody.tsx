@@ -2,17 +2,18 @@
 
 import type { JSONOutput } from 'typedoc';
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
+import type { TSDSignatureReflection } from '../types';
 import { Comment, hasComment } from './Comment';
 import { CommentBadges, isCommentWithModifiers } from './CommentBadges';
 import { DefaultValue } from './DefaultValue';
 import { Flags } from './Flags';
 import { hasSources, MemberSources } from './MemberSources';
 import { Parameter } from './Parameter';
-import { Type } from './Type';
+import { extractDeclarationFromType, Type } from './Type';
 import { TypeParameters } from './TypeParameters';
 
 export function hasSigBody(
-	sig: JSONOutput.SignatureReflection | undefined,
+	sig: TSDSignatureReflection | undefined,
 	minimal: boolean,
 	hideSources: boolean = false,
 ) {
@@ -31,7 +32,7 @@ export function hasSigBody(
 
 export interface MemberSignatureBodyProps {
 	hideSources?: boolean;
-	sig: JSONOutput.SignatureReflection;
+	sig: TSDSignatureReflection;
 }
 
 function intoReturnComment(comment?: JSONOutput.Comment): JSONOutput.Comment | undefined {
@@ -112,7 +113,7 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 
 					<Comment comment={intoReturnComment(sig.comment)} />
 
-					<Parameter param={sig.type?.declaration} />
+					<Parameter param={extractDeclarationFromType(sig.type)} />
 				</>
 			)}
 		</>

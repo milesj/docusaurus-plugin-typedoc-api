@@ -1,7 +1,7 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/templates/reflection.hbs
 
 import { useMemo } from 'react';
-import type { JSONOutput } from 'typedoc';
+import type { TSDDeclarationReflection, TSDReflection, TSDSignatureReflection } from '../types';
 import { createHierarchy } from '../utils/hierarchy';
 import { Comment, hasComment } from './Comment';
 import { CommentBadges, isCommentWithModifiers } from './CommentBadges';
@@ -11,14 +11,11 @@ import { Index } from './Index';
 import { Members } from './Members';
 import { MemberSignatures } from './MemberSignatures';
 import { Parameter } from './Parameter';
-import { Type } from './Type';
+import { extractDeclarationFromType, Type } from './Type';
 import { TypeParameters } from './TypeParameters';
 
 export interface ReflectionProps {
-	reflection:
-		| JSONOutput.DeclarationReflection
-		| JSONOutput.Reflection
-		| JSONOutput.SignatureReflection;
+	reflection: TSDDeclarationReflection | TSDReflection | TSDSignatureReflection;
 }
 // eslint-disable-next-line complexity
 export function Reflection({ reflection }: ReflectionProps) {
@@ -123,14 +120,14 @@ export function Reflection({ reflection }: ReflectionProps) {
 
 						<Comment comment={reflection.indexSignature.comment} />
 
-						<Parameter param={reflection.indexSignature.type?.declaration} />
+						<Parameter param={extractDeclarationFromType(reflection.indexSignature.type)} />
 					</div>
 				</section>
 			)}
 
-			<Index reflection={reflection as JSONOutput.DeclarationReflection} />
+			<Index reflection={reflection as TSDDeclarationReflection} />
 
-			<Members reflection={reflection as JSONOutput.DeclarationReflection} />
+			<Members reflection={reflection as TSDDeclarationReflection} />
 		</>
 	);
 }

@@ -5,7 +5,18 @@ import { Fragment } from 'react';
 import type { JSONOutput } from 'typedoc';
 import Link from '@docusaurus/Link';
 import { useReflectionMap } from '../hooks/useReflectionMap';
+import type { TSDDeclarationReflection } from '../types';
 import { MemberSignatureTitle } from './MemberSignatureTitle';
+
+export function extractDeclarationFromType(
+	type?: JSONOutput.Reflection | JSONOutput.SomeType,
+): TSDDeclarationReflection | undefined {
+	if (!type) {
+		return undefined;
+	}
+
+	return (type as unknown as { declaration?: TSDDeclarationReflection })?.declaration;
+}
 
 function parens(element: JSX.Element, needsParens: boolean): JSX.Element {
 	if (!needsParens) {

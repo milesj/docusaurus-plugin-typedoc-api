@@ -9,6 +9,7 @@ import type {
 	DocusaurusPluginTypeDocApiOptions,
 	PackageReflectionGroup,
 	ResolvedPackageConfig,
+	TSDDeclarationReflection,
 } from '../types';
 import { migrateToVersion0230 } from './structure/0.23';
 import { getKindSlug, getPackageSlug, joinUrl } from './url';
@@ -104,7 +105,7 @@ export async function generateJson(
 }
 
 export function createReflectionMap(
-	items: JSONOutput.DeclarationReflection[] = [],
+	items: TSDDeclarationReflection[] = [],
 ): DeclarationReflectionMap {
 	const map: DeclarationReflectionMap = {};
 
@@ -144,7 +145,7 @@ export function addMetadataToReflections(
 	project: JSONOutput.DeclarationReflection,
 	packageSlug: string,
 	urlPrefix: string,
-): JSONOutput.DeclarationReflection {
+): TSDDeclarationReflection {
 	const permalink = `/${joinUrl(urlPrefix, packageSlug)}`;
 
 	if (project.children) {
@@ -172,16 +173,14 @@ export function addMetadataToReflections(
 		});
 	}
 
+	// @ts-expect-error Not sure why this fails
 	return {
 		...project,
 		permalink: normalizeUrl([permalink]),
 	};
 }
 
-function mergeReflections(
-	base: JSONOutput.DeclarationReflection,
-	next: JSONOutput.DeclarationReflection,
-) {
+function mergeReflections(base: TSDDeclarationReflection, next: TSDDeclarationReflection) {
 	if (Array.isArray(base.children) && Array.isArray(next.children)) {
 		base.children.push(...next.children);
 	}
@@ -203,7 +202,7 @@ function mergeReflections(
 	}
 }
 
-function sortReflectionGroups(reflections: JSONOutput.DeclarationReflection[]) {
+function sortReflectionGroups(reflections: TSDDeclarationReflection[]) {
 	reflections.forEach((reflection) => {
 		const map = createReflectionMap(reflection.children);
 		const sort = (a: number, b: number) => (map[a].name < map[b].name ? -1 : 1);
@@ -302,7 +301,7 @@ export function flattenAndGroupPackages(
 
 	// Loop through every TypeDoc module and group based on package and entry point
 	const packages: Record<string, PackageReflectionGroup> = {};
-	const packagesWithDeepImports: JSONOutput.DeclarationReflection[] = [];
+	const packagesWithDeepImports: TSDDeclarationReflection[] = [];
 
 	modules.forEach((mod) => {
 		// Monorepos of 1 package don't have sources, so use the child sources

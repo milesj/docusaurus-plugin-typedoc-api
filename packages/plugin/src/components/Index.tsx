@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
-import type { JSONOutput } from 'typedoc';
 import Link from '@docusaurus/Link';
 import { useReflection } from '../hooks/useReflection';
+import type { TSDDeclarationReflection } from '../types';
 import { AnchorLink } from './AnchorLink';
 import { Icon } from './Icon';
 
@@ -23,7 +23,7 @@ function IndexChild({ id }: IndexChildProps) {
 }
 
 export interface IndexProps {
-	reflection: JSONOutput.DeclarationReflection;
+	reflection: TSDDeclarationReflection;
 }
 
 export function Index({ reflection }: IndexProps) {

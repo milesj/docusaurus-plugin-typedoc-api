@@ -1,16 +1,14 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.sources.hbs
 
-import type { JSONOutput } from 'typedoc';
+import type { TSDDeclarationReflection, TSDSignatureReflection } from '../types';
 import { TypeAndParent } from './TypeAndParent';
 
-export function hasSources(
-	reflection: JSONOutput.DeclarationReflection | JSONOutput.SignatureReflection,
-) {
+export function hasSources(reflection: TSDDeclarationReflection | TSDSignatureReflection) {
 	return Boolean(reflection.implementationOf || reflection.inheritedFrom || reflection.overwrites);
 }
 
 export interface MemberSourcesProps {
-	reflection: JSONOutput.DeclarationReflection | JSONOutput.SignatureReflection;
+	reflection: TSDDeclarationReflection | TSDSignatureReflection;
 }
 
 export function MemberSources({ reflection }: MemberSourcesProps) {

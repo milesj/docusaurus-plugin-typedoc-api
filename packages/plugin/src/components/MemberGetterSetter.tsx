@@ -1,15 +1,15 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.getterSetter.hbs
 
-import type { JSONOutput } from 'typedoc';
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
+import type { TSDDeclarationReflection } from '../types';
 import { Icon } from './Icon';
 import { hasSigBody, MemberSignatureBody } from './MemberSignatureBody';
 import { MemberSignatureTitle } from './MemberSignatureTitle';
 
 export interface MemberGetterSetterProps {
 	inPanel?: boolean;
-	getter?: JSONOutput.DeclarationReflection['getSignature'];
-	setter?: JSONOutput.DeclarationReflection['setSignature'];
+	getter?: TSDDeclarationReflection['getSignature'];
+	setter?: TSDDeclarationReflection['setSignature'];
 }
 
 // eslint-disable-next-line complexity

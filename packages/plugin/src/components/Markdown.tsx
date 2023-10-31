@@ -203,7 +203,9 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 				break;
 
 			default: {
-				const Comp = TOKEN_TO_TAG[token.type] || token.type;
+				const Comp = (TOKEN_TO_TAG[token.type] || token.type) as unknown as React.ComponentType<{
+					children: React.ReactNode;
+				}>;
 				const innerText = 'text' in token ? token.text : '';
 
 				elements.push(<Comp key={counter}>{convertAstToElements(children) ?? innerText}</Comp>);

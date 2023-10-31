@@ -1,7 +1,7 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/members.hbs
 
-import type { JSONOutput } from 'typedoc';
 import { useReflectionMap } from '../hooks/useReflectionMap';
+import type { TSDDeclarationReflection } from '../types';
 import {
 	allCategoryChildrenHaveOwnDocument,
 	allGroupChildrenHaveOwnDocument,
@@ -12,7 +12,7 @@ import { Member } from './Member';
 import { MembersGroup } from './MembersGroup';
 
 export interface MembersProps {
-	reflection: JSONOutput.DeclarationReflection;
+	reflection: TSDDeclarationReflection;
 }
 
 export function Members({ reflection }: MembersProps) {

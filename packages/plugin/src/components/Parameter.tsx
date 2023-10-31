@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/Parameter.hbs
 
-import type { JSONOutput } from 'typedoc';
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
+import type { TSDDeclarationReflection } from '../types';
 import { Comment } from './Comment';
 import { Flags } from './Flags';
 import { Icon } from './Icon';
 import { hasSigBody, MemberSignatureBody } from './MemberSignatureBody';
 import { MemberSignatures } from './MemberSignatures';
 import { MemberSignatureTitle } from './MemberSignatureTitle';
-import { Type } from './Type';
+import { extractDeclarationFromType, Type } from './Type';
 
 export interface ParameterProps {
-	param?: JSONOutput.DeclarationReflection;
+	param?: TSDDeclarationReflection;
 }
 
 function ParameterChild({ param }: ParameterProps) {
@@ -50,7 +50,7 @@ function ParameterChild({ param }: ParameterProps) {
 
 				{param.children?.map((child) => <Parameter key={child.id} param={child} />)}
 
-				<Parameter param={param.type.declaration} />
+				<Parameter param={extractDeclarationFromType(param.type)} />
 			</li>
 		);
 	}
@@ -150,7 +150,7 @@ export function Parameter({ param }: ParameterProps) {
 
 					<Comment comment={param.indexSignature.comment} />
 
-					<Parameter param={param.indexSignature.declaration} />
+					<Parameter param={extractDeclarationFromType(param.indexSignature)} />
 				</li>
 			)}
 

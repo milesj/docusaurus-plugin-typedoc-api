@@ -3,19 +3,24 @@
 import '@vscode/codicons/dist/codicon.css';
 import './styles.css';
 import { useMemo } from 'react';
-import type { JSONOutput } from 'typedoc';
 import DocRoot, { type Props as DocRootProps } from '@theme/DocRoot';
-import type { ApiOptions, DeclarationReflectionMap, PackageReflectionGroup } from '../types';
+import type {
+	ApiOptions,
+	DeclarationReflectionMap,
+	PackageReflectionGroup,
+	TSDDeclarationReflection,
+	TSDReflection,
+} from '../types';
 import { ApiDataContext } from './ApiDataContext';
 
-function isObject(value: unknown): value is JSONOutput.Reflection {
+function isObject(value: unknown): value is TSDReflection {
 	return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 function deepMapReflections(
-	data: JSONOutput.Reflection,
+	data: TSDReflection,
 	map: DeclarationReflectionMap,
-	parent?: JSONOutput.Reflection,
+	parent?: TSDReflection,
 ) {
 	Object.entries(data).forEach(([key, value]) => {
 		if (key === 'id') {
@@ -23,7 +28,7 @@ function deepMapReflections(
 
 			// Dont overwrite with reference nodes
 			if (!hasType || (hasType && (data as unknown as { type: string }).type !== 'reference')) {
-				map[Number(value)] = data as JSONOutput.DeclarationReflection;
+				map[Number(value)] = data as TSDDeclarationReflection;
 
 				if (parent) {
 					data.parentId = parent.id;

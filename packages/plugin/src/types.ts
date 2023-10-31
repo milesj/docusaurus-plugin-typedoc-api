@@ -1,4 +1,4 @@
-import type { DeclarationReflection, JSONOutput, TypeDocOptions } from 'typedoc';
+import type { JSONOutput, TypeDocOptions } from 'typedoc';
 import type {
 	PropSidebarItem,
 	VersionBanner,
@@ -103,7 +103,7 @@ export interface TOCItem {
 export interface PackageReflectionGroupEntry {
 	index: boolean;
 	label: string;
-	reflection: JSONOutput.DeclarationReflection;
+	reflection: TSDDeclarationReflection;
 	urlSlug: string;
 }
 
@@ -123,20 +123,25 @@ export interface ApiMetadata {
 	nextId?: number;
 }
 
-export type DeclarationReflectionMap = Record<number, JSONOutput.DeclarationReflection>;
+export type DeclarationReflectionMap = Record<number, TSDDeclarationReflection>;
 
-declare module 'typedoc' {
-	interface Reflection extends ApiMetadata {
-		// Not typed but used in the templates
-		declaration?: DeclarationReflection;
-		// Added by us for convenience
-		parentId?: number;
-	}
+// TYPEDOC COMPAT
 
-	interface Type {
-		// Not typed but used in the templates
-		declaration?: DeclarationReflection;
-	}
+export interface TSDReflection extends Omit<JSONOutput.Reflection, 'signatures'>, ApiMetadata {
+	signatures: TSDSignatureReflection[];
+	// Added by us for convenience
+	parentId?: number;
+}
+
+export interface TSDDeclarationReflection
+	extends Omit<JSONOutput.DeclarationReflection, 'children' | 'signatures'>,
+		ApiMetadata {
+	children?: TSDDeclarationReflection[];
+	signatures: TSDSignatureReflection[];
+}
+
+export interface TSDSignatureReflection extends JSONOutput.SignatureReflection {
+	// declaration: TSDDeclarationReflection;
 }
 
 declare global {

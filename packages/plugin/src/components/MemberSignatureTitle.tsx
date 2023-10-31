@@ -1,14 +1,15 @@
 /* eslint-disable no-nested-ternary */
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.signature.title.hbs
+
 import { Fragment } from 'react';
-import type { JSONOutput } from 'typedoc';
+import type { TSDSignatureReflection } from '../types';
 import { Type } from './Type';
 import { TypeParametersGeneric } from './TypeParametersGeneric';
 
 export interface MemberSignatureTitleProps {
 	useArrow?: boolean;
 	hideName?: boolean;
-	sig: JSONOutput.SignatureReflection;
+	sig: TSDSignatureReflection;
 }
 
 export function MemberSignatureTitle({ useArrow, hideName, sig }: MemberSignatureTitleProps) {

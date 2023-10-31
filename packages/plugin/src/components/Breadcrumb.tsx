@@ -1,11 +1,11 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/breadcrumb.hbs
 
-import type { JSONOutput } from 'typedoc';
 import Link from '@docusaurus/Link';
 import { useReflection } from '../hooks/useReflection';
+import type { TSDReflection } from '../types';
 
 export interface BreadcrumbProps {
-	reflection: JSONOutput.Reflection;
+	reflection: TSDReflection;
 	root?: boolean;
 }
 

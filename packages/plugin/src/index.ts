@@ -2,7 +2,6 @@
 
 import fs from 'fs';
 import path from 'path';
-import type { JSONOutput } from 'typedoc';
 import type { PropVersionDocs, PropVersionMetadata } from '@docusaurus/plugin-content-docs';
 import { CURRENT_VERSION_NAME } from '@docusaurus/plugin-content-docs/server';
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
@@ -22,6 +21,7 @@ import type {
 	PackageEntryConfig,
 	PackageReflectionGroup,
 	ResolvedPackageConfig,
+	TSDDeclarationReflection,
 	VersionMetadata,
 } from './types';
 
@@ -95,7 +95,7 @@ export default function typedocApiPlugin(
 		if (!pkgConfig.entry || typeof pkgConfig.entry === 'string') {
 			entries.index = {
 				label: 'Index',
-				path: pkgConfig.entry ?? 'src/index.ts',
+				path: pkgConfig.entry ? String(pkgConfig.entry) : 'src/index.ts',
 			};
 		} else {
 			Object.entries(pkgConfig.entry).forEach(([importPath, entryConfig]) => {
@@ -287,7 +287,7 @@ export default function typedocApiPlugin(
 					);
 
 					function createRoute(
-						info: JSONOutput.Reflection,
+						info: TSDDeclarationReflection,
 						modules?: Record<string, string>,
 					): RouteConfig {
 						return {
