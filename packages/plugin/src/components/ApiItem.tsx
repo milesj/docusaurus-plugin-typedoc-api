@@ -3,7 +3,7 @@ import { PageMetadata } from '@docusaurus/theme-common';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
-import type { DeclarationReflectionMap, TOCItem, TSDDeclarationReflection } from '../types';
+import type { TOCItem, TSDDeclarationReflection, TSDDeclarationReflectionMap } from '../types';
 import { getKindIconHtml } from '../utils/icons';
 import ApiItemLayout from './ApiItemLayout';
 import { displayPartsToMarkdown } from './Comment';
@@ -11,7 +11,7 @@ import { Flags } from './Flags';
 import { Reflection } from './Reflection';
 import { TypeParametersGeneric } from './TypeParametersGeneric';
 
-function extractTOC(item: TSDDeclarationReflection, map: DeclarationReflectionMap): TOCItem[] {
+function extractTOC(item: TSDDeclarationReflection, map: TSDDeclarationReflectionMap): TOCItem[] {
 	const toc: TOCItem[] = [];
 	const mapped = new Set<string>();
 

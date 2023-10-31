@@ -1,5 +1,5 @@
 import type { PropVersionMetadata } from '@docusaurus/plugin-content-docs';
-import type { DeclarationReflectionMap } from '../types';
+import type { TSDDeclarationReflectionMap } from '../types';
 
 function splitLinkText(text: string): { caption: string; target: string } {
 	let splitIndex = text.indexOf('|');
@@ -25,7 +25,7 @@ function splitLinkText(text: string): { caption: string; target: string } {
 }
 
 function findReflectionWithMatchingTarget(
-	reflections: DeclarationReflectionMap,
+	reflections: TSDDeclarationReflectionMap,
 	symbol: string,
 	member?: string,
 ) {
@@ -39,7 +39,7 @@ function findReflectionWithMatchingTarget(
 }
 
 function replaceApiLinks(
-	reflections: DeclarationReflectionMap,
+	reflections: TSDDeclarationReflectionMap,
 ): (match: string, tagName: string, content: string) => string {
 	return (match: string, tagName: string, content: string) => {
 		const { caption, target } = splitLinkText(content);
@@ -75,7 +75,7 @@ function replaceDocLinks(
 // @see https://github.com/TypeStrong/typedoc/blob/master/src/lib/output/plugins/MarkedLinksPlugin.ts
 export function replaceLinkTokens(
 	markdown: string,
-	reflections: DeclarationReflectionMap,
+	reflections: TSDDeclarationReflectionMap,
 	currentVersion: PropVersionMetadata,
 	docsBaseUrl: string,
 ) {

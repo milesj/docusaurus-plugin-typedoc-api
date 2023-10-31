@@ -5,11 +5,11 @@ import { JSONOutput, ReflectionKind } from 'typedoc';
 import ts from 'typescript';
 import { normalizeUrl } from '@docusaurus/utils';
 import type {
-	DeclarationReflectionMap,
 	DocusaurusPluginTypeDocApiOptions,
 	PackageReflectionGroup,
 	ResolvedPackageConfig,
 	TSDDeclarationReflection,
+	TSDDeclarationReflectionMap,
 } from '../types';
 import { migrateToVersion0230 } from './structure/0.23';
 import { getKindSlug, getPackageSlug, joinUrl } from './url';
@@ -53,7 +53,7 @@ export async function generateJson(
 		return true;
 	}
 
-	const tsconfig = path.join(projectRoot, options.tsconfigName!);
+	const tsconfig = path.join(projectRoot, options.tsconfigName);
 
 	const app = await TypeDoc.Application.bootstrapWithPlugins(
 		{
@@ -106,8 +106,8 @@ export async function generateJson(
 
 export function createReflectionMap(
 	items: TSDDeclarationReflection[] = [],
-): DeclarationReflectionMap {
-	const map: DeclarationReflectionMap = {};
+): TSDDeclarationReflectionMap {
+	const map: TSDDeclarationReflectionMap = {};
 
 	items.forEach((item) => {
 		map[item.id] = item;

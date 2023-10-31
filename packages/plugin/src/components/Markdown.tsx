@@ -36,8 +36,7 @@ marked.use({
 			name: 'admonition',
 			level: 'block',
 			start(src) {
-				// eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
-				return src.match(ADMONITION_START)?.index!;
+				return src.match(ADMONITION_START)?.index;
 			},
 			tokenizer(src, tokens) {
 				const match = ADMONITION_START.exec(src);

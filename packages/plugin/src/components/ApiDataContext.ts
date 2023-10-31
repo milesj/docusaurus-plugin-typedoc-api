@@ -1,9 +1,9 @@
 import { createContext } from 'react';
-import type { ApiOptions, DeclarationReflectionMap } from '../types';
+import type { ApiOptions, TSDDeclarationReflectionMap } from '../types';
 
 export const ApiDataContext = createContext<{
 	options: ApiOptions;
-	reflections: DeclarationReflectionMap;
+	reflections: TSDDeclarationReflectionMap;
 }>({
 	options: {
 		banner: '',

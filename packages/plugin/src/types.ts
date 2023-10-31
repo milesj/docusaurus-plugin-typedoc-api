@@ -123,8 +123,6 @@ export interface ApiMetadata {
 	nextId?: number;
 }
 
-export type DeclarationReflectionMap = Record<number, TSDDeclarationReflection>;
-
 // TYPEDOC COMPAT
 
 export interface TSDReflection extends Omit<JSONOutput.Reflection, 'signatures'>, ApiMetadata {
@@ -139,6 +137,8 @@ export interface TSDDeclarationReflection
 	children?: TSDDeclarationReflection[];
 	signatures: TSDSignatureReflection[];
 }
+
+export type TSDDeclarationReflectionMap = Record<number, TSDDeclarationReflection>;
 
 export interface TSDSignatureReflection extends JSONOutput.SignatureReflection {
 	// declaration: TSDDeclarationReflection;

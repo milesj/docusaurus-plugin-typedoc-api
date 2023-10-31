@@ -6,9 +6,9 @@ import { useMemo } from 'react';
 import DocRoot, { type Props as DocRootProps } from '@theme/DocRoot';
 import type {
 	ApiOptions,
-	DeclarationReflectionMap,
 	PackageReflectionGroup,
 	TSDDeclarationReflection,
+	TSDDeclarationReflectionMap,
 	TSDReflection,
 } from '../types';
 import { ApiDataContext } from './ApiDataContext';
@@ -19,7 +19,7 @@ function isObject(value: unknown): value is TSDReflection {
 
 function deepMapReflections(
 	data: TSDReflection,
-	map: DeclarationReflectionMap,
+	map: TSDDeclarationReflectionMap,
 	parent?: TSDReflection,
 ) {
 	Object.entries(data).forEach(([key, value]) => {
@@ -48,8 +48,8 @@ function deepMapReflections(
 	return map;
 }
 
-function mapPackagesToReflection(packages: PackageReflectionGroup[]): DeclarationReflectionMap {
-	const map: DeclarationReflectionMap = {};
+function mapPackagesToReflection(packages: PackageReflectionGroup[]): TSDDeclarationReflectionMap {
+	const map: TSDDeclarationReflectionMap = {};
 
 	packages.forEach((pkg) => {
 		pkg.entryPoints.forEach((entry) => {
