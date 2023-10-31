@@ -2,7 +2,6 @@
 
 import { Fragment, useState } from 'react';
 import { marked, Tokens } from 'marked';
-import { markedHighlight } from 'marked-highlight';
 import { markedSmartypants } from 'marked-smartypants';
 import { useDocsData } from '@docusaurus/plugin-content-docs/client';
 import { useDocsVersion } from '@docusaurus/theme-common/internal';
@@ -52,12 +51,6 @@ marked.setOptions({
 	gfm: true,
 });
 marked.use(markedSmartypants());
-marked.use(
-	markedHighlight({
-		langPrefix: 'hljs language-',
-		highlight: (code) => code,
-	}),
-);
 marked.use({
 	extensions: [
 		{
