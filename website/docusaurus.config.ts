@@ -1,16 +1,17 @@
-import type { Config } from '@docusaurus/types';
-import type * as Preset from '@docusaurus/preset-classic';
-import path from 'path';
-// @ts-expect-error Not typed
-import lightCodeTheme from 'prism-react-renderer/themes/github';
-// @ts-expect-error Not typed
-import darkCodeTheme from 'prism-react-renderer/themes/dracula';
+/* eslint-disable sort-keys */
 
-let versions = [];
+import path from 'path';
+import { themes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
+
+let versions: string[] = [];
 
 try {
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	versions = require('./versions.json');
-} catch {}
+} catch {
+	// Ignore
+}
 
 // MONOREPO
 const monorepo = {
@@ -229,8 +230,8 @@ const config: Config = {
 			copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
 		},
 		prism: {
-			theme: lightCodeTheme,
-			darkTheme: darkCodeTheme,
+			theme: themes.github,
+			darkTheme: themes.dracula,
 		},
 	},
 	presets: [

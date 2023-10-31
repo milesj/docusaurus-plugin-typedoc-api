@@ -1,4 +1,4 @@
-import type { JSONOutput, TypeDocOptions } from 'typedoc';
+import type { DeclarationReflection, JSONOutput, TypeDocOptions } from 'typedoc';
 import type {
 	PropSidebarItem,
 	VersionBanner,
@@ -125,7 +125,7 @@ export interface ApiMetadata {
 
 export type DeclarationReflectionMap = Record<number, JSONOutput.DeclarationReflection>;
 
-declare module 'typedoc/dist/lib/serialization/schema' {
+declare module 'typedoc' {
 	interface Reflection extends ApiMetadata {
 		// Not typed but used in the templates
 		declaration?: DeclarationReflection;

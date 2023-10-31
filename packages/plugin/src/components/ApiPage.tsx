@@ -4,7 +4,7 @@ import '@vscode/codicons/dist/codicon.css';
 import './styles.css';
 import { useMemo } from 'react';
 import type { JSONOutput } from 'typedoc';
-import DocPage, { type Props as DocPageProps } from '@theme/DocPage';
+import DocRoot, { type Props as DocRootProps } from '@theme/DocRoot';
 import type { ApiOptions, DeclarationReflectionMap, PackageReflectionGroup } from '../types';
 import { ApiDataContext } from './ApiDataContext';
 
@@ -55,7 +55,7 @@ function mapPackagesToReflection(packages: PackageReflectionGroup[]): Declaratio
 	return map;
 }
 
-export interface ApiPageProps extends DocPageProps {
+export interface ApiPageProps extends DocRootProps {
 	options: ApiOptions;
 	packages: PackageReflectionGroup[];
 }
@@ -69,7 +69,7 @@ function ApiPage({ options, packages, ...props }: ApiPageProps) {
 	return (
 		<ApiDataContext.Provider value={value}>
 			<div className="apiPage">
-				<DocPage {...props} />
+				<DocRoot {...props} />
 			</div>
 		</ApiDataContext.Provider>
 	);

@@ -232,7 +232,6 @@ export default function typedocApiPlugin(
 				return;
 			}
 
-			const { createData, addRoute } = actions;
 			const docs: PropVersionDocs = {};
 
 			// Create an index of versions for quick lookups.
@@ -247,14 +246,14 @@ export default function typedocApiPlugin(
 				}
 			});
 
-			await Promise.all(
+			const rootRoutes = await Promise.all(
 				content.loadedVersions.map(async (loadedVersion) => {
 					const version = loadedVersion.versionName;
 
 					// Define version metadata for all pages. We need to use the same structure as
 					// "docs" so that we can utilize the same React components.
 					// https://github.com/facebook/docusaurus/blob/master/packages/docusaurus-plugin-content-docs/src/index.ts#L337
-					const versionMetadata = await createData(
+					const versionMetadata = await actions.createData(
 						`version-${version}.json`,
 						JSON.stringify({
 							badge: loadedVersion.versionBadge,
@@ -267,23 +266,25 @@ export default function typedocApiPlugin(
 							noIndex: false,
 							pluginId,
 							version: loadedVersion.versionName,
-						} as PropVersionMetadata),
+						} satisfies PropVersionMetadata),
 					);
 
-					const packagesData = await createData(
+					const packagesData = await actions.createData(
 						`packages-${version}.json`,
 						JSON.stringify(formatPackagesWithoutHostInfo(loadedVersion.packages)),
 					);
 
-					const optionsContextData: ApiOptions = {
-						banner,
-						breadcrumbs,
-						gitRefName,
-						minimal,
-						pluginId,
-						scopes: removeScopes,
-					};
-					const optionsData = await createData('options.json', JSON.stringify(optionsContextData));
+					const optionsData = await actions.createData(
+						'options.json',
+						JSON.stringify({
+							banner,
+							breadcrumbs,
+							gitRefName,
+							minimal,
+							pluginId,
+							scopes: removeScopes,
+						} satisfies ApiOptions),
+					);
 
 					function createRoute(
 						info: JSONOutput.Reflection,
@@ -311,7 +312,7 @@ export default function typedocApiPlugin(
 							// Map a route for every declaration in the package (the exported APIs)
 							const subRoutes = children.map((child) => createRoute(child));
 
-							// Map a top-level package route, otherwise `DocPage` shows a page not found
+							// Map a top-level package route, otherwise `DocRoot` shows a page not found
 							subRoutes.push(
 								createRoute(
 									entry.reflection,
@@ -351,20 +352,40 @@ export default function typedocApiPlugin(
 						});
 					}
 
-					addRoute({
+					// Wrap in the `DocVersionRoot` component:
+					// https://github.com/facebook/docusaurus/blob/main/packages/docusaurus-plugin-content-docs/src/routes.ts#L192
+					return {
 						path: indexPermalink,
 						exact: false,
-						component: path.join(__dirname, './components/ApiPage.js'),
-						routes,
+						component: '@theme/DocVersionRoot',
+						routes: [
+							{
+								path: indexPermalink,
+								exact: false,
+								component: path.join(__dirname, './components/ApiPage.js'),
+								routes,
+								modules: {
+									options: optionsData,
+									packages: packagesData,
+								},
+							},
+						],
 						modules: {
-							options: optionsData,
-							packages: packagesData,
-							versionMetadata,
+							version: versionMetadata,
 						},
 						priority: loadedVersion.routePriority,
-					});
+					};
 				}),
 			);
+
+			// Wrap in the `DocsRoot` component:
+			// https://github.com/facebook/docusaurus/blob/main/packages/docusaurus-plugin-content-docs/src/routes.ts#L232
+			actions.addRoute({
+				path: normalizeUrl([context.baseUrl, options.routeBasePath ?? 'api']),
+				exact: false,
+				component: '@theme/DocsRoot',
+				routes: rootRoutes,
+			});
 		},
 
 		configureWebpack(config, isServer, utils) {
