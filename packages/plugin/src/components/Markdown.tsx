@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 
 import { Fragment, useState } from 'react';
-import { marked, Tokens } from 'marked';
+import { marked, type Tokens } from 'marked';
 import { markedSmartypants } from 'marked-smartypants';
 import { useDocsData } from '@docusaurus/plugin-content-docs/client';
 import { useDocsVersion } from '@docusaurus/theme-common/internal';
@@ -142,12 +142,12 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 			}
 
 			case 'image':
-				elements.push(<MDX.img key={counter} alt={token.title} src={token.href} />);
+				elements.push(<MDX.img key={counter} alt={token.title ?? ''} src={token.href} />);
 				break;
 
 			case 'link':
 				elements.push(
-					<MDX.a key={counter} href={token.href} title={token.title}>
+					<MDX.a key={counter} href={token.href} title={token.title ?? ''}>
 						{convertAstToElements(children) ?? token.text}
 					</MDX.a>,
 				);
