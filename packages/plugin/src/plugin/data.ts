@@ -53,7 +53,7 @@ export async function generateJson(
 		return true;
 	}
 
-	const tsconfig = path.join(projectRoot, options.tsconfigName);
+	const tsconfig = path.join(projectRoot, options.tsconfigName ?? 'tsconfig.json');
 
 	const app = await TypeDoc.Application.bootstrapWithPlugins(
 		{
