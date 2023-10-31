@@ -2,16 +2,16 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.signatures.hbs
 
-import React, { useState } from 'react';
-import type { JSONOutput } from 'typedoc';
+import { useState } from 'react';
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
+import type { TSDSignatureReflection } from '../types';
 import { Icon } from './Icon';
 import { hasSigBody, MemberSignatureBody } from './MemberSignatureBody';
 import { MemberSignatureTitle } from './MemberSignatureTitle';
 
 export interface MemberSignaturesProps {
 	inPanel?: boolean;
-	sigs: JSONOutput.SignatureReflection[];
+	sigs: TSDSignatureReflection[];
 }
 
 export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {

@@ -2,20 +2,25 @@
 
 import '@vscode/codicons/dist/codicon.css';
 import './styles.css';
-import React, { useMemo } from 'react';
-import type { JSONOutput } from 'typedoc';
-import DocPage, { type Props as DocPageProps } from '@theme/DocPage';
-import type { ApiOptions, DeclarationReflectionMap, PackageReflectionGroup } from '../types';
+import { useMemo } from 'react';
+import DocRoot, { type Props as DocRootProps } from '@theme/DocRoot';
+import type {
+	ApiOptions,
+	PackageReflectionGroup,
+	TSDDeclarationReflection,
+	TSDDeclarationReflectionMap,
+	TSDReflection,
+} from '../types';
 import { ApiDataContext } from './ApiDataContext';
 
-function isObject(value: unknown): value is JSONOutput.Reflection {
+function isObject(value: unknown): value is TSDReflection {
 	return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 function deepMapReflections(
-	data: JSONOutput.Reflection,
-	map: DeclarationReflectionMap,
-	parent?: JSONOutput.Reflection,
+	data: TSDReflection,
+	map: TSDDeclarationReflectionMap,
+	parent?: TSDReflection,
 ) {
 	Object.entries(data).forEach(([key, value]) => {
 		if (key === 'id') {
@@ -23,7 +28,7 @@ function deepMapReflections(
 
 			// Dont overwrite with reference nodes
 			if (!hasType || (hasType && (data as unknown as { type: string }).type !== 'reference')) {
-				map[Number(value)] = data as JSONOutput.DeclarationReflection;
+				map[Number(value)] = data as TSDDeclarationReflection;
 
 				if (parent) {
 					data.parentId = parent.id;
@@ -43,8 +48,8 @@ function deepMapReflections(
 	return map;
 }
 
-function mapPackagesToReflection(packages: PackageReflectionGroup[]): DeclarationReflectionMap {
-	const map: DeclarationReflectionMap = {};
+function mapPackagesToReflection(packages: PackageReflectionGroup[]): TSDDeclarationReflectionMap {
+	const map: TSDDeclarationReflectionMap = {};
 
 	packages.forEach((pkg) => {
 		pkg.entryPoints.forEach((entry) => {
@@ -55,7 +60,7 @@ function mapPackagesToReflection(packages: PackageReflectionGroup[]): Declaratio
 	return map;
 }
 
-export interface ApiPageProps extends DocPageProps {
+export interface ApiPageProps extends DocRootProps {
 	options: ApiOptions;
 	packages: PackageReflectionGroup[];
 }
@@ -69,7 +74,7 @@ function ApiPage({ options, packages, ...props }: ApiPageProps) {
 	return (
 		<ApiDataContext.Provider value={value}>
 			<div className="apiPage">
-				<DocPage {...props} />
+				<DocRoot {...props} />
 			</div>
 		</ApiDataContext.Provider>
 	);

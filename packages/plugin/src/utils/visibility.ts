@@ -1,8 +1,8 @@
 import type { JSONOutput } from 'typedoc';
-import type { DeclarationReflectionMap } from '../types';
+import type { TSDDeclarationReflectionMap } from '../types';
 
 // https://github.com/TypeStrong/typedoc/blob/master/src/lib/output/themes/DefaultTheme.ts#L264
-export function hasOwnDocument(id: number, reflections: DeclarationReflectionMap): boolean {
+export function hasOwnDocument(id: number, reflections: TSDDeclarationReflectionMap): boolean {
 	const reflection = reflections[id];
 
 	return Boolean(reflection?.permalink && !reflection.permalink.includes('#'));
@@ -11,7 +11,7 @@ export function hasOwnDocument(id: number, reflections: DeclarationReflectionMap
 // https://github.com/TypeStrong/typedoc/blob/2103f347c9cba40fcaa1f67e36f7cea0bdea2f0f/src/lib/models/ReflectionCategory.ts#L44
 export function allCategoryChildrenHaveOwnDocument(
 	category: JSONOutput.ReflectionCategory,
-	reflections: DeclarationReflectionMap,
+	reflections: TSDDeclarationReflectionMap,
 ): boolean {
 	let onlyOwnDocuments = true;
 
@@ -25,7 +25,7 @@ export function allCategoryChildrenHaveOwnDocument(
 // https://github.com/TypeStrong/typedoc/blob/2103f347c9cba40fcaa1f67e36f7cea0bdea2f0f/src/lib/models/ReflectionGroup.ts#L81
 export function allGroupChildrenHaveOwnDocument(
 	group: JSONOutput.ReflectionGroup,
-	reflections: DeclarationReflectionMap,
+	reflections: TSDDeclarationReflectionMap,
 ): boolean {
 	return Boolean(group.children?.every((child) => hasOwnDocument(child, reflections)));
 }

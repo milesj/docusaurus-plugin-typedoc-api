@@ -1,13 +1,7 @@
 {
-  "compilerOptions": {
-    "emitDeclarationOnly": false,
-    "noEmit": true
-  },
-  "extends": "../../tsconfig.options.json",
+  "extends": "@docusaurus/tsconfig",
   "include": [
     "src/**/*",
-    "types/**/*",
-    "../../types/**/*"
-  ],
-  "references": []
+    "types/**/*"
+  ]
 }

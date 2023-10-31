@@ -1,6 +1,5 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/comment.hbs
-
-import React from 'react';
+import { Fragment } from 'react';
 import type { JSONOutput } from 'typedoc';
 import { Markdown } from './Markdown';
 
@@ -58,14 +57,14 @@ export function Comment({ comment, root, hideTags = [] }: CommentProps) {
 			{blockTags.length > 0 && (
 				<dl className="tsd-comment-tags">
 					{blockTags.map((tag) => (
-						<React.Fragment key={tag.tag}>
+						<Fragment key={tag.tag}>
 							<dt>
 								<strong>{tag.tag}</strong>
 							</dt>
 							<dd>
 								<Markdown content={displayPartsToMarkdown(tag.content)} />
 							</dd>
-						</React.Fragment>
+						</Fragment>
 					))}
 				</dl>
 			)}

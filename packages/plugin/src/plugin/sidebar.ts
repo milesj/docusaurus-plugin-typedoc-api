@@ -1,16 +1,17 @@
 import { JSONOutput } from 'typedoc';
 import { normalizeUrl } from '@docusaurus/utils';
 import type {
-	DeclarationReflectionMap,
 	DocusaurusPluginTypeDocApiOptions,
 	PackageReflectionGroup,
 	SidebarItem,
+	TSDDeclarationReflection,
+	TSDDeclarationReflectionMap,
 } from '../types';
 import { removeScopes } from '../utils/links';
 import { createReflectionMap } from './data';
 
 export function groupSidebarItems(
-	map: DeclarationReflectionMap,
+	map: TSDDeclarationReflectionMap,
 	groups: JSONOutput.ReflectionGroup[],
 ): SidebarItem[] {
 	const items: SidebarItem[] = [];
@@ -65,7 +66,7 @@ export function groupSidebarItems(
 	return items;
 }
 
-export function extractReflectionSidebar(pkg: JSONOutput.DeclarationReflection): SidebarItem[] {
+export function extractReflectionSidebar(pkg: TSDDeclarationReflection): SidebarItem[] {
 	return pkg.groups ? groupSidebarItems(createReflectionMap(pkg.children), pkg.groups) : [];
 }
 

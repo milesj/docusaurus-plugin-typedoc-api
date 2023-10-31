@@ -1,12 +1,17 @@
-const path = require('path');
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+/* eslint-disable sort-keys */
 
-let versions = [];
+import path from 'path';
+import { themes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
+
+let versions: string[] = [];
 
 try {
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 	versions = require('./versions.json');
-} catch {}
+} catch {
+	// Ignore
+}
 
 // MONOREPO
 const monorepo = {
@@ -128,8 +133,7 @@ function getPluginConfig() {
 	}
 }
 
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
-module.exports = {
+const config: Config = {
 	title: 'My Site',
 	tagline: 'Dinosaurs are cool',
 	url: 'https://your-docusaurus-test-site.com',
@@ -226,8 +230,8 @@ module.exports = {
 			copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
 		},
 		prism: {
-			theme: lightCodeTheme,
-			darkTheme: darkCodeTheme,
+			theme: themes.github,
+			darkTheme: themes.dracula,
 		},
 	},
 	presets: [
@@ -264,3 +268,5 @@ module.exports = {
 		],
 	],
 };
+
+export default config;

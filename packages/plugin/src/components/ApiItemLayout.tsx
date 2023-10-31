@@ -2,7 +2,6 @@
 // we had to duplicate it. Keep this file in sync as much as possible!
 // https://github.com/facebook/docusaurus/blob/main/packages/docusaurus-theme-classic/src/theme/DocItem/index.tsx
 
-import React from 'react';
 import type { PropNavigation } from '@docusaurus/plugin-content-docs';
 import { ThemeClassNames, useWindowSize } from '@docusaurus/theme-common';
 import DocBreadcrumbs from '@theme/DocBreadcrumbs';

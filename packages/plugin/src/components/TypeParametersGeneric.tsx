@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import type { JSONOutput } from 'typedoc';
 
 export interface TypeParametersGenericProps {
@@ -14,10 +14,10 @@ export function TypeParametersGeneric({ params }: TypeParametersGenericProps) {
 		<span className="tsd-generics">
 			<span className="tsd-signature-symbol">&lt;</span>
 			{params.map((param, i) => (
-				<React.Fragment key={param.id}>
+				<Fragment key={param.id}>
 					{i > 0 && <span className="tsd-signature-symbol">, </span>}
 					{param.name}
-				</React.Fragment>
+				</Fragment>
 			))}
 			<span className="tsd-signature-symbol">&gt;</span>
 		</span>

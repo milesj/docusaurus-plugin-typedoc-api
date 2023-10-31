@@ -5,6 +5,8 @@
       "esnext",
       "dom"
     ],
-    "jsx": "react"
+    "jsx": "preserve",
+    "moduleResolution": "bundler",
+    "module": "esnext",
   }
 }

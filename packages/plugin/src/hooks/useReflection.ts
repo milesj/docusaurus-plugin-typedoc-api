@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import type { JSONOutput } from 'typedoc';
 import { ApiDataContext } from '../components/ApiDataContext';
+import type { TSDDeclarationReflection } from '../types';
 
-export function useReflection<T = JSONOutput.DeclarationReflection>(id?: number): T | null {
+export function useReflection<T = TSDDeclarationReflection>(id?: number): T | null {
 	const { reflections } = useContext(ApiDataContext);
 
 	// 0 is a valid ID

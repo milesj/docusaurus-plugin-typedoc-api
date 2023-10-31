@@ -1,6 +1,5 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/hierarchy.hbs
 
-import React from 'react';
 import type { HierarchyNode } from '../utils/hierarchy';
 import { Type } from './Type';
 

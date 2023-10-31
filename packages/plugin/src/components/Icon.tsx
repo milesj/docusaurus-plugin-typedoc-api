@@ -1,9 +1,8 @@
-import React from 'react';
-import type { JSONOutput } from 'typedoc';
+import type { TSDDeclarationReflection, TSDSignatureReflection } from '../types';
 import { getKindIcon, getKindIconColor } from '../utils/icons';
 
 export interface IconProps {
-	reflection: JSONOutput.DeclarationReflection | JSONOutput.SignatureReflection;
+	reflection: TSDDeclarationReflection | TSDSignatureReflection;
 }
 
 export function Icon({ reflection }: IconProps) {

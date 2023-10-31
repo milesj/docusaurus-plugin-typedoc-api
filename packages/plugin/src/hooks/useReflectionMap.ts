@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { ApiDataContext } from '../components/ApiDataContext';
-import type { DeclarationReflectionMap } from '../types';
+import type { TSDDeclarationReflectionMap } from '../types';
 
-export function useReflectionMap(): DeclarationReflectionMap {
+export function useReflectionMap(): TSDDeclarationReflectionMap {
 	return useContext(ApiDataContext).reflections;
 }

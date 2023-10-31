@@ -1,4 +1,4 @@
-The `ApiPage` and `ApiItem` components are based on Docusaurus' built-in `DocPage` and `DocItem`. We
+The `ApiPage` and `ApiItem` components are based on Docusaurus' built-in `DocRoot` and `DocItem`. We
 wanted to reuse as much code as possible, so we try and extend or duplicate when necessary. Please
 reference the classic them when making changes:
 https://github.com/facebook/docusaurus/tree/main/packages/docusaurus-theme-classic/src/theme

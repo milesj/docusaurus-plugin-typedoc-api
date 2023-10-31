@@ -1,4 +1,3 @@
-import React from 'react';
 import type { JSONOutput } from 'typedoc';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import { useGitRefName } from '../hooks/useGitRefName';
