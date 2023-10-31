@@ -1,4 +1,3 @@
-import React from 'react';
 import type { JSONOutput } from 'typedoc';
 import { getKindIcon, getKindIconColor } from '../utils/icons';
 

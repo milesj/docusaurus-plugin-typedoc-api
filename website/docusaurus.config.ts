@@ -1,6 +1,10 @@
-const path = require('path');
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+import type { Config } from '@docusaurus/types';
+import type * as Preset from '@docusaurus/preset-classic';
+import path from 'path';
+// @ts-expect-error Not typed
+import lightCodeTheme from 'prism-react-renderer/themes/github';
+// @ts-expect-error Not typed
+import darkCodeTheme from 'prism-react-renderer/themes/dracula';
 
 let versions = [];
 
@@ -128,8 +132,7 @@ function getPluginConfig() {
 	}
 }
 
-/** @type {import('@docusaurus/types').DocusaurusConfig} */
-module.exports = {
+const config: Config = {
 	title: 'My Site',
 	tagline: 'Dinosaurs are cool',
 	url: 'https://your-docusaurus-test-site.com',
@@ -264,3 +267,5 @@ module.exports = {
 		],
 	],
 };
+
+export default config;

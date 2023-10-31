@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import Link from '@docusaurus/Link';
 import { useDocVersionSuggestions } from '@docusaurus/plugin-content-docs/client';
 import { ThemeClassNames, useDocsPreferredVersion } from '@docusaurus/theme-common';

@@ -1,6 +1,5 @@
 /* eslint-disable react-perf/jsx-no-new-object-as-prop */
 
-import React from 'react';
 import type { JSONOutput } from 'typedoc';
 import { displayPartsToMarkdown } from './Comment';
 import { Type } from './Type';

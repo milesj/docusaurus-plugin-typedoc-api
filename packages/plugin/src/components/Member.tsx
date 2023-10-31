@@ -1,6 +1,6 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/members.hbs
 
-import React from 'react';
+import { Fragment } from 'react';
 import type { JSONOutput } from 'typedoc';
 import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
@@ -53,11 +53,11 @@ export function Member({ id }: MemberProps) {
 			{content}
 
 			{reflection.groups?.map((group) => (
-				<React.Fragment key={group.title}>
+				<Fragment key={group.title}>
 					{group.children?.map((child) =>
 						hasOwnDocument(child, reflections) ? null : <Member key={child} id={child} />,
 					)}
-				</React.Fragment>
+				</Fragment>
 			))}
 		</section>
 	);

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import type { JSONOutput } from 'typedoc';
 import Link from '@docusaurus/Link';
 import { useReflection } from '../hooks/useReflection';
@@ -68,7 +68,7 @@ export function Index({ reflection }: IndexProps) {
 							<section key={group.title} className="tsd-index-section">
 								{group.categories && group.categories.length > 0 ? (
 									group.categories.map((category) => (
-										<React.Fragment key={category.title}>
+										<Fragment key={category.title}>
 											<h3 className="tsd-panel-header">
 												{category.title === '__CATEGORY__' ? group.title : category.title}
 											</h3>
@@ -78,7 +78,7 @@ export function Index({ reflection }: IndexProps) {
 													{category.children?.map((child) => <IndexChild key={child} id={child} />)}
 												</ul>
 											</div>
-										</React.Fragment>
+										</Fragment>
 									))
 								) : (
 									<>

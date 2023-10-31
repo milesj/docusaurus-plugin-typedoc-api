@@ -1,6 +1,5 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.declaration.hbs
 
-import React from 'react';
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { useReflection } from '../hooks/useReflection';
 import { Comment, hasComment } from './Comment';

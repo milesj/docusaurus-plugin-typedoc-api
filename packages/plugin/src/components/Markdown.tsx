@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 
-import React, { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { marked } from 'marked';
 import { useDocsData } from '@docusaurus/plugin-content-docs/client';
 import { useDocsVersion } from '@docusaurus/theme-common/internal';
@@ -189,7 +189,7 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 					children.length === 0 ? (
 						token.text
 					) : (
-						<React.Fragment key={counter}>{convertAstToElements(children)}</React.Fragment>
+						<Fragment key={counter}>{convertAstToElements(children)}</Fragment>
 					),
 				);
 				break;

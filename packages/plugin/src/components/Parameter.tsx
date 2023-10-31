@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/Parameter.hbs
 
-import React from 'react';
 import type { JSONOutput } from 'typedoc';
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { Comment } from './Comment';
@@ -49,9 +48,7 @@ function ParameterChild({ param }: ParameterProps) {
 
 				<Comment comment={param.comment} />
 
-				{param.children?.map((child) => (
-					<Parameter key={child.id} param={child} />
-				))}
+				{param.children?.map((child) => <Parameter key={child.id} param={child} />)}
 
 				<Parameter param={param.type.declaration} />
 			</li>
@@ -157,9 +154,7 @@ export function Parameter({ param }: ParameterProps) {
 				</li>
 			)}
 
-			{param.children?.map((child) => (
-				<ParameterChild key={child.id} param={child} />
-			))}
+			{param.children?.map((child) => <ParameterChild key={child.id} param={child} />)}
 		</ul>
 	);
 }

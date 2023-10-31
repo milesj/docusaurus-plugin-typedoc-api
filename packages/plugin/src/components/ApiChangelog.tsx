@@ -1,4 +1,3 @@
-import React from 'react';
 import { PageMetadata } from '@docusaurus/theme-common';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import type { TOCItem } from '../types';

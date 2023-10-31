@@ -1,7 +1,6 @@
 /* eslint-disable no-nested-ternary */
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.signature.title.hbs
-
-import React from 'react';
+import { Fragment } from 'react';
 import type { JSONOutput } from 'typedoc';
 import { Type } from './Type';
 import { TypeParametersGeneric } from './TypeParametersGeneric';
@@ -30,7 +29,7 @@ export function MemberSignatureTitle({ useArrow, hideName, sig }: MemberSignatur
 			<span className="tsd-signature-symbol">(</span>
 
 			{sig.parameters?.map((param, index) => (
-				<React.Fragment key={param.id}>
+				<Fragment key={param.id}>
 					{index > 0 && <span className="tsd-signature-symbol">, </span>}
 
 					<span>
@@ -44,7 +43,7 @@ export function MemberSignatureTitle({ useArrow, hideName, sig }: MemberSignatur
 
 						<Type type={param.type} />
 					</span>
-				</React.Fragment>
+				</Fragment>
 			))}
 
 			<span className="tsd-signature-symbol">)</span>

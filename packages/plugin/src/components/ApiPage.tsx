@@ -2,7 +2,7 @@
 
 import '@vscode/codicons/dist/codicon.css';
 import './styles.css';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import type { JSONOutput } from 'typedoc';
 import DocPage, { type Props as DocPageProps } from '@theme/DocPage';
 import type { ApiOptions, DeclarationReflectionMap, PackageReflectionGroup } from '../types';

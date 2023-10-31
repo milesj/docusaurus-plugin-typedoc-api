@@ -3,11 +3,13 @@
     "emitDeclarationOnly": false,
     "noEmit": true
   },
-  "extends": "../../tsconfig.options.json",
+  "extends": [
+    "../../tsconfig.options.json",
+    "@docusaurus/tsconfig"
+  ],
   "include": [
     "src/**/*",
-    "types/**/*",
-    "../../types/**/*"
+    "types/**/*"
   ],
   "references": []
 }

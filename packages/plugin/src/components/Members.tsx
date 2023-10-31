@@ -1,6 +1,5 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/members.hbs
 
-import React from 'react';
 import type { JSONOutput } from 'typedoc';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import {
