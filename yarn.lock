@@ -4047,10 +4047,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/marked@npm:^4.3.2":
-  version: 4.3.2
-  resolution: "@types/marked@npm:4.3.2"
-  checksum: c1b5aa2cee0b8929164f4a8d206d7f89256ebde0d5b9998e9cdf6da2a5fa71162f66ef30e80b98213ee2c3372514b39b756e8494980174a4907a4aa4690b4d1d
+"@types/marked@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@types/marked@npm:6.0.0"
+  dependencies:
+    marked: "npm:*"
+  checksum: ad4cd5a405604b27efb4d3979b05869f3069529d1f5b2a38039de7c96e57270f03e7580efe327ca1c136ec22a355d0a7d8578346bd2af8397fdd6bb76ca1b084
   languageName: node
   linkType: hard
 
@@ -7292,7 +7294,7 @@ __metadata:
   resolution: "docusaurus-plugin-typedoc-api-root@workspace:."
   dependencies:
     "@moonrepo/dev": "npm:^2.0.1"
-    "@types/marked": "npm:^4.3.2"
+    "@types/marked": "npm:^6.0.0"
     "@types/react": "npm:^18.2.33"
     eslint: "npm:^8.52.0"
     eslint-config-moon: "npm:^2.0.11"
@@ -7316,7 +7318,9 @@ __metadata:
     "@docusaurus/types": "npm:^3.0.0"
     "@docusaurus/utils": "npm:^3.0.0"
     "@vscode/codicons": "npm:^0.0.35"
-    marked: "npm:^4.3.0"
+    marked: "npm:^9.1.4"
+    marked-highlight: "npm:^2.0.6"
+    marked-smartypants: "npm:^1.1.3"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typedoc: "npm:0.25.0"
@@ -11781,6 +11785,35 @@ __metadata:
   version: 3.0.3
   resolution: "markdown-table@npm:3.0.3"
   checksum: ee6e661935c85734620d2fd10e237a60ae2992ef861713b71aa66135a5d5ae957cf06ce5e15fedf3ed1fce839dd7af1f9e87c5729186490f69fa9469e8e5c3e8
+  languageName: node
+  linkType: hard
+
+"marked-highlight@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "marked-highlight@npm:2.0.6"
+  peerDependencies:
+    marked: ">=4 <10"
+  checksum: ab4162c65ba570bd9d95818a7e53f0406ef52addc034983f999bd291b3288ac967fc14b7660cb3d560f4c4afa7a36ccbe39fda9dd33e5a9096a6b10656d3af2d
+  languageName: node
+  linkType: hard
+
+"marked-smartypants@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "marked-smartypants@npm:1.1.3"
+  dependencies:
+    smartypants: "npm:^0.2.2"
+  peerDependencies:
+    marked: ">=4 <10"
+  checksum: 1d9fa32f9adc4e91e31e34db96b02a9863ced5947766aec90816c8cd4cf396fcd1f76f1d80ef726988c313bbcf041b7ffb7770fbf4ced73b0069c151413356e0
+  languageName: node
+  linkType: hard
+
+"marked@npm:*, marked@npm:^9.1.4":
+  version: 9.1.4
+  resolution: "marked@npm:9.1.4"
+  bin:
+    marked: bin/marked.js
+  checksum: 365d60f32818a01a7d7ff3baf3a860c28d65738e1dd3bb7645a339f6fda399cbfe13f06f0d156559f12b928998296a1b634834b729284d19b435bf0f2b26666b
   languageName: node
   linkType: hard
 
@@ -16437,6 +16470,16 @@ __metadata:
   version: 4.2.0
   resolution: "smart-buffer@npm:4.2.0"
   checksum: 927484aa0b1640fd9473cee3e0a0bcad6fce93fd7bbc18bac9ad0c33686f5d2e2c422fba24b5899c184524af01e11dd2bd051c2bf2b07e47aff8ca72cbfc60d2
+  languageName: node
+  linkType: hard
+
+"smartypants@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "smartypants@npm:0.2.2"
+  bin:
+    smartypants: bin/smartypants.js
+    smartypantsu: bin/smartypantsu.js
+  checksum: e73ff0493fab65f8302d471cff01c1287d3d83ccbdd3d972c2bc383e2e65a51f6862429c0ce3efbafb6bad7cf4bb5648711567cb11465251aa273faee22626c0
   languageName: node
   linkType: hard
 

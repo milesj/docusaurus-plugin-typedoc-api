@@ -232,6 +232,9 @@ const config: Config = {
 		prism: {
 			theme: themes.github,
 			darkTheme: themes.dracula,
+			prism: {
+				additionalLanguages: ['bash', 'diff', 'json', 'typescript'],
+			},
 		},
 	},
 	presets: [
