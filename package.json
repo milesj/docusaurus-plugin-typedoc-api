@@ -6,7 +6,7 @@
     "clean": "packemon clean --cwd packages/plugin",
     "docs": "yarn run build && cd website && yarn run start",
     "build": "packemon build --addEngines --cwd packages/plugin",
-    "pack": "packemon pack --addEngines --declaration --cwd packages/plugin",
+    "pack": "rm -f packages/plugin/tsconfig.lib.tsbuildinfo && packemon pack --addEngines --declaration --cwd packages/plugin",
     "format": "prettier --write .",
     "lint": "eslint --cache --color --fix --ext .ts,.tsx ./packages/*/{src,tests} ./website/src",
     "type": "tsc --build",
