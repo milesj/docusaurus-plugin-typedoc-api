@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 4.0.0 - 2023-11-01
+
+#### 💥 Breaking
+
+- Upgrade to Docusaurus v3. Drop Node.js v16 and TypeScript v4. (#115) ([c7594b8](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/c7594b8)), closes [#115](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/115)
+
+#### 🐞 Fixes
+
+- Fix some packages not finding an entry point. ([baf9cc5](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/baf9cc5))
+
+#### 📦 Dependencies
+
+- **[marked]** Update to v9 (from v4). (#118) ([cace409](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/cace409)), closes [#118](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/118)
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 3.0.1 - 2023-09-26
 
 #### 🚀 Updates

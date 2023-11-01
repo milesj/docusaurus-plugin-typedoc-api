@@ -1,6 +1,6 @@
 {
   "name": "docusaurus-plugin-typedoc-api",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "Docusaurus plugin that provides source code API documentation powered by TypeDoc. ",
   "keywords": [
     "docusaurus",
