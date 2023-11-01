@@ -6,6 +6,7 @@ import ts from 'typescript';
 import { normalizeUrl } from '@docusaurus/utils';
 import type {
 	DocusaurusPluginTypeDocApiOptions,
+	PackageEntryConfig,
 	PackageReflectionGroup,
 	ResolvedPackageConfig,
 	TSDDeclarationReflection,
@@ -221,7 +222,7 @@ function sortReflectionGroups(reflections: TSDDeclarationReflection[]) {
 	});
 }
 
-function matchesEntryPoint(
+function sourceFileMatchesEntryPoint(
 	sourceFile: string,
 	entryPoint: string,
 	{ deep, single }: { deep: boolean; single: boolean },
@@ -246,6 +247,43 @@ function matchesEntryPoint(
 		// packages/foo/src/some/deep/file.ts === packages/foo/src/
 		(deep && sourceFile.startsWith(entryPoint))
 	);
+}
+
+function modContainsEntryPoint(
+	mod: JSONOutput.DeclarationReflection,
+	entry: PackageEntryConfig,
+	meta: {
+		allSourceFiles: Record<string, boolean>;
+		packagePath: string;
+		isSinglePackage: boolean;
+		isUsingDeepImports: boolean;
+	},
+) {
+	const relModSources = mod.sources ?? [];
+	const relModSourceFile = relModSources.find((sf) => !!sf.fileName)?.fileName ?? '';
+	const relEntryPoint = joinUrl(meta.packagePath, entry.path);
+
+	// Monorepos of 1 package don't have sources, so use the child sources.
+	// They also don't use full paths like "package/src/index.ts" and simply use "index.ts",
+	// so account for those entry points also.
+	if (!relModSourceFile) {
+		const relEntryPointName = path.basename(relEntryPoint);
+		const relEntryPointInSourceFiles =
+			!!meta.allSourceFiles[relEntryPoint] ||
+			(relEntryPointName.startsWith('index.') && !!meta.allSourceFiles[relEntryPointName]);
+
+		if (relEntryPointInSourceFiles) {
+			return sourceFileMatchesEntryPoint(relEntryPoint, relEntryPoint, {
+				deep: meta.isUsingDeepImports,
+				single: meta.isSinglePackage,
+			});
+		}
+	}
+
+	return sourceFileMatchesEntryPoint(relModSourceFile, relEntryPoint, {
+		deep: meta.isUsingDeepImports,
+		single: meta.isSinglePackage,
+	});
 }
 
 function extractReflectionModules(
@@ -289,6 +327,18 @@ function extractReflectionModules(
 	return modules;
 }
 
+function buildSourceFileNameMap(modChildren: JSONOutput.DeclarationReflection[]) {
+	const map: Record<string, boolean> = {};
+
+	modChildren.forEach((child) => {
+		child.sources?.forEach((sf) => {
+			map[sf.fileName] = true;
+		});
+	});
+
+	return map;
+}
+
 export function flattenAndGroupPackages(
 	packageConfigs: ResolvedPackageConfig[],
 	project: JSONOutput.ProjectReflection,
@@ -304,19 +354,18 @@ export function flattenAndGroupPackages(
 	const packagesWithDeepImports: TSDDeclarationReflection[] = [];
 
 	modules.forEach((mod) => {
-		// Monorepos of 1 package don't have sources, so use the child sources
-		const relSources = mod.sources ?? mod.children?.[0].sources ?? [];
-		const relSourceFile = relSources.find((sf) => !!sf.fileName)?.fileName ?? '';
+		const allSourceFiles = buildSourceFileNameMap(mod.children ?? []);
 
 		packageConfigs.some((cfg) =>
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
-				const relEntryPoint = joinUrl(cfg.packagePath, entry.path);
 				const isUsingDeepImports = !entry.path.match(/\.tsx?$/);
 
 				if (
-					!matchesEntryPoint(relSourceFile, relEntryPoint, {
-						deep: isUsingDeepImports,
-						single: isSinglePackage,
+					!modContainsEntryPoint(mod, entry, {
+						allSourceFiles,
+						isSinglePackage,
+						isUsingDeepImports,
+						packagePath: cfg.packagePath,
 					})
 				) {
 					return false;
