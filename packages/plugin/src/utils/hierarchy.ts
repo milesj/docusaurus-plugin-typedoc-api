@@ -12,7 +12,11 @@ export function createHierarchy(reflection: JSONOutput.Reflection) {
 	let root!: HierarchyNode;
 	let hierarchy!: HierarchyNode;
 
-	function push(types: JSONOutput.SomeType[]) {
+	function push(types?: JSONOutput.SomeType[]) {
+		if (!types) {
+			return;
+		}
+
 		const level: HierarchyNode = { types };
 
 		if (hierarchy) {
