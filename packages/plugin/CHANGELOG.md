@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 4.0.1 - 2023-11-04
+
+#### 🐞 Fixes
+
+- Escape symbols to support MDX 2/3 changes. (#121) ([cd0a1b1](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/cd0a1b1)), closes [#121](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/121)
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 # 4.0.0 - 2023-11-01
 
 #### 💥 Breaking
