@@ -25,7 +25,7 @@ export function createHierarchy(reflection: JSONOutput.Reflection) {
 	}
 
 	if ('extendedTypes' in reflection && reflection.extendedTypes) {
-		push((reflection as JSONOutput.DeclarationReflection).extendedTypes!);
+		push((reflection as JSONOutput.DeclarationReflection).extendedTypes);
 	}
 
 	push([
@@ -39,7 +39,7 @@ export function createHierarchy(reflection: JSONOutput.Reflection) {
 	hierarchy.isTarget = true;
 
 	if ('extendedBy' in reflection && reflection.extendedBy) {
-		push((reflection as JSONOutput.DeclarationReflection).extendedBy!);
+		push((reflection as JSONOutput.DeclarationReflection).extendedBy);
 	}
 
 	return root;

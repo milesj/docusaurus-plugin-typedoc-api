@@ -4,6 +4,7 @@ import { Fragment } from 'react';
 import type { JSONOutput } from 'typedoc';
 import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
+import { escapeMdx } from '../utils/helpers';
 import { hasOwnDocument } from '../utils/visibility';
 import { AnchorLink } from './AnchorLink';
 import { CommentBadges, isCommentWithModifiers } from './CommentBadges';
@@ -46,7 +47,7 @@ export function Member({ id }: MemberProps) {
 				<AnchorLink id={reflection.name} />
 				<SourceLink sources={reflection.sources} />
 				<Flags flags={reflection.flags} />
-				{reflection.name}
+				{escapeMdx(reflection.name)}
 				{isCommentWithModifiers(comment) && <CommentBadges comment={comment} />}
 			</h3>
 

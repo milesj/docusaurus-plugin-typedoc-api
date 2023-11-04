@@ -3,6 +3,7 @@
 
 import { Fragment } from 'react';
 import type { TSDSignatureReflection } from '../types';
+import { escapeMdx } from '../utils/helpers';
 import { Type } from './Type';
 import { TypeParametersGeneric } from './TypeParametersGeneric';
 
@@ -16,7 +17,7 @@ export function MemberSignatureTitle({ useArrow, hideName, sig }: MemberSignatur
 	return (
 		<>
 			{!hideName && sig.name !== '__type' ? (
-				sig.name
+				escapeMdx(sig.name)
 			) : // Constructor signature
 			sig.kind === 16_384 ? (
 				<>

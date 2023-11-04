@@ -2,6 +2,7 @@
 
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import type { TSDDeclarationReflection } from '../types';
+import { escapeMdx } from '../utils/helpers';
 import { Icon } from './Icon';
 import { hasSigBody, MemberSignatureBody } from './MemberSignatureBody';
 import { MemberSignatureTitle } from './MemberSignatureTitle';
@@ -29,7 +30,7 @@ export function MemberGetterSetter({ inPanel, getter, setter }: MemberGetterSett
 							<li className="tsd-signature tsd-kind-icon">
 								<Icon reflection={getter} />
 								<span className="tsd-signature-symbol">get </span>
-								{getter.name}
+								{escapeMdx(getter.name)}
 								<MemberSignatureTitle hideName sig={getter} />
 							</li>
 						)}
@@ -38,7 +39,7 @@ export function MemberGetterSetter({ inPanel, getter, setter }: MemberGetterSett
 							<li className="tsd-signature tsd-kind-icon">
 								<Icon reflection={setter} />
 								<span className="tsd-signature-symbol">set </span>
-								{setter.name}
+								{escapeMdx(setter.name)}
 								<MemberSignatureTitle hideName sig={setter} />
 							</li>
 						)}

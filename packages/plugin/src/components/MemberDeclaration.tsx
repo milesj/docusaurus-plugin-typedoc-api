@@ -2,6 +2,7 @@
 
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import { useReflection } from '../hooks/useReflection';
+import { escapeMdx } from '../utils/helpers';
 import { Comment, hasComment } from './Comment';
 import { DefaultValue } from './DefaultValue';
 import { Icon } from './Icon';
@@ -26,7 +27,7 @@ export function MemberDeclaration({ id }: MemberDeclarationProps) {
 			<div className="tsd-panel-content">
 				<div className="tsd-signature tsd-kind-icon">
 					<Icon reflection={reflection} />
-					{reflection.name}
+					{escapeMdx(reflection.name)}
 					<TypeParametersGeneric params={reflection.typeParameters} />
 					<span className="tsd-signature-symbol">{reflection.flags?.isOptional && '?'}: </span>{' '}
 					<Type type={reflection.type} />

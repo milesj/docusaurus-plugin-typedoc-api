@@ -4,6 +4,7 @@ import type { Props as DocItemProps } from '@theme/DocItem';
 import { useReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import type { TOCItem, TSDDeclarationReflection, TSDDeclarationReflectionMap } from '../types';
+import { escapeMdx } from '../utils/helpers';
 import { getKindIconHtml } from '../utils/icons';
 import ApiItemLayout from './ApiItemLayout';
 import { displayPartsToMarkdown } from './Comment';
@@ -23,14 +24,15 @@ function extractTOC(item: TSDDeclarationReflection, map: TSDDeclarationReflectio
 				return;
 			}
 
-			const iconHtml = getKindIconHtml(child.kind, child.name);
-
 			if (!child.permalink || child.permalink.includes('#')) {
+				const iconHtml = getKindIconHtml(child.kind, child.name);
+				const value = escapeMdx(child.name);
+
 				toc.push({
 					// @ts-expect-error Not typed upstream
 					children: [],
 					id: child.name,
-					value: iconHtml ? `${iconHtml} ${child.name}` : child.name,
+					value: iconHtml ? `${iconHtml} ${value}` : value,
 					level: 1,
 				});
 
@@ -59,13 +61,13 @@ export default function ApiItem({ readme: Readme, route }: ApiItemProps) {
 			next: nextItem
 				? {
 						permalink: nextItem.permalink,
-						title: nextItem.name,
+						title: escapeMdx(nextItem.name),
 				  }
 				: undefined,
 			previous: prevItem
 				? {
 						permalink: prevItem.permalink,
-						title: prevItem.name,
+						title: escapeMdx(prevItem.name),
 				  }
 				: undefined,
 		}),
@@ -79,7 +81,7 @@ export default function ApiItem({ readme: Readme, route }: ApiItemProps) {
 					<span className="tsd-header-flags">
 						<Flags flags={item.flags} />
 					</span>
-					{item.name} <TypeParametersGeneric params={item.typeParameters} />
+					{escapeMdx(item.name)} <TypeParametersGeneric params={item.typeParameters} />
 				</>
 			}
 			pageMetadata={
