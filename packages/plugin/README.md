@@ -103,6 +103,8 @@ The following options are available to the plugin:
   sidebar, excluding "Overview" and "Changelog". Defaults to alphabetical.
 - `tsconfigName` (`string`) - Name of the TypeScript config file in the project root. Defaults to
   `tsconfig.json`.
+- `remarkPlugins` (`MDXPlugin[]`) - List of remark plugins to use for [MDX compilation](https://mdxjs.com/docs/extending-mdx).
+- `rehypePlugins` (`MDXPlugin[]`) - List of rehype plugins to use for [MDX compilation](https://mdxjs.com/docs/extending-mdx).
 - `typedocOptions` (`object`) - [TypeDoc options](https://typedoc.org/guides/options/#input-options)
   to pass to the compiler. Only supports a small subset of options, primarily around visibility
   exclusion.
