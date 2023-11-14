@@ -1,4 +1,5 @@
 import type { JSONOutput, TypeDocOptions } from 'typedoc';
+import type { MDXPlugin } from '@docusaurus/mdx-loader'
 import type {
 	PropSidebarItem,
 	VersionBanner,
@@ -28,6 +29,9 @@ export interface DocusaurusPluginTypeDocApiOptions
 	sortSidebar?: (a: string, d: string) => number;
 	tsconfigName?: string;
 	typedocOptions?: Partial<TypeDocOptions>;
+
+	remarkPlugins: MDXPlugin[];
+	rehypePlugins: MDXPlugin[];
 
 	// Versioning, based on Docusaurus
 	disableVersioning?: boolean;
