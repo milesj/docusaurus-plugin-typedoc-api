@@ -37,6 +37,27 @@ const monorepoOnePackage = {
 	packages: ['standard'],
 };
 
+const monorepoCategories = {
+	projectRoot: path.join(__dirname, '../fixtures/monorepo'),
+	packages: [
+		{
+			path: 'deep-imports',
+			entry: 'src/',
+			category: 'Deep imports',
+		},
+		{
+			category: 'Multi imports',
+			path: 'multi-imports',
+			entry: {
+				index: 'src/index.ts',
+				test: { path: 'src/test.ts', label: 'Test utilities' },
+			},
+		},
+		'standard',
+	],
+	categories: ['Multi imports', 'Deep imports'],
+};
+
 // POLYREPO STANDARD
 const polyrepo = {
 	projectRoot: path.join(__dirname, '../fixtures/polyrepo'),
@@ -122,6 +143,8 @@ function getPluginConfig() {
 			return monorepo;
 		case 'monorepo-1':
 			return monorepoOnePackage;
+		case 'monorepo-categories':
+			return monorepoCategories;
 		case 'polyrepo':
 			return polyrepo;
 		case 'polyrepo-deep':

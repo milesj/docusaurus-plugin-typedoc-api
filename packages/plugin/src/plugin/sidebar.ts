@@ -67,7 +67,14 @@ export function groupSidebarItems(
 }
 
 export function extractReflectionSidebar(pkg: TSDDeclarationReflection): SidebarItem[] {
-	return pkg.groups ? groupSidebarItems(createReflectionMap(pkg.children), pkg.groups) : [];
+	const overview = {
+		href: pkg.permalink,
+		label: 'Overview',
+		type: 'link',
+	};
+	return pkg.groups
+		? [overview, ...groupSidebarItems(createReflectionMap(pkg.children), pkg.groups)]
+		: [];
 }
 
 export function extractSidebar(
@@ -75,42 +82,33 @@ export function extractSidebar(
 	scopes: string[],
 	changelogs: boolean,
 	sortSidebar: NonNullable<DocusaurusPluginTypeDocApiOptions['sortSidebar']>,
+	packageCategories: string[],
 ): SidebarItem[] {
 	if (packages.length === 0) {
 		return [];
 	}
 
-	const items: SidebarItem[] = packages.map((pkg) => {
-		let subItems: SidebarItem[] = [];
-
-		pkg.entryPoints.forEach((entry) => {
-			// Index entry point should always bubble up reflection groups
-			if (entry.index) {
-				subItems.push(...extractReflectionSidebar(entry.reflection));
-				// Otherwise nest non-index entry points behind categories
-			} else {
-				subItems.push({
-					collapsed: true,
-					collapsible: true,
-					items: extractReflectionSidebar(entry.reflection),
-					label: entry.label,
-					type: 'category',
-				});
-			}
-		});
+	const categories = new Map(packageCategories.map((category) => [category, []]));
+	for (const pkg of packages) {
+		const subItems = [];
+		if (pkg.entryPoints.length === 1) {
+			subItems.push(...extractReflectionSidebar(pkg.entryPoints[0].reflection));
+		} else {
+			pkg.entryPoints.forEach((entry) => {
+				if (entry.reflection.groups) {
+					subItems.push({
+						collapsed: true,
+						collapsible: true,
+						items: extractReflectionSidebar(entry.reflection),
+						label: entry.label,
+						type: 'category',
+					});
+				}
+			});
+		}
 
 		// Always include the overview as the 1st item
 		const indexHref = pkg.entryPoints.find((entry) => entry.index)?.reflection.permalink ?? '';
-
-		subItems = subItems.sort((a, d) =>
-			sortSidebar('label' in a ? a.label : '', 'label' in d ? d.label : ''),
-		);
-
-		subItems.unshift({
-			href: indexHref,
-			label: 'Overview',
-			type: 'link',
-		});
 
 		if (pkg.changelogPath && changelogs) {
 			subItems.push({
@@ -120,21 +118,24 @@ export function extractSidebar(
 			});
 		}
 
-		return {
+		if (!categories.has(pkg.category)) {
+			categories.set(pkg.category, []);
+		}
+
+		categories.get(pkg.category).push({
 			collapsed: true,
 			collapsible: true,
 			items: subItems,
 			label: removeScopes(pkg.packageName, scopes),
 			type: 'category',
-		} as const;
-	});
-
-	const sidebar = items.filter((item) => 'items' in item && items.length > 0);
-
-	// Collapse sidebar when only 1 package
-	if (packages.length === 1 && sidebar.length === 1 && sidebar[0].type === 'category') {
-		return sidebar[0].items;
+		});
 	}
 
-	return sidebar;
+	return Array.from(categories, ([category, items]) => ({
+		collapsed: false,
+		collapsible: false,
+		items,
+		label: category,
+		type: 'category',
+	}));
 }

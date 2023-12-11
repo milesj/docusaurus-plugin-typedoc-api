@@ -4,6 +4,7 @@ import type {
 	VersionBanner,
 	VersionsOptions,
 } from '@docusaurus/plugin-content-docs';
+import type { MDXPlugin } from '@docusaurus/mdx-loader';
 
 export type { VersionBanner };
 
@@ -20,6 +21,7 @@ export interface DocusaurusPluginTypeDocApiOptions
 	minimal?: boolean;
 	packageJsonName?: string;
 	packages: (PackageConfig | string)[];
+	packageCategories?: string[];
 	projectRoot: string;
 	readmeName?: string;
 	readmes?: boolean;
@@ -33,6 +35,9 @@ export interface DocusaurusPluginTypeDocApiOptions
 	disableVersioning?: boolean;
 	includeCurrentVersion?: boolean;
 	routeBasePath?: string;
+
+	remarkPlugins: MDXPlugin[];
+	rehypePlugins: MDXPlugin[];
 }
 
 // CONFIG
@@ -46,6 +51,7 @@ export interface PackageConfig {
 	path: string; // Folder relative to project root
 	entry?: Record<string, PackageEntryConfig | string> | string;
 	slug?: string;
+	category?: string;
 }
 
 export interface ResolvedPackageConfig {
@@ -54,6 +60,7 @@ export interface ResolvedPackageConfig {
 	packageSlug: string;
 	packageName: string;
 	packageVersion: string;
+	category: string;
 }
 
 // VERSIONING
@@ -113,6 +120,7 @@ export interface PackageReflectionGroup {
 	packageVersion: string;
 	changelogPath?: string;
 	readmePath?: string;
+	category: string;
 }
 
 export interface ApiMetadata {

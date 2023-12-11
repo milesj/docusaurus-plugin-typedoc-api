@@ -382,6 +382,7 @@ export function flattenAndGroupPackages(
 
 					packages[cfg.packagePath] = {
 						entryPoints: [],
+						category: cfg.category,
 						packageName: (versioned && cfg.packageName) || packageJson.name,
 						packageVersion: (versioned && cfg.packageVersion) || packageJson.version,
 						readmePath,

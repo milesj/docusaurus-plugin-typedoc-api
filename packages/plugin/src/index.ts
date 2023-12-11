@@ -41,6 +41,7 @@ const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
 	onlyIncludeVersions: [],
 	packageJsonName: 'package.json',
 	packages: [],
+	packageCategories: [],
 	projectRoot: '.',
 	sortPackages: (a, d) => a.packageName.localeCompare(d.packageName),
 	sortSidebar: (a, d) => a.localeCompare(d),
@@ -89,7 +90,7 @@ export default function typedocApiPlugin(
 	// Determine entry points from configs
 	const entryPoints: string[] = [];
 	const packageConfigs: ResolvedPackageConfig[] = options.packages.map((pkgItem) => {
-		const pkgConfig = typeof pkgItem === 'string' ? { path: pkgItem } : pkgItem;
+		const pkgConfig = typeof pkgItem === 'string' ? { path: pkgItem, category: '' } : pkgItem;
 		const entries: Record<string, PackageEntryConfig> = {};
 
 		if (!pkgConfig.entry || typeof pkgConfig.entry === 'string') {
@@ -115,6 +116,7 @@ export default function typedocApiPlugin(
 
 		return {
 			entryPoints: entries,
+			category: pkgConfig.category,
 			packagePath: pkgConfig.path || '.',
 			packageSlug: pkgConfig.slug ?? path.basename(pkgConfig.path),
 			// Load later on
@@ -220,6 +222,7 @@ export default function typedocApiPlugin(
 								removeScopes,
 								changelogs,
 								options.sortSidebar,
+								options.packageCategories,
 							),
 						};
 					}),
