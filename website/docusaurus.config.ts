@@ -178,7 +178,7 @@ const config: Config = {
 										label: version,
 										to: i === 0 ? 'api' : `api/${version}`,
 									})),
-							  ]
+								]
 							: [],
 				},
 				{

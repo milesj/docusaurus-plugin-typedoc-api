@@ -33,9 +33,9 @@ export function MemberSignatures({ inPanel, sigs }: MemberSignaturesProps) {
 							onClick={
 								hasMultiple
 									? // eslint-disable-next-line react-perf/jsx-no-new-function-as-prop
-									  () => {
+										() => {
 											setActiveIndex(i);
-									  }
+										}
 									: undefined
 							}
 						>
