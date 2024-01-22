@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import Link from '@docusaurus/Link';
-import { useReflection } from '../hooks/useReflection';
+import { useRequiredReflection } from '../hooks/useReflection';
 import type { TSDDeclarationReflection } from '../types';
 import { escapeMdx } from '../utils/helpers';
 import { AnchorLink } from './AnchorLink';
@@ -11,7 +11,7 @@ export interface IndexChildProps {
 }
 
 function IndexChild({ id }: IndexChildProps) {
-	const reflection = useReflection(id);
+	const reflection = useRequiredReflection(id);
 
 	return (
 		<li>
