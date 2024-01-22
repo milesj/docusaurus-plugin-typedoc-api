@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { PageMetadata } from '@docusaurus/theme-common';
 import type { Props as DocItemProps } from '@theme/DocItem';
-import { useReflection } from '../hooks/useReflection';
+import { useReflection, useRequiredReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import type { TOCItem, TSDDeclarationReflection, TSDDeclarationReflectionMap } from '../types';
 import { escapeMdx } from '../utils/helpers';
@@ -49,7 +49,7 @@ export interface ApiItemProps extends Pick<DocItemProps, 'route'> {
 }
 
 export default function ApiItem({ readme: Readme, route }: ApiItemProps) {
-	const item = useReflection((route as unknown as { id: number }).id);
+	const item = useRequiredReflection((route as unknown as { id: number }).id);
 	const reflections = useReflectionMap();
 	const toc = useMemo(() => extractTOC(item, reflections), [item, reflections]);
 

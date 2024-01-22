@@ -2,7 +2,7 @@
 
 import { Fragment } from 'react';
 import type { JSONOutput } from 'typedoc';
-import { useReflection } from '../hooks/useReflection';
+import { useRequiredReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { escapeMdx } from '../utils/helpers';
 import { hasOwnDocument } from '../utils/visibility';
@@ -21,7 +21,7 @@ export interface MemberProps {
 
 export function Member({ id }: MemberProps) {
 	const reflections = useReflectionMap();
-	const reflection = useReflection(id);
+	const reflection = useRequiredReflection(id);
 	const { comment } = reflection;
 	let content: React.ReactNode = null;
 
