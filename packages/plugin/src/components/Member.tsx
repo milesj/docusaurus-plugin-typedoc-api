@@ -21,7 +21,7 @@ export interface MemberProps {
 
 export function Member({ id }: MemberProps) {
 	const reflections = useReflectionMap();
-	const reflection = useReflection(id)!;
+	const reflection = useReflection(id);
 	const { comment } = reflection;
 	let content: React.ReactNode = null;
 

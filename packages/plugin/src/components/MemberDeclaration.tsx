@@ -17,7 +17,7 @@ export interface MemberDeclarationProps {
 }
 
 export function MemberDeclaration({ id }: MemberDeclarationProps) {
-	const reflection = useReflection(id)!;
+	const reflection = useReflection(id);
 	const minimal = useMinimalLayout();
 	const showTypes = reflection.typeParameters && reflection.typeParameters.length > 0;
 	const showDeclaration = !minimal && extractDeclarationFromType(reflection.type);

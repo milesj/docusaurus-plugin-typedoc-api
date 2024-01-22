@@ -186,7 +186,7 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 						<thead>
 							<tr>
 								{token.header.map((h, i) => (
-									<th key={i} align={token.align[i]!}>
+									<th key={i} align={token.align[i]}>
 										{convertAstToElements(h.tokens as TokensList)}
 									</th>
 								))}
@@ -196,7 +196,7 @@ function convertAstToElements(ast: TokensList): React.ReactNode[] | undefined {
 							{token.rows.map((cells, i) => (
 								<tr key={i}>
 									{cells.map((c, i2) => (
-										<td key={i2} align={token.align[i]!}>
+										<td key={i2} align={token.align[i]}>
 											{convertAstToElements(c.tokens as TokensList)}
 										</td>
 									))}
