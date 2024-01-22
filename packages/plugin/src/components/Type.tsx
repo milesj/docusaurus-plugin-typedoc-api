@@ -373,7 +373,7 @@ export function Type({ needsParens = false, type: base }: TypeProps) {
 					{type.tail.map((t, i) => (
 						<Fragment key={i}>
 							<span className="tsd-signature-symbol">{'${'}</span>
-							{typeof t[0] !== 'string' && <Type type={t[0]!} />}
+							{typeof t[0] !== 'string' && <Type type={t[0]} />}
 							<span className="tsd-signature-symbol">{'}'}</span>
 							{typeof t[1] === 'string' && <span className="tsd-signature-type">{t[1]}</span>}
 						</Fragment>

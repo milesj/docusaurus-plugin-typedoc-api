@@ -11,7 +11,7 @@ export interface IndexChildProps {
 }
 
 function IndexChild({ id }: IndexChildProps) {
-	const reflection = useReflection(id)!;
+	const reflection = useReflection(id);
 
 	return (
 		<li>

@@ -18,7 +18,7 @@ function extractTOC(item: TSDDeclarationReflection, map: TSDDeclarationReflectio
 
 	item.groups?.forEach((group) => {
 		group.children?.forEach((childId) => {
-			const child = map[childId]!;
+			const child = map[childId];
 
 			if (mapped.has(child.name)) {
 				return;
@@ -49,7 +49,7 @@ export interface ApiItemProps extends Pick<DocItemProps, 'route'> {
 }
 
 export default function ApiItem({ readme: Readme, route }: ApiItemProps) {
-	const item = useReflection((route as unknown as { id: number }).id)!;
+	const item = useReflection((route as unknown as { id: number }).id);
 	const reflections = useReflectionMap();
 	const toc = useMemo(() => extractTOC(item, reflections), [item, reflections]);
 
