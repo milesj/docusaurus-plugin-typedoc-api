@@ -62,13 +62,13 @@ export default function ApiItem({ readme: Readme, route }: ApiItemProps) {
 				? {
 						permalink: nextItem.permalink,
 						title: escapeMdx(nextItem.name),
-				  }
+					}
 				: undefined,
 			previous: prevItem
 				? {
 						permalink: prevItem.permalink,
 						title: escapeMdx(prevItem.name),
-				  }
+					}
 				: undefined,
 		}),
 		[nextItem, prevItem],

@@ -104,7 +104,7 @@ export default function typedocApiPlugin(
 						? {
 								label: 'Index',
 								path: entryConfig,
-						  }
+							}
 						: entryConfig;
 			});
 		}
