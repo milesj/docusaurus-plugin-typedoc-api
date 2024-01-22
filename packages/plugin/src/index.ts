@@ -50,6 +50,8 @@ const DEFAULT_OPTIONS: Required<DocusaurusPluginTypeDocApiOptions> = {
 	routeBasePath: 'api',
 	tsconfigName: 'tsconfig.json',
 	typedocOptions: {},
+	remarkPlugins: [],
+	rehypePlugins: [],
 	versions: {},
 };
 
@@ -413,6 +415,8 @@ export default function typedocApiPlugin(
 									loader: require.resolve('@docusaurus/mdx-loader'),
 									options: {
 										admonitions: true,
+										remarkPlugins: options.remarkPlugins,
+										rehypePlugins: options.rehypePlugins,
 										staticDir: path.join(context.siteDir, 'static'),
 										// Since this isnt a doc/blog page, we can get
 										// away with it being a partial!
