@@ -214,15 +214,34 @@ export default function typedocApiPlugin(
 
 						packages.sort((a, d) => options.sortPackages(a, d));
 
+						// Generate sidebars (this runs before the main sidebar is loaded)
+						const sidebars = await extractSidebar(
+							packages,
+							removeScopes,
+							changelogs,
+							options.sortSidebar,
+						);
+
+						await fs.promises.writeFile(
+							path.join(
+								context.generatedFilesDir,
+								`api-sidebar-${pluginId}-${metadata.versionName}.js`,
+							),
+							`module.exports = ${JSON.stringify(sidebars, null, 2)};`,
+						);
+
+						await fs.promises.writeFile(
+							path.join(
+								context.generatedFilesDir,
+								`api-sidebar-${pluginId}-${metadata.versionName}.d.ts`,
+							),
+							`import type { SidebarConfig } from '@docusaurus/plugin-content-docs';\nexport = Array<SidebarConfig>;`,
+						);
+
 						return {
 							...metadata,
 							packages,
-							sidebars: await extractSidebar(
-								packages,
-								removeScopes,
-								changelogs,
-								options.sortSidebar,
-							),
+							sidebars,
 						};
 					}),
 				),

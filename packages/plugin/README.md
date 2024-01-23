@@ -95,6 +95,10 @@ The following options are available to the plugin:
 - `readmeName` (`string`) - Name of the readme file within a package. Defaults to `README.md`.
 - `readmes` (`boolean`) - Include and render the readme file from every package. Defaults to
   `false`.
+- `rehypePlugins` (`MDXPlugin[]`) - List of rehype plugins to use for
+  [MDX compilation](https://mdxjs.com/docs/extending-mdx).
+- `remarkPlugins` (`MDXPlugin[]`) - List of remark plugins to use for
+  [MDX compilation](https://mdxjs.com/docs/extending-mdx).
 - `removeScopes` (`string[]`) - Package scopes and prefixes to remove when displaying the package
   name in the sidebar and index. For example, `boost` will remove `@boost/` and `boost-`.
 - `sortPackages` (`(a, d) => number`) - Function to sort the package list in the sidebar and on the
@@ -103,8 +107,6 @@ The following options are available to the plugin:
   sidebar, excluding "Overview" and "Changelog". Defaults to alphabetical.
 - `tsconfigName` (`string`) - Name of the TypeScript config file in the project root. Defaults to
   `tsconfig.json`.
-- `remarkPlugins` (`MDXPlugin[]`) - List of remark plugins to use for [MDX compilation](https://mdxjs.com/docs/extending-mdx).
-- `rehypePlugins` (`MDXPlugin[]`) - List of rehype plugins to use for [MDX compilation](https://mdxjs.com/docs/extending-mdx).
 - `typedocOptions` (`object`) - [TypeDoc options](https://typedoc.org/guides/options/#input-options)
   to pass to the compiler. Only supports a small subset of options, primarily around visibility
   exclusion.
@@ -267,6 +269,24 @@ module.exports = {
 ```
 
 > This workaround isn't perfect and may be buggy. Use at your own risk!
+
+### Sidebars
+
+When we generate API routes, we also dynamically generate and associate a sidebar with each route.
+This cannot be overridden, but can be customized with some basic options (like categories and
+sorting).
+
+If you'd like to reference the generated sidebar in your `sidebars.ts`, we write the sidebar to a
+file located at `.docusaurus/api-sidebar-<id>-<version>.js`. The `<id>` token defaults to "default"
+and `<version>` to "current".
+
+```ts
+import apiSidebar from './.docusaurus/api-sidebar-default-current';
+
+export default {
+  api: apiSidebar,
+};
+```
 
 ### Caveats
 
