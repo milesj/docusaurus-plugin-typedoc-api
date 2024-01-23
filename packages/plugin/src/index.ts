@@ -288,6 +288,11 @@ export default function typedocApiPlugin(
 						} satisfies ApiOptions),
 					);
 
+					await actions.createData(
+						`sidebar-${version}.js`,
+						`module.exports = ${JSON.stringify(loadedVersion.sidebars, null, 2)};`,
+					);
+
 					function createRoute(
 						info: TSDDeclarationReflection,
 						modules?: Record<string, string>,
