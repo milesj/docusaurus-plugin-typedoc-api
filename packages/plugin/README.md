@@ -277,11 +277,11 @@ This cannot be overridden, but can be customized with some basic options (like c
 sorting).
 
 If you'd like to reference the generated sidebar in your `sidebars.ts`, we write the sidebar to a
-file located at `.docusaurus/docusaurus-plugin-typedoc-api/<id>/sidebar-<version>.js`. The `<id>`
-token defaults to "fallback" and `<version>` to "current".
+file located at `.docusaurus/api-sidebar-<id>-<version>.js`. The `<id>` token defaults to "default"
+and `<version>` to "current".
 
 ```ts
-import apiSidebar from './.docusaurus/docusaurus-plugin-typedoc-api/default/sidebar-current.js';
+import apiSidebar from './.docusaurus/api-sidebar-default-current';
 
 export default {
   api: apiSidebar,
