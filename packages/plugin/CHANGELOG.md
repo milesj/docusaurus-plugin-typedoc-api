@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.1.0 - 2024-01-24
+
+#### 🚀 Updates
+
+- Add remark and rehype plugins support (#123) ([3ab71aa](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/3ab71aa)), closes [#123](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/123)
+- Generate a sidebar file. (#132) ([ff45d2b](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/ff45d2b)), closes [#132](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/132)
+- Support TypeScript v5.3. ([c39b2ab](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/c39b2ab))
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to v3.1. ([2b42b17](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/2b42b17))
+- **[eslint]** Update to v8.56. ([17ec185](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/17ec185))
+- **[marked]** Update to v9 latest. ([93c9df6](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/93c9df6))
+- **[prettier]** Update to v3.2. ([889c44d](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/889c44d))
+- **[typedoc]** Update to v0.25.7. ([83c5432](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/83c5432))
+
+#### 🛠 Internals
+
+- Fix reflection type issues. ([999451d](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/999451d))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ### 4.0.1 - 2023-11-04
 
 #### 🐞 Fixes
