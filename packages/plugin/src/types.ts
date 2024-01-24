@@ -1,5 +1,5 @@
 import type { JSONOutput, TypeDocOptions } from 'typedoc';
-import type { MDXPlugin } from '@docusaurus/mdx-loader'
+import type { MDXPlugin } from '@docusaurus/mdx-loader';
 import type {
 	PropSidebarItem,
 	VersionBanner,
@@ -54,6 +54,7 @@ export interface PackageConfig {
 
 export interface ResolvedPackageConfig {
 	entryPoints: Record<string, PackageEntryConfig>;
+	packageRoot: string;
 	packagePath: string;
 	packageSlug: string;
 	packageName: string;

@@ -36,6 +36,7 @@ jobs:
         repo-type:
           - monorepo
           - monorepo-1
+          - monorepo-reexports
           - polyrepo
           - polyrepo-deep
           - polyrepo-multi

@@ -255,6 +255,7 @@ function modContainsEntryPoint(
 	meta: {
 		allSourceFiles: Record<string, boolean>;
 		packagePath: string;
+		packageRoot: string;
 		isSinglePackage: boolean;
 		isUsingDeepImports: boolean;
 	},
@@ -267,12 +268,14 @@ function modContainsEntryPoint(
 	// They also don't use full paths like "package/src/index.ts" and simply use "index.ts",
 	// so account for those entry points also.
 	if (!relModSourceFile) {
+		const absEntryPoint = path.normalize(path.join(meta.packageRoot, entry.path));
 		const relEntryPointName = path.basename(relEntryPoint);
-		const relEntryPointInSourceFiles =
+		const entryPointInSourceFiles =
+			!!meta.allSourceFiles[absEntryPoint] ||
 			!!meta.allSourceFiles[relEntryPoint] ||
 			(relEntryPointName.startsWith('index.') && !!meta.allSourceFiles[relEntryPointName]);
 
-		if (relEntryPointInSourceFiles) {
+		if (entryPointInSourceFiles) {
 			return sourceFileMatchesEntryPoint(relEntryPoint, relEntryPoint, {
 				deep: meta.isUsingDeepImports,
 				single: meta.isSinglePackage,
@@ -327,11 +330,21 @@ function extractReflectionModules(
 	return modules;
 }
 
-function buildSourceFileNameMap(modChildren: JSONOutput.DeclarationReflection[]) {
+function buildSourceFileNameMap(
+	project: JSONOutput.ProjectReflection,
+	modChildren: JSONOutput.DeclarationReflection[],
+) {
 	const map: Record<string, boolean> = {};
+	const cwd = process.cwd();
+
+	Object.values(project.symbolIdMap).forEach((symbol) => {
+		// absolute
+		map[path.normalize(path.join(cwd, symbol.sourceFileName))] = true;
+	});
 
 	modChildren.forEach((child) => {
 		child.sources?.forEach((sf) => {
+			// relative
 			map[sf.fileName] = true;
 		});
 	});
@@ -354,7 +367,7 @@ export function flattenAndGroupPackages(
 	const packagesWithDeepImports: TSDDeclarationReflection[] = [];
 
 	modules.forEach((mod) => {
-		const allSourceFiles = buildSourceFileNameMap(mod.children ?? []);
+		const allSourceFiles = buildSourceFileNameMap(project, mod.children ?? []);
 
 		packageConfigs.some((cfg) =>
 			Object.entries(cfg.entryPoints).some(([importPath, entry]) => {
@@ -366,6 +379,7 @@ export function flattenAndGroupPackages(
 						isSinglePackage,
 						isUsingDeepImports,
 						packagePath: cfg.packagePath,
+						packageRoot: cfg.packageRoot,
 					})
 				) {
 					return false;
