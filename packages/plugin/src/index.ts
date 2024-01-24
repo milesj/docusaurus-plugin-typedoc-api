@@ -117,6 +117,7 @@ export default function typedocApiPlugin(
 
 		return {
 			entryPoints: entries,
+			packageRoot: path.normalize(path.join(projectRoot, pkgConfig.path || '.')),
 			packagePath: pkgConfig.path || '.',
 			packageSlug: pkgConfig.slug ?? path.basename(pkgConfig.path),
 			// Load later on

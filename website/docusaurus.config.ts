@@ -37,6 +37,11 @@ const monorepoOnePackage = {
 	packages: ['standard'],
 };
 
+const monorepoReexports = {
+	projectRoot: path.join(__dirname, '../fixtures/monorepo-1-package'),
+	packages: ['reexports'],
+};
+
 // POLYREPO STANDARD
 const polyrepo = {
 	projectRoot: path.join(__dirname, '../fixtures/polyrepo'),
@@ -122,6 +127,8 @@ function getPluginConfig() {
 			return monorepo;
 		case 'monorepo-1':
 			return monorepoOnePackage;
+		case 'monorepo-reexports':
+			return monorepoReexports;
 		case 'polyrepo':
 			return polyrepo;
 		case 'polyrepo-deep':

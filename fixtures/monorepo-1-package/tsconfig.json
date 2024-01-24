@@ -6,6 +6,9 @@
       "path": "other"
     },
     {
+      "path": "reexports"
+    },
+    {
       "path": "standard"
     }
   ]
