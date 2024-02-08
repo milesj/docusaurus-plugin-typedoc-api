@@ -2,6 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
+import type { Options as MDXLoaderOptions } from '@docusaurus/mdx-loader';
 import type { PropVersionDocs, PropVersionMetadata } from '@docusaurus/plugin-content-docs';
 import { CURRENT_VERSION_NAME } from '@docusaurus/plugin-content-docs/server';
 import type { LoadContext, Plugin, RouteConfig } from '@docusaurus/types';
@@ -216,7 +217,7 @@ export default function typedocApiPlugin(
 						packages.sort((a, d) => options.sortPackages(a, d));
 
 						// Generate sidebars (this runs before the main sidebar is loaded)
-						const sidebars = await extractSidebar(
+						const sidebars = extractSidebar(
 							packages,
 							removeScopes,
 							changelogs,
@@ -418,10 +419,16 @@ export default function typedocApiPlugin(
 			// Whitelist the folders that this webpack rule applies to, otherwise we collide with the native
 			// docs/blog plugins. We need to include the specific files only, as in polyrepo mode, the `cfg.packagePath`
 			// can be project root (where the regular docs are too).
-			const include = packageConfigs.flatMap((cfg) => [
-				path.join(options.projectRoot, cfg.packagePath, options.readmeName),
-				path.join(options.projectRoot, cfg.packagePath, options.changelogName),
-			]);
+			const include = packageConfigs.flatMap((cfg) => {
+				const list: string[] = [];
+				if (readmes) {
+					list.push(path.join(options.projectRoot, cfg.packagePath, options.readmeName));
+				}
+				if (changelogs) {
+					list.push(path.join(options.projectRoot, cfg.packagePath, options.changelogName));
+				}
+				return list;
+			});
 
 			return {
 				module: {
@@ -437,12 +444,13 @@ export default function typedocApiPlugin(
 										admonitions: true,
 										remarkPlugins: options.remarkPlugins,
 										rehypePlugins: options.rehypePlugins,
-										staticDir: path.join(context.siteDir, 'static'),
-										// Since this isnt a doc/blog page, we can get
+										siteDir: context.siteDir,
+										staticDirs: [...context.siteConfig.staticDirectories, path.join(context.siteDir, 'static')],
+										// Since this isn't a doc/blog page, we can get
 										// away with it being a partial!
 										isMDXPartial: () => true,
 										markdownConfig: context.siteConfig.markdown,
-									},
+									} satisfies MDXLoaderOptions,
 								},
 								{
 									loader: path.resolve(__dirname, './markdownLoader.js'),
