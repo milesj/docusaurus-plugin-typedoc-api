@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 4.2.0 - 2024-02-11
+
+#### 🚀 Updates
+
+- **[mdx-loader]** Fix configuration to satisfy the mdx loader's options (specifically, the static folders and site dir). (#134) ([a9f1440](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/a9f1440)), closes [#134](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/134)
+
+#### 🐞 Fixes
+
+- **[AnchorLink]** Hook into Docusaurus' broken links API to inform about anchors produced by this plugin. (#135) ([fb43b78](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/fb43b78)), closes [#135](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/135)
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 4.1.0 - 2024-01-24
 
 #### 🚀 Updates
