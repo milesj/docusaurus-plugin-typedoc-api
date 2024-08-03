@@ -1,4 +1,4 @@
-import { createContext, useMemo, useState } from 'react'
+import { createContext, useMemo, useState } from 'react';
 import { PageMetadata } from '@docusaurus/theme-common';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import { useReflection, useRequiredReflection } from '../hooks/useReflection';
@@ -7,7 +7,7 @@ import type { TOCItem, TSDDeclarationReflection, TSDDeclarationReflectionMap } f
 import { escapeMdx } from '../utils/helpers';
 import { getKindIconHtml } from '../utils/icons';
 import ApiItemLayout from './ApiItemLayout';
-import ApiOptionsLayout from './ApiOptionsLayout'
+import ApiOptionsLayout from './ApiOptionsLayout';
 import { displayPartsToMarkdown } from './Comment';
 import { Flags } from './Flags';
 import { Reflection } from './Reflection';

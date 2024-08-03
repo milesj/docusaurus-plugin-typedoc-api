@@ -1,13 +1,13 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/members.hbs
 
-import { Fragment, useContext } from 'react'
+import { Fragment, useContext } from 'react';
 import type { JSONOutput } from 'typedoc';
 import { useRequiredReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { escapeMdx } from '../utils/helpers';
 import { hasOwnDocument } from '../utils/visibility';
 import { AnchorLink } from './AnchorLink';
-import { ApiOptionsContext } from './ApiItem'
+import { ApiOptionsContext } from './ApiItem';
 import { CommentBadges, isCommentWithModifiers } from './CommentBadges';
 import { Flags } from './Flags';
 import { MemberDeclaration } from './MemberDeclaration';
