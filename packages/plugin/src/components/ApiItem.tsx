@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { createContext, useMemo, useState } from 'react'
 import { PageMetadata } from '@docusaurus/theme-common';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import { useReflection, useRequiredReflection } from '../hooks/useReflection';
@@ -7,20 +7,26 @@ import type { TOCItem, TSDDeclarationReflection, TSDDeclarationReflectionMap } f
 import { escapeMdx } from '../utils/helpers';
 import { getKindIconHtml } from '../utils/icons';
 import ApiItemLayout from './ApiItemLayout';
+import ApiOptionsLayout from './ApiOptionsLayout'
 import { displayPartsToMarkdown } from './Comment';
 import { Flags } from './Flags';
 import { Reflection } from './Reflection';
 import { TypeParametersGeneric } from './TypeParametersGeneric';
 
-function extractTOC(item: TSDDeclarationReflection, map: TSDDeclarationReflectionMap): TOCItem[] {
+function extractTOC(
+	item: TSDDeclarationReflection,
+	map: TSDDeclarationReflectionMap,
+	hideInherited: boolean,
+): TOCItem[] {
 	const toc: TOCItem[] = [];
 	const mapped = new Set<string>();
 
 	item.groups?.forEach((group) => {
 		group.children?.forEach((childId) => {
 			const child = map[childId];
+			const shouldShow = child.inheritedFrom ? !hideInherited : true;
 
-			if (mapped.has(child.name)) {
+			if (!shouldShow || mapped.has(child.name)) {
 				return;
 			}
 
@@ -48,10 +54,21 @@ export interface ApiItemProps extends Pick<DocItemProps, 'route'> {
 	readme?: React.ComponentType;
 }
 
+export const ApiOptionsContext = createContext({
+	hideInherited: false,
+	setHideInherited: (hideInherited: boolean) => {}
+});
+
 export default function ApiItem({ readme: Readme, route }: ApiItemProps) {
+	const [hideInherited, setHideInherited] = useState(false);
+	const apiOptions = useMemo(() => ({
+		hideInherited,
+		setHideInherited,
+	}), [hideInherited, setHideInherited]);
+
 	const item = useRequiredReflection((route as unknown as { id: number }).id);
 	const reflections = useReflectionMap();
-	const toc = useMemo(() => extractTOC(item, reflections), [item, reflections]);
+	const toc = useMemo(() => extractTOC(item, reflections, hideInherited), [item, reflections, hideInherited]);
 
 	// Pagination
 	const prevItem = useReflection(item.previousId);
@@ -60,47 +77,51 @@ export default function ApiItem({ readme: Readme, route }: ApiItemProps) {
 		() => ({
 			next: nextItem
 				? {
-						permalink: nextItem.permalink,
-						title: escapeMdx(nextItem.name),
-					}
+					permalink: nextItem.permalink,
+					title: escapeMdx(nextItem.name),
+				}
 				: undefined,
 			previous: prevItem
 				? {
-						permalink: prevItem.permalink,
-						title: escapeMdx(prevItem.name),
-					}
+					permalink: prevItem.permalink,
+					title: escapeMdx(prevItem.name),
+				}
 				: undefined,
 		}),
 		[nextItem, prevItem],
 	);
 
 	return (
-		<ApiItemLayout
-			heading={
-				<>
-					<span className="tsd-header-flags">
-						<Flags flags={item.flags} />
-					</span>
-					{escapeMdx(item.name)} <TypeParametersGeneric params={item.typeParameters} />
-				</>
-			}
-			pageMetadata={
-				<PageMetadata
-					description={item.comment?.summary ? displayPartsToMarkdown(item.comment.summary) : ''}
-					title={`${item.name} | API`}
-				/>
-			}
-			pagingMetadata={pagingMetadata}
-			route={route}
-			toc={toc}
-		>
-			{Readme && (
-				<section className="tsd-readme">
-					<Readme />
-				</section>
-			)}
+		<ApiOptionsContext.Provider value={apiOptions}>
+			<ApiOptionsLayout />
 
-			<Reflection reflection={item} />
-		</ApiItemLayout>
+			<ApiItemLayout
+				heading={
+					<>
+						<span className="tsd-header-flags">
+							<Flags flags={item.flags} />
+						</span>
+						{escapeMdx(item.name)} <TypeParametersGeneric params={item.typeParameters} />
+					</>
+				}
+				pageMetadata={
+					<PageMetadata
+						description={item.comment?.summary ? displayPartsToMarkdown(item.comment.summary) : ''}
+						title={`${item.name} | API`}
+					/>
+				}
+				pagingMetadata={pagingMetadata}
+				route={route}
+				toc={toc}
+			>
+				{Readme && (
+					<section className="tsd-readme">
+						<Readme />
+					</section>
+				)}
+
+				<Reflection reflection={item}  />
+			</ApiItemLayout>
+		</ApiOptionsContext.Provider>
 	);
 }
