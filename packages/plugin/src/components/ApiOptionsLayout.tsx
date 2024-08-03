@@ -9,8 +9,12 @@ export default function ApiOptionsLayout() {
 
   return (
     <>
-      <div>
-        <input checked={hideInherited} type="checkbox" onChange={handleHideInherited} />
+      <div className="tsd-api-options">
+        <div><b>Page Options</b></div>
+        <label>
+          <input checked={hideInherited} type="checkbox" onChange={handleHideInherited} />
+          <span>Hide Inherited</span>
+        </label>
       </div>
     </>
   );
