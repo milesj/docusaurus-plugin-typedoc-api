@@ -1,6 +1,7 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/member.signature.body.hbs
 
-import type { JSONOutput } from 'typedoc';
+import { Fragment } from 'react'
+import type { JSONOutput, Models } from 'typedoc';
 import { useMinimalLayout } from '../hooks/useMinimalLayout';
 import type { TSDSignatureReflection } from '../types';
 import { Comment, hasComment } from './Comment';
@@ -85,21 +86,71 @@ export function MemberSignatureBody({ hideSources, sig }: MemberSignatureBodyPro
 
 					<ul className="tsd-parameters">
 						{sig.parameters?.map((param) => (
-							<li key={param.id}>
-								<h5>
-									<Flags flags={param.flags} />
-									{param.flags?.isRest && <span className="tsd-signature-symbol">...</span>}
-									{`${param.name}: `}
-									<Type type={param.type} />
-									<DefaultValue
-										comment={param.comment}
-										type={param.type}
-										value={param.defaultValue}
-									/>
-								</h5>
+							<Fragment key={param.id}>
+								<li>
+									<h5>
+										<Flags flags={param.flags} />
+										{param.flags?.isRest && <span className="tsd-signature-symbol">...</span>}
+										{`${param.name}: `}
+										<Type type={param.type} />
+										<DefaultValue
+											comment={param.comment}
+											type={param.type}
+											value={param.defaultValue}
+										/>
+									</h5>
 
-								<Comment comment={param.comment} />
-							</li>
+									<Comment comment={param.comment} />
+								</li>
+
+								{param.type?.type === 'reflection' && (
+									<ul key={param.type.declaration.id}>
+										{param.type.declaration?.children?.map((reflectionChild) => (
+											<li key={reflectionChild.id}>
+												<h5>
+													<Flags flags={reflectionChild.flags} />
+													{reflectionChild.flags?.isRest && <span className="tsd-signature-symbol">...</span>}
+													{`${reflectionChild.name}: `}
+													<Type type={reflectionChild.type} />
+													<DefaultValue
+														comment={reflectionChild.comment as unknown as JSONOutput.Comment}
+														type={reflectionChild.type}
+														value={reflectionChild.defaultValue}
+													/>
+												</h5>
+
+												<Comment comment={reflectionChild.comment as unknown as JSONOutput.Comment} />
+											</li>
+										))}
+									</ul>
+								)}
+
+								{param.type?.type === 'union' && (
+									(param.type as unknown as Models.UnionType).types.filter(
+										(unionType) => unionType.type === 'reflection').map(
+										(unionReflectionType) => (
+											<ul key={(unionReflectionType as Models.ReflectionType).declaration.id}>
+												{(unionReflectionType as Models.ReflectionType).declaration?.children?.map((unionChild) => (
+													<li key={unionChild.id}>
+														<h5>
+															<Flags flags={unionChild.flags} />
+															{unionChild.flags?.isRest && <span className="tsd-signature-symbol">...</span>}
+															{`${unionChild.name}: `}
+															<Type type={unionChild.type} />
+															<DefaultValue
+																comment={unionChild.comment as unknown as JSONOutput.Comment}
+																type={unionChild.type}
+																value={unionChild.defaultValue}
+															/>
+														</h5>
+
+														<Comment comment={unionChild.comment as unknown as JSONOutput.Comment} />
+													</li>
+												))}
+											</ul>
+										))
+								)}
+							</Fragment>
 						))}
 					</ul>
 				</>
