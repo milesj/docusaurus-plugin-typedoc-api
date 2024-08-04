@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import type { InlineTagDisplayPart } from 'typedoc'
 import { PageMetadata } from '@docusaurus/theme-common';
 import type { Props as DocItemProps } from '@theme/DocItem';
 import { useReflection, useRequiredReflection } from '../hooks/useReflection';
@@ -48,6 +49,7 @@ export interface ApiItemProps extends Pick<DocItemProps, 'route'> {
 	readme?: React.ComponentType;
 }
 
+// eslint-disable-next-line complexity
 export default function ApiItem({ readme: Readme, route }: ApiItemProps) {
 	const item = useRequiredReflection((route as unknown as { id: number }).id);
 	const reflections = useReflectionMap();
@@ -73,6 +75,37 @@ export default function ApiItem({ readme: Readme, route }: ApiItemProps) {
 		}),
 		[nextItem, prevItem],
 	);
+
+	// Add @reference categories.
+	const referenceCategories: Record<string, { title: string; children: number[] }> = {};
+	for (const tag of item.comment?.blockTags ?? []) {
+		if (tag.tag === '@reference' && tag.content.length >= 2 && tag.content[0].kind === 'text') {
+			const categoryName = tag.content[0].text.trim();
+			const ref = (tag.content as InlineTagDisplayPart[]).find((t) => t.tag === '@link');
+
+			if (ref && typeof ref.target === 'number') {
+				if (!(categoryName in referenceCategories)) {
+					referenceCategories[categoryName] = { title: categoryName, children: [] };
+				}
+
+				if (!referenceCategories[categoryName].children.includes(ref.target)) {
+					referenceCategories[categoryName].children.push(ref.target);
+				}
+			}
+		}
+	}
+
+	if (!item.categories) {
+		item.categories = [];
+	}
+	for (const category of Object.values(referenceCategories)) {
+		if (category.children.length > 0) {
+			const index = item.categories.findIndex((c) => c.title === category.title);
+			if (index === -1) {
+				item.categories.push(category);
+			}
+		}
+	}
 
 	return (
 		<ApiItemLayout
