@@ -14,6 +14,7 @@ import TOC from '@theme/TOC';
 import TOCCollapsible from '@theme/TOCCollapsible';
 import { useBreadcrumbs } from '../hooks/useBreadcrumbs';
 import type { TOCItem } from '../types';
+import ApiOptionsLayout from './ApiOptionsLayout'
 import { Footer } from './Footer';
 import { VersionBanner } from './VersionBanner';
 
@@ -54,12 +55,15 @@ export default function ApiItemLayout({
 							<DocVersionBadge />
 
 							{canRenderTOC && (
-								<TOCCollapsible
-									className={`${ThemeClassNames.docs.docTocMobile ?? ''} apiTocMobile`}
-									maxHeadingLevel={6}
-									minHeadingLevel={1}
-									toc={toc}
-								/>
+								<>
+									{!renderTocDesktop && <ApiOptionsLayout className="tsd-api-options-mobile" />}
+									<TOCCollapsible
+										className={`${ThemeClassNames.docs.docTocMobile ?? ''} apiTocMobile`}
+										maxHeadingLevel={6}
+										minHeadingLevel={1}
+										toc={toc}
+									/>
+								</>
 							)}
 
 							<div className={`${ThemeClassNames.docs.docMarkdown ?? ''} markdown`}>
@@ -79,6 +83,7 @@ export default function ApiItemLayout({
 
 				{renderTocDesktop && (
 					<div className="col col--3">
+						<ApiOptionsLayout className="tsd-api-options" />
 						<TOC
 							className={ThemeClassNames.docs.docTocDesktop}
 							maxHeadingLevel={6}

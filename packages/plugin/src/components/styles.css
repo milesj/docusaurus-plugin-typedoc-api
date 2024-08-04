@@ -7,19 +7,47 @@
 }
 
 .tsd-api-options {
-	border-bottom: 1px solid #eee;
+	border-left: 1px solid var(--ifm-toc-border-color);
 	font-size: var(--tsd-font-small);
-	margin-bottom: 10px;
-	margin-right: 10px;
-	padding-bottom: 10px;
-	text-align: right;
+	padding-left: var(--ifm-toc-padding-horizontal);
+}
+.tsd-api-options > div:first-child {
+	margin: var(--ifm-toc-padding-vertical) var(--ifm-toc-padding-horizontal);
+}
+.tsd-api-options > label {
+	margin: var(--ifm-toc-padding-vertical) var(--ifm-toc-padding-horizontal);
 }
 .tsd-api-options > label > input {
-	margin-right: 5px;
+	margin: 0 5px 0 0;
 	vertical-align: middle;
 }
 .tsd-api-options > label > span {
 	vertical-align: middle;
+}
+.tsd-api-options > div:last-child {
+	border-bottom: 1px solid var(--ifm-toc-border-color);
+	margin-top: 1rem;
+}
+
+.tsd-api-options-mobile {
+	font-size: var(--tsd-font-small);
+}
+.tsd-api-options-mobile > div:first-child {
+	margin: var(--ifm-toc-padding-vertical) var(--ifm-toc-padding-horizontal);
+}
+.tsd-api-options-mobile > label {
+	margin: var(--ifm-toc-padding-vertical) var(--ifm-toc-padding-horizontal);
+}
+.tsd-api-options-mobile > label > input {
+	margin: 0 5px 0 0;
+	vertical-align: middle;
+}
+.tsd-api-options-mobile > label > span {
+	vertical-align: middle;
+}
+.tsd-api-options-mobile > div:last-child {
+	border-bottom: 1px solid var(--ifm-toc-border-color);
+	margin-top: 1rem;
 }
 
 .tsd-panel {

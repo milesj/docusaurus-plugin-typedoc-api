@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react';
 import { ApiOptionsContext } from './ApiItem';
 
-export default function ApiOptionsLayout() {
+export default function ApiOptionsLayout({ className }: { className: string }) {
   const { hideInherited, setHideInherited } = useContext(ApiOptionsContext);
   const handleHideInherited = useCallback(() => {
     setHideInherited(!hideInherited);
@@ -9,12 +9,13 @@ export default function ApiOptionsLayout() {
 
   return (
     <>
-      <div className="tsd-api-options">
+      <div className={className}>
         <div><b>Page Options</b></div>
         <label>
           <input checked={hideInherited} type="checkbox" onChange={handleHideInherited} />
           <span>Hide Inherited</span>
         </label>
+        <div />
       </div>
     </>
   );

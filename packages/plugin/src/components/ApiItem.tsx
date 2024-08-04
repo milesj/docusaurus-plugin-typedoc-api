@@ -7,7 +7,6 @@ import type { TOCItem, TSDDeclarationReflection, TSDDeclarationReflectionMap } f
 import { escapeMdx } from '../utils/helpers';
 import { getKindIconHtml } from '../utils/icons';
 import ApiItemLayout from './ApiItemLayout';
-import ApiOptionsLayout from './ApiOptionsLayout';
 import { displayPartsToMarkdown } from './Comment';
 import { Flags } from './Flags';
 import { Reflection } from './Reflection';
@@ -93,8 +92,6 @@ export default function ApiItem({ readme: Readme, route }: ApiItemProps) {
 
 	return (
 		<ApiOptionsContext.Provider value={apiOptions}>
-			<ApiOptionsLayout />
-
 			<ApiItemLayout
 				heading={
 					<>
