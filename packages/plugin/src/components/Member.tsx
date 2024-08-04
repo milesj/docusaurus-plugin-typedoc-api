@@ -1,12 +1,13 @@
 // https://github.com/TypeStrong/typedoc-default-themes/blob/master/src/default/partials/members.hbs
 
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 import type { JSONOutput } from 'typedoc';
 import { useRequiredReflection } from '../hooks/useReflection';
 import { useReflectionMap } from '../hooks/useReflectionMap';
 import { escapeMdx } from '../utils/helpers';
 import { hasOwnDocument } from '../utils/visibility';
 import { AnchorLink } from './AnchorLink';
+import { ApiOptionsContext } from './ApiItem';
 import { CommentBadges, isCommentWithModifiers } from './CommentBadges';
 import { Flags } from './Flags';
 import { MemberDeclaration } from './MemberDeclaration';
@@ -25,6 +26,9 @@ export function Member({ id }: MemberProps) {
 	const { comment } = reflection;
 	let content: React.ReactNode = null;
 
+	const apiOptions = useContext(ApiOptionsContext);
+	const shouldHideInherited = reflection.inheritedFrom ? apiOptions.hideInherited : false;
+
 	if (reflection.signatures) {
 		content = <MemberSignatures inPanel sigs={reflection.signatures} />;
 	} else if (reflection.getSignature || reflection.setSignature) {
@@ -42,7 +46,7 @@ export function Member({ id }: MemberProps) {
 	}
 
 	return (
-		<section className="tsd-panel tsd-member">
+		!shouldHideInherited && <section className="tsd-panel tsd-member">
 			<h3 className="tsd-panel-header">
 				<AnchorLink id={reflection.name} />
 				<SourceLink sources={reflection.sources} />

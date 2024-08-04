@@ -6,6 +6,50 @@
 	--tsd-spacing-horizontal: 1rem;
 }
 
+.tsd-api-options {
+	border-left: 1px solid var(--ifm-toc-border-color);
+	font-size: var(--tsd-font-small);
+	padding-left: var(--ifm-toc-padding-horizontal);
+}
+.tsd-api-options > div:first-child {
+	margin: var(--ifm-toc-padding-vertical) var(--ifm-toc-padding-horizontal);
+}
+.tsd-api-options > label {
+	margin: var(--ifm-toc-padding-vertical) var(--ifm-toc-padding-horizontal);
+}
+.tsd-api-options > label > input {
+	margin: 0 5px 0 0;
+	vertical-align: middle;
+}
+.tsd-api-options > label > span {
+	vertical-align: middle;
+}
+.tsd-api-options > div:last-child {
+	border-bottom: 1px solid var(--ifm-toc-border-color);
+	margin-top: 1rem;
+}
+
+.tsd-api-options-mobile {
+	font-size: var(--tsd-font-small);
+}
+.tsd-api-options-mobile > div:first-child {
+	margin: var(--ifm-toc-padding-vertical) var(--ifm-toc-padding-horizontal);
+}
+.tsd-api-options-mobile > label {
+	margin: var(--ifm-toc-padding-vertical) var(--ifm-toc-padding-horizontal);
+}
+.tsd-api-options-mobile > label > input {
+	margin: 0 5px 0 0;
+	vertical-align: middle;
+}
+.tsd-api-options-mobile > label > span {
+	vertical-align: middle;
+}
+.tsd-api-options-mobile > div:last-child {
+	border-bottom: 1px solid var(--ifm-toc-border-color);
+	margin-top: 1rem;
+}
+
 .tsd-panel {
 	border: 1px solid var(--ifm-card-background-color);
 	border-radius: var(--ifm-global-radius);
