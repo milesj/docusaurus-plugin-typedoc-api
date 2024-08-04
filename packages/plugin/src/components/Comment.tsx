@@ -37,7 +37,7 @@ export function Comment({ comment, root, hideTags = [] }: CommentProps) {
 		return null;
 	}
 
-  // Hide custom tags.
+	// Hide custom tags.
 	hideTags.push('@reference');
 
 	const blockTags =
