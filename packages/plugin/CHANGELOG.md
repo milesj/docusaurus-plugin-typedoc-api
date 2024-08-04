@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### 4.2.1 - 2024-08-04
+
+#### 🐞 Fixes
+
+- Support for Object Literals and Destructed Parameters in [@param](https://github.com/param) [#147] (#148) ([d613725](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/d613725)), closes [#147](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/147) [#148](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/148) [#147](https://github.com/milesj/docusaurus-plugin-typedoc-api/issues/147)
+
+#### 📦 Dependencies
+
+- **[docusaurus]** Update to v3.4. ([a0bc748](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/a0bc748))
+- Update prettier and typescript. ([1319b7f](https://github.com/milesj/docusaurus-plugin-typedoc-api/commit/1319b7f))
+
+**Note:** Version bump only for package docusaurus-plugin-typedoc-api
+
+
+
+
+
 ## 4.2.0 - 2024-02-11
 
 #### 🚀 Updates
